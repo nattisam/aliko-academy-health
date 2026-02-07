@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { MapPin, Phone, Mail, Clock, CheckCircle } from "lucide-react";
+import { MapPin, Phone, Mail, Clock, CheckCircle, Send, MessageSquare } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const Contact = () => {
@@ -31,9 +31,17 @@ const Contact = () => {
 
   return (
     <Layout>
-      <section className="py-12 lg:py-16 bg-card">
-        <div className="container-academy">
-          <h1 className="text-3xl lg:text-4xl font-bold text-foreground">
+      {/* Hero Section */}
+      <section className="relative py-16 lg:py-24 bg-gradient-to-br from-primary/5 via-card to-accent/5 overflow-hidden">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-64 h-64 bg-accent/5 rounded-full blur-3xl" />
+        
+        <div className="container-academy relative">
+          <div className="flex items-center gap-2 mb-4">
+            <div className="h-1 w-12 bg-accent rounded-full" />
+            <span className="text-sm font-medium text-accent">Get in Touch</span>
+          </div>
+          <h1 className="text-3xl lg:text-5xl font-bold text-foreground">
             Contact Us
           </h1>
           <p className="mt-4 text-lg text-muted-foreground max-w-3xl">
@@ -48,19 +56,24 @@ const Contact = () => {
           <div className="grid lg:grid-cols-3 gap-12">
             {/* Contact Form */}
             <div className="lg:col-span-2">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Send Us a Message</CardTitle>
-                </CardHeader>
-                <CardContent>
+              <Card className="overflow-hidden">
+                <div className="bg-gradient-to-r from-primary to-primary/80 text-primary-foreground px-6 py-4">
+                  <div className="flex items-center gap-3">
+                    <MessageSquare className="h-5 w-5" />
+                    <CardTitle className="text-lg text-primary-foreground">Send Us a Message</CardTitle>
+                  </div>
+                </div>
+                <CardContent className="pt-6">
                   {isSubmitted ? (
-                    <div className="text-center py-8">
-                      <CheckCircle className="h-16 w-16 text-accent mx-auto mb-4" />
-                      <h3 className="text-xl font-semibold mb-2">Thank You!</h3>
-                      <p className="text-muted-foreground mb-6">
+                    <div className="text-center py-12">
+                      <div className="w-20 h-20 rounded-full bg-accent/10 flex items-center justify-center mx-auto mb-6">
+                        <CheckCircle className="h-10 w-10 text-accent" />
+                      </div>
+                      <h3 className="text-2xl font-semibold mb-2">Thank You!</h3>
+                      <p className="text-muted-foreground mb-6 max-w-md mx-auto">
                         Your message has been received. Our team will respond within 1-2 business days.
                       </p>
-                      <Button onClick={() => setIsSubmitted(false)}>
+                      <Button onClick={() => setIsSubmitted(false)} variant="outline">
                         Send Another Message
                       </Button>
                     </div>
@@ -69,29 +82,29 @@ const Contact = () => {
                       <div className="grid sm:grid-cols-2 gap-4">
                         <div className="space-y-2">
                           <Label htmlFor="firstName">First Name *</Label>
-                          <Input id="firstName" required placeholder="John" />
+                          <Input id="firstName" required placeholder="John" className="h-11" />
                         </div>
                         <div className="space-y-2">
                           <Label htmlFor="lastName">Last Name *</Label>
-                          <Input id="lastName" required placeholder="Smith" />
+                          <Input id="lastName" required placeholder="Smith" className="h-11" />
                         </div>
                       </div>
 
                       <div className="grid sm:grid-cols-2 gap-4">
                         <div className="space-y-2">
                           <Label htmlFor="email">Email *</Label>
-                          <Input id="email" type="email" required placeholder="john@example.com" />
+                          <Input id="email" type="email" required placeholder="john@example.com" className="h-11" />
                         </div>
                         <div className="space-y-2">
                           <Label htmlFor="phone">Phone</Label>
-                          <Input id="phone" type="tel" placeholder="(206) 555-0100" />
+                          <Input id="phone" type="tel" placeholder="(206) 555-0100" className="h-11" />
                         </div>
                       </div>
 
                       <div className="space-y-2">
                         <Label htmlFor="topic">Topic *</Label>
                         <Select required>
-                          <SelectTrigger>
+                          <SelectTrigger className="h-11">
                             <SelectValue placeholder="Select a topic" />
                           </SelectTrigger>
                           <SelectContent>
@@ -111,12 +124,19 @@ const Contact = () => {
                           id="message"
                           required
                           placeholder="Tell us how we can help you..."
-                          className="min-h-[120px]"
+                          className="min-h-[140px] resize-none"
                         />
                       </div>
 
-                      <Button type="submit" disabled={isSubmitting} className="w-full sm:w-auto">
-                        {isSubmitting ? "Sending..." : "Send Message"}
+                      <Button type="submit" disabled={isSubmitting} size="lg" className="w-full sm:w-auto shadow-lg">
+                        {isSubmitting ? (
+                          "Sending..."
+                        ) : (
+                          <>
+                            <Send className="h-4 w-4 mr-2" />
+                            Send Message
+                          </>
+                        )}
                       </Button>
                     </form>
                   )}
@@ -126,10 +146,12 @@ const Contact = () => {
 
             {/* Contact Info */}
             <div className="space-y-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <MapPin className="h-5 w-5 text-primary" />
+              <Card className="group hover:shadow-lg transition-all duration-300 border-l-4 border-l-primary">
+                <CardHeader className="pb-3">
+                  <CardTitle className="flex items-center gap-3 text-base">
+                    <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                      <MapPin className="h-5 w-5 text-primary" />
+                    </div>
                     Location
                   </CardTitle>
                 </CardHeader>
@@ -141,10 +163,12 @@ const Contact = () => {
                 </CardContent>
               </Card>
 
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Phone className="h-5 w-5 text-primary" />
+              <Card className="group hover:shadow-lg transition-all duration-300 border-l-4 border-l-accent">
+                <CardHeader className="pb-3">
+                  <CardTitle className="flex items-center gap-3 text-base">
+                    <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center">
+                      <Phone className="h-5 w-5 text-accent" />
+                    </div>
                     Phone
                   </CardTitle>
                 </CardHeader>
@@ -156,10 +180,12 @@ const Contact = () => {
                 </CardContent>
               </Card>
 
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Mail className="h-5 w-5 text-primary" />
+              <Card className="group hover:shadow-lg transition-all duration-300 border-l-4 border-l-primary">
+                <CardHeader className="pb-3">
+                  <CardTitle className="flex items-center gap-3 text-base">
+                    <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                      <Mail className="h-5 w-5 text-primary" />
+                    </div>
                     Email
                   </CardTitle>
                 </CardHeader>
@@ -171,10 +197,12 @@ const Contact = () => {
                 </CardContent>
               </Card>
 
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Clock className="h-5 w-5 text-primary" />
+              <Card className="group hover:shadow-lg transition-all duration-300 border-l-4 border-l-accent">
+                <CardHeader className="pb-3">
+                  <CardTitle className="flex items-center gap-3 text-base">
+                    <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center">
+                      <Clock className="h-5 w-5 text-accent" />
+                    </div>
                     Office Hours
                   </CardTitle>
                 </CardHeader>

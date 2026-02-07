@@ -7,7 +7,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Clock, MapPin, Calendar, DollarSign, BookOpen } from "lucide-react";
+import { Clock, MapPin, Calendar, DollarSign, BookOpen, GraduationCap, Sparkles } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 type ModalityFilter = "all" | "Hybrid" | "Online" | "In-Person";
@@ -47,15 +47,45 @@ const Programs = () => {
 
   return (
     <Layout>
-      <section className="py-12 lg:py-16 bg-card">
-        <div className="container-academy">
-          <h1 className="text-3xl lg:text-4xl font-bold text-foreground">
+      {/* Hero Section */}
+      <section className="relative py-16 lg:py-24 bg-gradient-to-br from-primary/5 via-card to-accent/5 overflow-hidden">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-64 h-64 bg-accent/5 rounded-full blur-3xl" />
+        
+        <div className="container-academy relative">
+          <div className="flex items-center gap-2 mb-4">
+            <div className="h-1 w-12 bg-accent rounded-full" />
+            <span className="text-sm font-medium text-accent">Explore Programs</span>
+          </div>
+          <h1 className="text-3xl lg:text-5xl font-bold text-foreground">
             Programs & Courses
           </h1>
           <p className="mt-4 text-lg text-muted-foreground max-w-3xl">
             Explore our comprehensive healthcare training programs and exam preparation courses 
             designed to advance your career in the healthcare industry.
           </p>
+          
+          {/* Quick stats */}
+          <div className="mt-8 flex flex-wrap gap-6">
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                <GraduationCap className="h-5 w-5 text-primary" />
+              </div>
+              <div>
+                <p className="font-semibold text-foreground">{programs.length}</p>
+                <p className="text-xs">Training Programs</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center">
+                <BookOpen className="h-5 w-5 text-accent" />
+              </div>
+              <div>
+                <p className="font-semibold text-foreground">{examPrepPrograms.length}</p>
+                <p className="text-xs">Exam Prep Courses</p>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -93,14 +123,16 @@ const Programs = () => {
           </div>
 
           <Tabs defaultValue="training" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 mb-8">
-              <TabsTrigger value="training" className="text-sm">
-                Healthcare Training Programs
-                <Badge variant="secondary" className="ml-2">{filteredPrograms.length}</Badge>
+            <TabsList className="grid w-full grid-cols-2 mb-8 h-auto p-1">
+              <TabsTrigger value="training" className="text-sm py-3 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+                <GraduationCap className="h-4 w-4 mr-2" />
+                Healthcare Training
+                <Badge variant="secondary" className="ml-2 bg-background/50">{filteredPrograms.length}</Badge>
               </TabsTrigger>
-              <TabsTrigger value="exam-prep" className="text-sm">
-                Exam Review & Preparation
-                <Badge variant="secondary" className="ml-2">{filteredExamPrep.length}</Badge>
+              <TabsTrigger value="exam-prep" className="text-sm py-3 data-[state=active]:bg-accent data-[state=active]:text-accent-foreground">
+                <BookOpen className="h-4 w-4 mr-2" />
+                Exam Preparation
+                <Badge variant="secondary" className="ml-2 bg-background/50">{filteredExamPrep.length}</Badge>
               </TabsTrigger>
             </TabsList>
 
@@ -114,14 +146,17 @@ const Programs = () => {
 
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredPrograms.map((program) => (
-                  <Card key={program.id} className="flex flex-col hover:shadow-lg transition-shadow">
-                    <CardHeader className="pb-3">
-                      <div className="flex items-start justify-between gap-2">
-                        <CardTitle className="text-lg leading-tight">{program.name}</CardTitle>
-                        {program.featured && (
-                          <Badge variant="secondary" className="shrink-0 text-xs">Featured</Badge>
-                        )}
+                  <Card key={program.id} className="group flex flex-col hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden">
+                    {program.featured && (
+                      <div className="bg-gradient-to-r from-primary to-primary/80 text-primary-foreground px-4 py-1.5 text-xs font-medium flex items-center gap-1">
+                        <Sparkles className="h-3 w-3" />
+                        Featured Program
                       </div>
+                    )}
+                    <CardHeader className="pb-3">
+                      <CardTitle className="text-lg leading-tight group-hover:text-primary transition-colors">
+                        {program.name}
+                      </CardTitle>
                       <p className="text-sm text-muted-foreground">{program.credential}</p>
                     </CardHeader>
                     <CardContent className="flex-1 space-y-3">
@@ -172,7 +207,7 @@ const Programs = () => {
             <TabsContent value="exam-prep">
               <div className="mb-6">
                 <div className="flex items-center gap-2 mb-1">
-                  <BookOpen className="h-5 w-5 text-primary" />
+                  <BookOpen className="h-5 w-5 text-accent" />
                   <h2 className="text-xl font-semibold text-foreground">Exam Review & Preparation Programs</h2>
                 </div>
                 <p className="text-sm text-muted-foreground">
@@ -186,14 +221,17 @@ const Programs = () => {
 
               <div className="grid sm:grid-cols-2 gap-6">
                 {filteredExamPrep.map((program) => (
-                  <Card key={program.id} className="flex flex-col hover:shadow-lg transition-shadow">
-                    <CardHeader className="pb-3">
-                      <div className="flex items-start justify-between gap-2">
-                        <CardTitle className="text-lg leading-tight">{program.name}</CardTitle>
-                        {program.featured && (
-                          <Badge variant="secondary" className="shrink-0 text-xs">Featured</Badge>
-                        )}
+                  <Card key={program.id} className="group flex flex-col hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden">
+                    {program.featured && (
+                      <div className="bg-gradient-to-r from-accent to-accent/80 text-accent-foreground px-4 py-1.5 text-xs font-medium flex items-center gap-1">
+                        <Sparkles className="h-3 w-3" />
+                        Popular Course
                       </div>
+                    )}
+                    <CardHeader className="pb-3">
+                      <CardTitle className="text-lg leading-tight group-hover:text-accent transition-colors">
+                        {program.name}
+                      </CardTitle>
                       <p className="text-sm text-muted-foreground">Non-Credential, Supplemental</p>
                     </CardHeader>
                     <CardContent className="flex-1 space-y-3">

@@ -22,9 +22,9 @@ export function Header() {
     <header className="bg-card border-b border-border sticky top-0 z-50">
       <nav className="container-academy flex items-center justify-between py-4">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2">
-          <img src={logo} alt="Aliko Academy Health" className="h-12 md:h-14 w-auto" />
-          <span className="px-2 py-0.5 rounded bg-primary text-primary-foreground text-xs font-bold uppercase tracking-wide">
+        <Link to="/" className="flex items-center gap-3">
+          <img src={logo} alt="Aliko Academy Health" className="h-14 md:h-16 w-auto" />
+          <span className="px-2.5 py-1 rounded-md bg-primary text-primary-foreground text-xs font-bold uppercase tracking-wider shadow-sm">
             Health
           </span>
         </Link>
