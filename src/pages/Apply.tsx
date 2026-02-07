@@ -1,8 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { FileText, Upload, CheckCircle, GraduationCap, Calendar, User, Mail, Phone, MapPin } from "lucide-react";
+import { 
+  FileText, Upload, CheckCircle, GraduationCap, Calendar, User, Mail, Phone, MapPin, 
+  BookOpen, Shield, Clock, Sparkles, ArrowRight, FileCheck, AlertCircle, Heart,
+  ChevronRight, Users, Award
+} from "lucide-react";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,61 +14,48 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/hooks/use-toast";
 import { programs } from "@/data/programs";
+import { cn } from "@/lib/utils";
 
 const applicationSchema = z.object({
-  // Personal Information
   firstName: z.string().min(2, "First name must be at least 2 characters").max(50),
   lastName: z.string().min(2, "Last name must be at least 2 characters").max(50),
   email: z.string().email("Please enter a valid email address"),
   phone: z.string().min(10, "Please enter a valid phone number").max(15),
   dateOfBirth: z.string().min(1, "Date of birth is required"),
-  
-  // Address
   streetAddress: z.string().min(5, "Please enter your street address"),
   city: z.string().min(2, "Please enter your city"),
   state: z.string().min(2, "Please select your state"),
   zipCode: z.string().min(5, "Please enter a valid ZIP code").max(10),
-  
-  // Program Selection
   programId: z.string().min(1, "Please select a program"),
   startMonth: z.string().min(1, "Please select a start month"),
-  
-  // Education Background
   highestEducation: z.string().min(1, "Please select your highest education level"),
   previousHealthcareExperience: z.string().optional(),
-  
-  // Emergency Contact
   emergencyContactName: z.string().min(2, "Emergency contact name is required"),
   emergencyContactPhone: z.string().min(10, "Please enter a valid phone number"),
   emergencyContactRelation: z.string().min(1, "Please specify the relationship"),
-  
-  // Additional
   howDidYouHear: z.string().optional(),
   additionalNotes: z.string().optional(),
-  
-  // Agreements
   termsAccepted: z.boolean().refine(val => val === true, "You must accept the terms and conditions"),
   backgroundCheckConsent: z.boolean().refine(val => val === true, "Background check consent is required"),
 });
 
 type ApplicationFormData = z.infer<typeof applicationSchema>;
 
-// Generate available start months (next 12 months starting from March 2026)
 const generateStartMonths = () => {
   const months = [];
-  const startDate = new Date(2026, 2, 1); // March 2026
-  
+  const startDate = new Date(2026, 2, 1);
   for (let i = 0; i < 12; i++) {
     const date = new Date(startDate);
     date.setMonth(startDate.getMonth() + i);
     const monthYear = date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
     months.push({ value: monthYear, label: monthYear });
   }
-  
   return months;
 };
 
@@ -99,10 +90,21 @@ const hearAboutOptions = [
   "Other",
 ];
 
+const formSteps = [
+  { id: 1, title: "Personal Info", icon: User },
+  { id: 2, title: "Address", icon: MapPin },
+  { id: 3, title: "Program", icon: GraduationCap },
+  { id: 4, title: "Education", icon: BookOpen },
+  { id: 5, title: "Documents", icon: FileText },
+  { id: 6, title: "Emergency", icon: Phone },
+  { id: 7, title: "Submit", icon: CheckCircle },
+];
+
 const Apply = () => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [activeSection, setActiveSection] = useState(1);
   const [uploadedFiles, setUploadedFiles] = useState<{ [key: string]: File | null }>({
     governmentId: null,
     highSchoolDiploma: null,
@@ -136,62 +138,101 @@ const Apply = () => {
     },
   });
 
+  const watchedFields = form.watch();
+  
+  // Calculate progress
+  const calculateProgress = () => {
+    const fields = [
+      watchedFields.firstName,
+      watchedFields.lastName,
+      watchedFields.email,
+      watchedFields.phone,
+      watchedFields.dateOfBirth,
+      watchedFields.streetAddress,
+      watchedFields.city,
+      watchedFields.state,
+      watchedFields.zipCode,
+      watchedFields.programId,
+      watchedFields.startMonth,
+      watchedFields.highestEducation,
+      watchedFields.emergencyContactName,
+      watchedFields.emergencyContactPhone,
+      watchedFields.emergencyContactRelation,
+    ];
+    const filledFields = fields.filter(f => f && f.length > 0).length;
+    return Math.round((filledFields / fields.length) * 100);
+  };
+
+  const progress = calculateProgress();
+
   const handleFileChange = (documentType: string, file: File | null) => {
     setUploadedFiles(prev => ({ ...prev, [documentType]: file }));
   };
 
   const onSubmit = async (data: ApplicationFormData) => {
     setIsSubmitting(true);
-    
-    // Simulate form submission
     await new Promise(resolve => setTimeout(resolve, 2000));
-    
     console.log("Application submitted:", data);
     console.log("Uploaded files:", uploadedFiles);
-    
     setIsSubmitting(false);
     setIsSubmitted(true);
-    
     toast({
       title: "Application Submitted!",
       description: "We've received your application and will contact you within 2-3 business days.",
     });
   };
 
+  const selectedProgram = programs.find(p => p.id === watchedFields.programId);
+
   if (isSubmitted) {
     return (
       <Layout>
         <div className="min-h-screen bg-gradient-to-br from-primary/5 via-card to-accent/5 py-16">
           <div className="container mx-auto px-4">
-            <Card className="max-w-2xl mx-auto text-center">
+            <Card className="max-w-2xl mx-auto text-center overflow-hidden animate-fade-in">
+              <div className="h-2 bg-gradient-to-r from-primary via-accent to-primary" />
               <CardContent className="pt-12 pb-8">
-                <div className="w-20 h-20 bg-accent/20 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <CheckCircle className="h-10 w-10 text-accent" />
+                <div className="relative w-24 h-24 mx-auto mb-6">
+                  <div className="absolute inset-0 bg-accent/20 rounded-full animate-ping" />
+                  <div className="relative w-24 h-24 bg-gradient-to-br from-accent to-accent/80 rounded-full flex items-center justify-center shadow-lg">
+                    <CheckCircle className="h-12 w-12 text-accent-foreground" />
+                  </div>
                 </div>
-                <h1 className="text-3xl font-bold text-foreground mb-4">Application Submitted!</h1>
-                <p className="text-muted-foreground mb-6">
-                  Thank you for applying to Aliko Academy. We've received your application and our admissions team will review it carefully.
+                <Badge className="mb-4 bg-accent/10 text-accent border-accent/30">Application Received</Badge>
+                <h1 className="text-3xl font-bold text-foreground mb-4">You're on Your Way!</h1>
+                <p className="text-muted-foreground mb-8 max-w-md mx-auto">
+                  Thank you for applying to Aliko Academy Health. Our admissions team is excited to review your application.
                 </p>
-                <div className="bg-muted/50 rounded-lg p-6 mb-6 text-left">
-                  <h3 className="font-semibold mb-3">What happens next?</h3>
-                  <ul className="space-y-2 text-sm text-muted-foreground">
-                    <li className="flex items-start gap-2">
-                      <span className="text-primary font-bold">1.</span>
-                      Our admissions team will review your application within 2-3 business days.
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-primary font-bold">2.</span>
-                      You'll receive an email with your application status and next steps.
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-primary font-bold">3.</span>
-                      If approved, we'll schedule an orientation session for your selected start date.
-                    </li>
-                  </ul>
+                
+                <div className="bg-gradient-to-br from-primary/5 to-accent/5 rounded-xl p-6 mb-8 text-left border border-primary/10">
+                  <h3 className="font-semibold mb-4 flex items-center gap-2">
+                    <Sparkles className="h-5 w-5 text-accent" />
+                    What Happens Next?
+                  </h3>
+                  <div className="space-y-4">
+                    {[
+                      { step: 1, text: "Application review by our admissions team (2-3 business days)", icon: FileCheck },
+                      { step: 2, text: "You'll receive an email with your application status", icon: Mail },
+                      { step: 3, text: "Schedule orientation for your selected start date", icon: Calendar },
+                    ].map(({ step, text, icon: Icon }) => (
+                      <div key={step} className="flex items-start gap-3">
+                        <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                          <Icon className="h-4 w-4 text-primary" />
+                        </div>
+                        <p className="text-sm text-muted-foreground pt-1">{text}</p>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-                <Button asChild>
-                  <a href="/">Return to Home</a>
-                </Button>
+                
+                <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                  <Button asChild variant="outline">
+                    <a href="/programs">Explore Programs</a>
+                  </Button>
+                  <Button asChild className="bg-accent text-accent-foreground hover:bg-accent/90">
+                    <a href="/">Return to Home</a>
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           </div>
@@ -204,601 +245,677 @@ const Apply = () => {
     <Layout>
       <div className="min-h-screen bg-gradient-to-br from-primary/5 via-card to-accent/5">
         {/* Hero Section */}
-        <section className="relative py-16 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground overflow-hidden">
+        <section className="relative py-12 md:py-16 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground overflow-hidden">
           <div className="absolute inset-0 opacity-10">
             <div className="absolute top-10 left-10 w-32 h-32 bg-white rounded-full blur-3xl" />
             <div className="absolute bottom-10 right-10 w-48 h-48 bg-accent rounded-full blur-3xl" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-white/20 rounded-full blur-3xl" />
           </div>
           <div className="container mx-auto px-4 relative">
-            <div className="max-w-3xl mx-auto text-center">
-              <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm mb-6">
-                <GraduationCap className="h-4 w-4" />
-                <span>Start Your Healthcare Career</span>
+            <div className="max-w-4xl mx-auto">
+              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+                <div>
+                  <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm mb-4">
+                    <span className="relative flex h-2 w-2">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-accent"></span>
+                    </span>
+                    <span>Applications Open for Spring 2026</span>
+                  </div>
+                  <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-3">Start Your Application</h1>
+                  <p className="text-lg text-primary-foreground/90 max-w-xl">
+                    Take the first step toward your healthcare career. Complete your application in just 10-15 minutes.
+                  </p>
+                </div>
+                <div className="flex flex-col items-center md:items-end gap-2">
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center">
+                    <div className="text-3xl font-bold">{progress}%</div>
+                    <div className="text-sm text-primary-foreground/80">Complete</div>
+                  </div>
+                </div>
               </div>
-              <h1 className="text-4xl md:text-5xl font-bold mb-4">Apply Now</h1>
-              <p className="text-xl text-primary-foreground/90">
-                Complete your application to begin your journey in healthcare education. 
-                Our admissions team will guide you every step of the way.
-              </p>
             </div>
           </div>
         </section>
 
-        {/* Application Form */}
-        <section className="py-12">
+        {/* Progress Bar */}
+        <div className="sticky top-[73px] z-40 bg-card/95 backdrop-blur-sm border-b border-border shadow-sm">
+          <div className="container mx-auto px-4 py-3">
+            <div className="max-w-4xl mx-auto">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-medium">Application Progress</span>
+                <span className="text-sm text-muted-foreground">{progress}% Complete</span>
+              </div>
+              <Progress value={progress} className="h-2" />
+            </div>
+          </div>
+        </div>
+
+        {/* Form Section */}
+        <section className="py-8 md:py-12">
           <div className="container mx-auto px-4">
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="max-w-4xl mx-auto space-y-8">
-                
-                {/* Personal Information */}
-                <Card>
-                  <CardHeader>
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-                        <User className="h-5 w-5 text-primary" />
-                      </div>
-                      <div>
-                        <CardTitle>Personal Information</CardTitle>
-                        <CardDescription>Tell us about yourself</CardDescription>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="grid gap-6">
-                    <div className="grid md:grid-cols-2 gap-4">
-                      <FormField
-                        control={form.control}
-                        name="firstName"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>First Name *</FormLabel>
-                            <FormControl>
-                              <Input placeholder="John" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name="lastName"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Last Name *</FormLabel>
-                            <FormControl>
-                              <Input placeholder="Doe" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-                    
-                    <div className="grid md:grid-cols-2 gap-4">
-                      <FormField
-                        control={form.control}
-                        name="email"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Email Address *</FormLabel>
-                            <FormControl>
-                              <Input type="email" placeholder="john.doe@example.com" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name="phone"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Phone Number *</FormLabel>
-                            <FormControl>
-                              <Input type="tel" placeholder="(555) 123-4567" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-                    
-                    <FormField
-                      control={form.control}
-                      name="dateOfBirth"
-                      render={({ field }) => (
-                        <FormItem className="max-w-xs">
-                          <FormLabel>Date of Birth *</FormLabel>
-                          <FormControl>
-                            <Input type="date" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </CardContent>
-                </Card>
-
-                {/* Address */}
-                <Card>
-                  <CardHeader>
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-                        <MapPin className="h-5 w-5 text-primary" />
-                      </div>
-                      <div>
-                        <CardTitle>Address</CardTitle>
-                        <CardDescription>Your current mailing address</CardDescription>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="grid gap-6">
-                    <FormField
-                      control={form.control}
-                      name="streetAddress"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Street Address *</FormLabel>
-                          <FormControl>
-                            <Input placeholder="123 Main Street, Apt 4B" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    
-                    <div className="grid md:grid-cols-3 gap-4">
-                      <FormField
-                        control={form.control}
-                        name="city"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>City *</FormLabel>
-                            <FormControl>
-                              <Input placeholder="Seattle" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name="state"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>State *</FormLabel>
-                            <Select onValueChange={field.onChange} value={field.value}>
-                              <FormControl>
-                                <SelectTrigger>
-                                  <SelectValue placeholder="Select state" />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                {usStates.map(state => (
-                                  <SelectItem key={state} value={state}>{state}</SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name="zipCode"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>ZIP Code *</FormLabel>
-                            <FormControl>
-                              <Input placeholder="98101" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* Program Selection */}
-                <Card className="border-primary/20 bg-gradient-to-br from-primary/5 to-transparent">
-                  <CardHeader>
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-                        <GraduationCap className="h-5 w-5 text-primary-foreground" />
-                      </div>
-                      <div>
-                        <CardTitle>Program Selection</CardTitle>
-                        <CardDescription>Choose your program and preferred start date</CardDescription>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="grid gap-6">
-                    <div className="grid md:grid-cols-2 gap-4">
-                      <FormField
-                        control={form.control}
-                        name="programId"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Select Program *</FormLabel>
-                            <Select onValueChange={field.onChange} value={field.value}>
-                              <FormControl>
-                                <SelectTrigger>
-                                  <SelectValue placeholder="Choose a program" />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                {programs.map(program => (
-                                  <SelectItem key={program.id} value={program.id}>
-                                    {program.name}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-                            <FormDescription>
-                              Select the healthcare program you wish to enroll in
-                            </FormDescription>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name="startMonth"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Preferred Start Month *</FormLabel>
-                            <Select onValueChange={field.onChange} value={field.value}>
-                              <FormControl>
-                                <SelectTrigger>
-                                  <SelectValue placeholder="Select start month" />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                {startMonths.map(month => (
-                                  <SelectItem key={month.value} value={month.value}>
-                                    {month.label}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-                            <FormDescription>
-                              Classes start monthly on a cohort basis
-                            </FormDescription>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-                    
-                    <FormField
-                      control={form.control}
-                      name="highestEducation"
-                      render={({ field }) => (
-                        <FormItem className="max-w-md">
-                          <FormLabel>Highest Education Level *</FormLabel>
-                          <Select onValueChange={field.onChange} value={field.value}>
-                            <FormControl>
-                              <SelectTrigger>
-                                <SelectValue placeholder="Select education level" />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              {educationLevels.map(level => (
-                                <SelectItem key={level.value} value={level.value}>
-                                  {level.label}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    
-                    <FormField
-                      control={form.control}
-                      name="previousHealthcareExperience"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Previous Healthcare Experience (Optional)</FormLabel>
-                          <FormControl>
-                            <Textarea 
-                              placeholder="Describe any relevant healthcare experience, certifications, or volunteer work..."
-                              className="min-h-[100px]"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </CardContent>
-                </Card>
-
-                {/* Document Upload */}
-                <Card>
-                  <CardHeader>
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-                        <FileText className="h-5 w-5 text-primary" />
-                      </div>
-                      <div>
-                        <CardTitle>Required Documents</CardTitle>
-                        <CardDescription>Upload your supporting documentation (PDF, JPG, PNG - Max 5MB each)</CardDescription>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="grid md:grid-cols-2 gap-6">
-                      <div className="space-y-2">
-                        <Label htmlFor="governmentId">Government-Issued ID *</Label>
-                        <div className="relative">
-                          <Input
-                            id="governmentId"
-                            type="file"
-                            accept=".pdf,.jpg,.jpeg,.png"
-                            onChange={(e) => handleFileChange('governmentId', e.target.files?.[0] || null)}
-                            className="file:mr-4 file:py-1 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20"
-                          />
+            <div className="max-w-4xl mx-auto">
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                  
+                  {/* Step 1: Personal Information */}
+                  <Card className="overflow-hidden transition-all duration-300 hover:shadow-lg group">
+                    <div className="h-1 bg-gradient-to-r from-primary to-primary/50 group-hover:from-primary group-hover:to-accent transition-all duration-300" />
+                    <CardHeader className="bg-gradient-to-r from-primary/5 to-transparent">
+                      <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center shadow-lg shadow-primary/20">
+                          <User className="h-6 w-6 text-primary-foreground" />
                         </div>
-                        {uploadedFiles.governmentId && (
-                          <p className="text-sm text-accent flex items-center gap-1">
-                            <CheckCircle className="h-4 w-4" />
-                            {uploadedFiles.governmentId.name}
-                          </p>
-                        )}
-                        <p className="text-xs text-muted-foreground">Driver's license, state ID, or passport</p>
-                      </div>
-                      
-                      <div className="space-y-2">
-                        <Label htmlFor="highSchoolDiploma">High School Diploma or GED *</Label>
-                        <Input
-                          id="highSchoolDiploma"
-                          type="file"
-                          accept=".pdf,.jpg,.jpeg,.png"
-                          onChange={(e) => handleFileChange('highSchoolDiploma', e.target.files?.[0] || null)}
-                          className="file:mr-4 file:py-1 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20"
-                        />
-                        {uploadedFiles.highSchoolDiploma && (
-                          <p className="text-sm text-accent flex items-center gap-1">
-                            <CheckCircle className="h-4 w-4" />
-                            {uploadedFiles.highSchoolDiploma.name}
-                          </p>
-                        )}
-                        <p className="text-xs text-muted-foreground">Official transcript or diploma copy</p>
-                      </div>
-                      
-                      <div className="space-y-2">
-                        <Label htmlFor="immunizationRecords">Immunization Records (Optional)</Label>
-                        <Input
-                          id="immunizationRecords"
-                          type="file"
-                          accept=".pdf,.jpg,.jpeg,.png"
-                          onChange={(e) => handleFileChange('immunizationRecords', e.target.files?.[0] || null)}
-                          className="file:mr-4 file:py-1 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20"
-                        />
-                        {uploadedFiles.immunizationRecords && (
-                          <p className="text-sm text-accent flex items-center gap-1">
-                            <CheckCircle className="h-4 w-4" />
-                            {uploadedFiles.immunizationRecords.name}
-                          </p>
-                        )}
-                        <p className="text-xs text-muted-foreground">Required for clinical programs</p>
-                      </div>
-                      
-                      <div className="space-y-2">
-                        <Label htmlFor="resume">Resume (Optional)</Label>
-                        <Input
-                          id="resume"
-                          type="file"
-                          accept=".pdf,.doc,.docx"
-                          onChange={(e) => handleFileChange('resume', e.target.files?.[0] || null)}
-                          className="file:mr-4 file:py-1 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20"
-                        />
-                        {uploadedFiles.resume && (
-                          <p className="text-sm text-accent flex items-center gap-1">
-                            <CheckCircle className="h-4 w-4" />
-                            {uploadedFiles.resume.name}
-                          </p>
-                        )}
-                        <p className="text-xs text-muted-foreground">PDF or Word document</p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* Emergency Contact */}
-                <Card>
-                  <CardHeader>
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-                        <Phone className="h-5 w-5 text-primary" />
-                      </div>
-                      <div>
-                        <CardTitle>Emergency Contact</CardTitle>
-                        <CardDescription>Someone we can contact in case of emergency</CardDescription>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="grid gap-6">
-                    <div className="grid md:grid-cols-3 gap-4">
-                      <FormField
-                        control={form.control}
-                        name="emergencyContactName"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Contact Name *</FormLabel>
-                            <FormControl>
-                              <Input placeholder="Jane Doe" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name="emergencyContactPhone"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Contact Phone *</FormLabel>
-                            <FormControl>
-                              <Input type="tel" placeholder="(555) 987-6543" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name="emergencyContactRelation"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Relationship *</FormLabel>
-                            <FormControl>
-                              <Input placeholder="Parent, Spouse, etc." {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* Additional Information */}
-                <Card>
-                  <CardHeader>
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-                        <Mail className="h-5 w-5 text-primary" />
-                      </div>
-                      <div>
-                        <CardTitle>Additional Information</CardTitle>
-                        <CardDescription>Help us serve you better</CardDescription>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="grid gap-6">
-                    <FormField
-                      control={form.control}
-                      name="howDidYouHear"
-                      render={({ field }) => (
-                        <FormItem className="max-w-md">
-                          <FormLabel>How did you hear about us?</FormLabel>
-                          <Select onValueChange={field.onChange} value={field.value}>
-                            <FormControl>
-                              <SelectTrigger>
-                                <SelectValue placeholder="Select an option" />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              {hearAboutOptions.map(option => (
-                                <SelectItem key={option} value={option}>{option}</SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    
-                    <FormField
-                      control={form.control}
-                      name="additionalNotes"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Additional Notes or Questions (Optional)</FormLabel>
-                          <FormControl>
-                            <Textarea 
-                              placeholder="Any additional information you'd like to share with our admissions team..."
-                              className="min-h-[100px]"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </CardContent>
-                </Card>
-
-                {/* Terms and Consent */}
-                <Card className="border-accent/30">
-                  <CardHeader>
-                    <CardTitle>Terms & Consent</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <FormField
-                      control={form.control}
-                      name="termsAccepted"
-                      render={({ field }) => (
-                        <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                          <FormControl>
-                            <Checkbox
-                              checked={field.value}
-                              onCheckedChange={field.onChange}
-                            />
-                          </FormControl>
-                          <div className="space-y-1 leading-none">
-                            <FormLabel className="font-normal">
-                              I agree to the <a href="/policies" className="text-primary underline">Terms of Service and Privacy Policy</a> *
-                            </FormLabel>
-                            <FormMessage />
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2">
+                            <Badge variant="outline" className="text-xs">Step 1 of 7</Badge>
                           </div>
-                        </FormItem>
-                      )}
-                    />
-                    
-                    <FormField
-                      control={form.control}
-                      name="backgroundCheckConsent"
-                      render={({ field }) => (
-                        <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                          <FormControl>
-                            <Checkbox
-                              checked={field.value}
-                              onCheckedChange={field.onChange}
-                            />
-                          </FormControl>
-                          <div className="space-y-1 leading-none">
-                            <FormLabel className="font-normal">
-                              I consent to a background check as required for healthcare education programs *
-                            </FormLabel>
+                          <CardTitle className="mt-1">Personal Information</CardTitle>
+                          <CardDescription>Tell us about yourself</CardDescription>
+                        </div>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="pt-6 grid gap-6">
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <FormField
+                          control={form.control}
+                          name="firstName"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>First Name *</FormLabel>
+                              <FormControl>
+                                <Input placeholder="John" className="h-11" {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name="lastName"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Last Name *</FormLabel>
+                              <FormControl>
+                                <Input placeholder="Doe" className="h-11" {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <FormField
+                          control={form.control}
+                          name="email"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Email Address *</FormLabel>
+                              <FormControl>
+                                <Input type="email" placeholder="john.doe@example.com" className="h-11" {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name="phone"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Phone Number *</FormLabel>
+                              <FormControl>
+                                <Input type="tel" placeholder="(555) 123-4567" className="h-11" {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      <FormField
+                        control={form.control}
+                        name="dateOfBirth"
+                        render={({ field }) => (
+                          <FormItem className="max-w-xs">
+                            <FormLabel>Date of Birth *</FormLabel>
+                            <FormControl>
+                              <Input type="date" className="h-11" {...field} />
+                            </FormControl>
                             <FormMessage />
-                          </div>
-                        </FormItem>
-                      )}
-                    />
-                  </CardContent>
-                </Card>
+                          </FormItem>
+                        )}
+                      />
+                    </CardContent>
+                  </Card>
 
-                {/* Submit Button */}
-                <div className="flex justify-center">
-                  <Button 
-                    type="submit" 
-                    size="lg" 
-                    className="px-12 bg-accent text-accent-foreground hover:bg-accent/90"
-                    disabled={isSubmitting}
-                  >
-                    {isSubmitting ? (
-                      <>
-                        <span className="animate-spin mr-2">⏳</span>
-                        Submitting Application...
-                      </>
-                    ) : (
-                      <>
-                        <Upload className="mr-2 h-5 w-5" />
-                        Submit Application
-                      </>
-                    )}
+                  {/* Step 2: Address */}
+                  <Card className="overflow-hidden transition-all duration-300 hover:shadow-lg group">
+                    <div className="h-1 bg-gradient-to-r from-primary/50 to-primary/30 group-hover:from-primary group-hover:to-accent transition-all duration-300" />
+                    <CardHeader className="bg-gradient-to-r from-primary/5 to-transparent">
+                      <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 bg-primary/90 rounded-xl flex items-center justify-center shadow-lg shadow-primary/20">
+                          <MapPin className="h-6 w-6 text-primary-foreground" />
+                        </div>
+                        <div className="flex-1">
+                          <Badge variant="outline" className="text-xs">Step 2 of 7</Badge>
+                          <CardTitle className="mt-1">Mailing Address</CardTitle>
+                          <CardDescription>Where should we send correspondence?</CardDescription>
+                        </div>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="pt-6 grid gap-6">
+                      <FormField
+                        control={form.control}
+                        name="streetAddress"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Street Address *</FormLabel>
+                            <FormControl>
+                              <Input placeholder="123 Main Street, Apt 4B" className="h-11" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <div className="grid md:grid-cols-3 gap-4">
+                        <FormField
+                          control={form.control}
+                          name="city"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>City *</FormLabel>
+                              <FormControl>
+                                <Input placeholder="Seattle" className="h-11" {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name="state"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>State *</FormLabel>
+                              <Select onValueChange={field.onChange} value={field.value}>
+                                <FormControl>
+                                  <SelectTrigger className="h-11">
+                                    <SelectValue placeholder="Select state" />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                  {usStates.map(state => (
+                                    <SelectItem key={state} value={state}>{state}</SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name="zipCode"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>ZIP Code *</FormLabel>
+                              <FormControl>
+                                <Input placeholder="98101" className="h-11" {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Step 3: Program Selection */}
+                  <Card className="overflow-hidden transition-all duration-300 hover:shadow-lg group border-2 border-primary/20">
+                    <div className="h-1 bg-gradient-to-r from-accent to-primary" />
+                    <CardHeader className="bg-gradient-to-br from-primary/10 via-primary/5 to-accent/5">
+                      <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 bg-gradient-to-br from-primary to-accent rounded-xl flex items-center justify-center shadow-lg">
+                          <GraduationCap className="h-6 w-6 text-primary-foreground" />
+                        </div>
+                        <div className="flex-1">
+                          <Badge className="bg-accent/10 text-accent border-accent/30 text-xs">Important</Badge>
+                          <CardTitle className="mt-1">Program Selection</CardTitle>
+                          <CardDescription>Choose your program and start date</CardDescription>
+                        </div>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="pt-6 grid gap-6">
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <FormField
+                          control={form.control}
+                          name="programId"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Select Program *</FormLabel>
+                              <Select onValueChange={field.onChange} value={field.value}>
+                                <FormControl>
+                                  <SelectTrigger className="h-11">
+                                    <SelectValue placeholder="Choose a program" />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                  {programs.filter(p => p.enrollmentStatus === "open").map(program => (
+                                    <SelectItem key={program.id} value={program.id}>
+                                      {program.name}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name="startMonth"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Preferred Start Month *</FormLabel>
+                              <Select onValueChange={field.onChange} value={field.value}>
+                                <FormControl>
+                                  <SelectTrigger className="h-11">
+                                    <SelectValue placeholder="Select start month" />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                  {startMonths.map(month => (
+                                    <SelectItem key={month.value} value={month.value}>
+                                      {month.label}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      
+                      {selectedProgram && (
+                        <div className="bg-gradient-to-r from-primary/5 to-accent/5 rounded-xl p-4 border border-primary/10 animate-fade-in">
+                          <div className="flex items-start gap-3">
+                            <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                              <Award className="h-5 w-5 text-primary" />
+                            </div>
+                            <div>
+                              <h4 className="font-semibold text-sm">{selectedProgram.name}</h4>
+                              <p className="text-xs text-muted-foreground mt-1">{selectedProgram.description?.substring(0, 100)}...</p>
+                              <div className="flex flex-wrap gap-2 mt-2">
+                                <Badge variant="secondary" className="text-xs">{selectedProgram.duration}</Badge>
+                                <Badge variant="secondary" className="text-xs">{selectedProgram.modality}</Badge>
+                                <Badge variant="outline" className="text-xs">${selectedProgram.tuition.toLocaleString()}</Badge>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+
+                  {/* Step 4: Education Background */}
+                  <Card className="overflow-hidden transition-all duration-300 hover:shadow-lg group">
+                    <div className="h-1 bg-gradient-to-r from-primary/40 to-primary/20 group-hover:from-primary group-hover:to-accent transition-all duration-300" />
+                    <CardHeader className="bg-gradient-to-r from-primary/5 to-transparent">
+                      <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 bg-primary/80 rounded-xl flex items-center justify-center shadow-lg shadow-primary/20">
+                          <BookOpen className="h-6 w-6 text-primary-foreground" />
+                        </div>
+                        <div className="flex-1">
+                          <Badge variant="outline" className="text-xs">Step 4 of 7</Badge>
+                          <CardTitle className="mt-1">Education Background</CardTitle>
+                          <CardDescription>Tell us about your educational history</CardDescription>
+                        </div>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="pt-6 grid gap-6">
+                      <FormField
+                        control={form.control}
+                        name="highestEducation"
+                        render={({ field }) => (
+                          <FormItem className="max-w-md">
+                            <FormLabel>Highest Education Level *</FormLabel>
+                            <Select onValueChange={field.onChange} value={field.value}>
+                              <FormControl>
+                                <SelectTrigger className="h-11">
+                                  <SelectValue placeholder="Select education level" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                {educationLevels.map(level => (
+                                  <SelectItem key={level.value} value={level.value}>{level.label}</SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="previousHealthcareExperience"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Previous Healthcare Experience (Optional)</FormLabel>
+                            <FormControl>
+                              <Textarea 
+                                placeholder="Describe any relevant healthcare experience, certifications, or volunteer work..."
+                                className="min-h-[100px] resize-none"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </CardContent>
+                  </Card>
+
+                  {/* Step 5: Document Upload */}
+                  <Card className="overflow-hidden transition-all duration-300 hover:shadow-lg group">
+                    <div className="h-1 bg-gradient-to-r from-primary/30 to-primary/10 group-hover:from-primary group-hover:to-accent transition-all duration-300" />
+                    <CardHeader className="bg-gradient-to-r from-primary/5 to-transparent">
+                      <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 bg-primary/70 rounded-xl flex items-center justify-center shadow-lg shadow-primary/20">
+                          <FileText className="h-6 w-6 text-primary-foreground" />
+                        </div>
+                        <div className="flex-1">
+                          <Badge variant="outline" className="text-xs">Step 5 of 7</Badge>
+                          <CardTitle className="mt-1">Required Documents</CardTitle>
+                          <CardDescription>Upload your supporting documentation (PDF, JPG, PNG - Max 5MB each)</CardDescription>
+                        </div>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="pt-6">
+                      <div className="grid md:grid-cols-2 gap-4">
+                        {[
+                          { id: "governmentId", label: "Government-Issued ID", required: true, hint: "Driver's license, state ID, or passport", icon: Shield },
+                          { id: "highSchoolDiploma", label: "High School Diploma or GED", required: true, hint: "Official transcript or diploma copy", icon: Award },
+                          { id: "immunizationRecords", label: "Immunization Records", required: false, hint: "Required for clinical programs", icon: Heart },
+                          { id: "resume", label: "Resume / CV", required: false, hint: "PDF or Word document", icon: FileText },
+                        ].map(({ id, label, required, hint, icon: Icon }) => (
+                          <div 
+                            key={id} 
+                            className={cn(
+                              "relative group/upload rounded-xl border-2 border-dashed p-4 transition-all duration-200",
+                              uploadedFiles[id] 
+                                ? "border-accent bg-accent/5" 
+                                : "border-border hover:border-primary/50 hover:bg-primary/5"
+                            )}
+                          >
+                            <div className="flex items-start gap-3 mb-3">
+                              <div className={cn(
+                                "w-10 h-10 rounded-lg flex items-center justify-center transition-colors",
+                                uploadedFiles[id] ? "bg-accent/20" : "bg-muted"
+                              )}>
+                                {uploadedFiles[id] ? (
+                                  <CheckCircle className="h-5 w-5 text-accent" />
+                                ) : (
+                                  <Icon className="h-5 w-5 text-muted-foreground" />
+                                )}
+                              </div>
+                              <div className="flex-1">
+                                <Label htmlFor={id} className="font-medium cursor-pointer">
+                                  {label} {required && <span className="text-destructive">*</span>}
+                                </Label>
+                                <p className="text-xs text-muted-foreground mt-0.5">{hint}</p>
+                              </div>
+                            </div>
+                            <Input
+                              id={id}
+                              type="file"
+                              accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
+                              onChange={(e) => handleFileChange(id, e.target.files?.[0] || null)}
+                              className="file:mr-3 file:py-1.5 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 cursor-pointer"
+                            />
+                            {uploadedFiles[id] && (
+                              <p className="text-xs text-accent flex items-center gap-1 mt-2">
+                                <FileCheck className="h-3 w-3" />
+                                {uploadedFiles[id]?.name}
+                              </p>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Step 6: Emergency Contact */}
+                  <Card className="overflow-hidden transition-all duration-300 hover:shadow-lg group">
+                    <div className="h-1 bg-gradient-to-r from-primary/20 to-primary/5 group-hover:from-primary group-hover:to-accent transition-all duration-300" />
+                    <CardHeader className="bg-gradient-to-r from-primary/5 to-transparent">
+                      <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 bg-primary/60 rounded-xl flex items-center justify-center shadow-lg shadow-primary/20">
+                          <Phone className="h-6 w-6 text-primary-foreground" />
+                        </div>
+                        <div className="flex-1">
+                          <Badge variant="outline" className="text-xs">Step 6 of 7</Badge>
+                          <CardTitle className="mt-1">Emergency Contact</CardTitle>
+                          <CardDescription>Someone we can contact in case of emergency</CardDescription>
+                        </div>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="pt-6 grid gap-6">
+                      <div className="grid md:grid-cols-3 gap-4">
+                        <FormField
+                          control={form.control}
+                          name="emergencyContactName"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Contact Name *</FormLabel>
+                              <FormControl>
+                                <Input placeholder="Jane Doe" className="h-11" {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name="emergencyContactPhone"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Contact Phone *</FormLabel>
+                              <FormControl>
+                                <Input type="tel" placeholder="(555) 987-6543" className="h-11" {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name="emergencyContactRelation"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Relationship *</FormLabel>
+                              <FormControl>
+                                <Input placeholder="Parent, Spouse, etc." className="h-11" {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Step 7: Additional Info & Submit */}
+                  <Card className="overflow-hidden transition-all duration-300 hover:shadow-lg group">
+                    <div className="h-1 bg-gradient-to-r from-accent to-primary" />
+                    <CardHeader className="bg-gradient-to-r from-accent/5 to-transparent">
+                      <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 bg-accent rounded-xl flex items-center justify-center shadow-lg shadow-accent/20">
+                          <CheckCircle className="h-6 w-6 text-accent-foreground" />
+                        </div>
+                        <div className="flex-1">
+                          <Badge className="bg-accent/10 text-accent border-accent/30 text-xs">Final Step</Badge>
+                          <CardTitle className="mt-1">Review & Submit</CardTitle>
+                          <CardDescription>Complete your application</CardDescription>
+                        </div>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="pt-6 space-y-6">
+                      <FormField
+                        control={form.control}
+                        name="howDidYouHear"
+                        render={({ field }) => (
+                          <FormItem className="max-w-md">
+                            <FormLabel>How did you hear about us?</FormLabel>
+                            <Select onValueChange={field.onChange} value={field.value}>
+                              <FormControl>
+                                <SelectTrigger className="h-11">
+                                  <SelectValue placeholder="Select an option" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                {hearAboutOptions.map(option => (
+                                  <SelectItem key={option} value={option}>{option}</SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <FormField
+                        control={form.control}
+                        name="additionalNotes"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Additional Notes or Questions (Optional)</FormLabel>
+                            <FormControl>
+                              <Textarea 
+                                placeholder="Any additional information you'd like to share with our admissions team..."
+                                className="min-h-[80px] resize-none"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <div className="bg-muted/50 rounded-xl p-4 space-y-3">
+                        <FormField
+                          control={form.control}
+                          name="termsAccepted"
+                          render={({ field }) => (
+                            <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                              <FormControl>
+                                <Checkbox
+                                  checked={field.value}
+                                  onCheckedChange={field.onChange}
+                                  className="mt-0.5"
+                                />
+                              </FormControl>
+                              <div className="space-y-1 leading-none">
+                                <FormLabel className="font-normal text-sm">
+                                  I agree to the <a href="/policies" className="text-primary underline hover:text-primary/80">Terms of Service and Privacy Policy</a> *
+                                </FormLabel>
+                                <FormMessage />
+                              </div>
+                            </FormItem>
+                          )}
+                        />
+                        
+                        <FormField
+                          control={form.control}
+                          name="backgroundCheckConsent"
+                          render={({ field }) => (
+                            <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                              <FormControl>
+                                <Checkbox
+                                  checked={field.value}
+                                  onCheckedChange={field.onChange}
+                                  className="mt-0.5"
+                                />
+                              </FormControl>
+                              <div className="space-y-1 leading-none">
+                                <FormLabel className="font-normal text-sm">
+                                  I consent to a background check as required for healthcare education programs *
+                                </FormLabel>
+                                <FormMessage />
+                              </div>
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Submit Button */}
+                  <div className="bg-gradient-to-r from-primary/5 via-accent/5 to-primary/5 rounded-2xl p-6 text-center">
+                    <div className="flex items-center justify-center gap-2 mb-4">
+                      <Clock className="h-4 w-4 text-muted-foreground" />
+                      <span className="text-sm text-muted-foreground">Estimated time to complete: 10-15 minutes</span>
+                    </div>
+                    <Button 
+                      type="submit" 
+                      size="lg" 
+                      className="px-12 h-12 text-base bg-accent text-accent-foreground hover:bg-accent/90 shadow-lg shadow-accent/20 hover:shadow-xl hover:shadow-accent/30 transition-all duration-300"
+                      disabled={isSubmitting}
+                    >
+                      {isSubmitting ? (
+                        <>
+                          <span className="animate-spin mr-2">
+                            <svg className="h-5 w-5" viewBox="0 0 24 24">
+                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                            </svg>
+                          </span>
+                          Submitting Application...
+                        </>
+                      ) : (
+                        <>
+                          Submit Application
+                          <ArrowRight className="ml-2 h-5 w-5" />
+                        </>
+                      )}
+                    </Button>
+                    <p className="text-xs text-muted-foreground mt-4 max-w-md mx-auto">
+                      By submitting this application, you certify that all information provided is accurate and complete.
+                    </p>
+                  </div>
+                </form>
+              </Form>
+            </div>
+          </div>
+        </section>
+
+        {/* Help Section */}
+        <section className="py-8 border-t border-border">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto">
+              <div className="bg-card rounded-xl p-6 flex flex-col md:flex-row items-center justify-between gap-4">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                    <Users className="h-6 w-6 text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold">Need Help?</h3>
+                    <p className="text-sm text-muted-foreground">Our admissions team is here to assist you</p>
+                  </div>
+                </div>
+                <div className="flex gap-3">
+                  <Button variant="outline" asChild>
+                    <a href="/contact">Contact Us</a>
+                  </Button>
+                  <Button variant="outline" asChild>
+                    <a href="tel:+12065550100">
+                      <Phone className="h-4 w-4 mr-2" />
+                      Call Now
+                    </a>
                   </Button>
                 </div>
-                
-                <p className="text-center text-sm text-muted-foreground">
-                  By submitting this application, you certify that all information provided is accurate and complete.
-                </p>
-              </form>
-            </Form>
+              </div>
+            </div>
           </div>
         </section>
       </div>
