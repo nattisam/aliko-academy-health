@@ -70,9 +70,8 @@ export function HeroSection() {
             </Button>
             <Button 
               asChild 
-              variant="outline" 
               size="lg" 
-              className="text-base bg-white/10 border-white/30 text-white hover:bg-white/20 hover:text-white backdrop-blur-sm"
+              className="text-base bg-accent text-accent-foreground hover:bg-accent/90 shadow-lg"
             >
               <Link to="/admissions">Apply Now</Link>
             </Button>
