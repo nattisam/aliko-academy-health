@@ -48,7 +48,7 @@ export function Header() {
             Student Login
           </Link>
           <Button asChild>
-            <Link to="/admissions">Apply Now</Link>
+            <Link to="/apply">Apply Now</Link>
           </Button>
         </div>
 
@@ -94,7 +94,7 @@ export function Header() {
               Student Login
             </Link>
             <Button asChild className="w-full">
-              <Link to="/admissions" onClick={() => setMobileMenuOpen(false)}>
+              <Link to="/apply" onClick={() => setMobileMenuOpen(false)}>
                 Apply Now
               </Link>
             </Button>
