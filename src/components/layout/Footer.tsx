@@ -144,17 +144,19 @@ export function Footer() {
           <div className="mt-12 pt-8 border-t border-primary-foreground/10">
             <div className="grid md:grid-cols-3 gap-8">
               <div>
-                <div className="flex items-center gap-3 mb-4">
-                  <img src={logo} alt="Aliko Academy" className="h-10 w-auto brightness-0 invert" />
+                <Link to="/" className="flex items-center gap-3 mb-4 group">
+                  <div className="p-2 bg-white/10 rounded-xl backdrop-blur-sm group-hover:bg-white/20 transition-colors">
+                    <img src={logo} alt="Aliko Academy" className="h-12 w-auto" />
+                  </div>
                   <div className="flex flex-col">
-                    <span className="text-lg font-bold text-primary-foreground">ALIKO ACADEMY</span>
-                    <span className="px-2 py-0.5 text-xs font-bold tracking-widest bg-gradient-to-r from-primary to-accent text-primary-foreground rounded w-fit">
+                    <span className="text-lg font-bold text-primary-foreground group-hover:text-accent transition-colors">ALIKO ACADEMY</span>
+                    <span className="px-2 py-0.5 text-xs font-bold tracking-widest bg-gradient-to-r from-primary to-accent text-primary-foreground rounded w-fit shadow-sm">
                       HEALTH
                     </span>
                   </div>
-                </div>
-                <p className="text-sm text-primary-foreground/70">
-                  Industry-aligned healthcare training with clear cohort start dates.
+                </Link>
+                <p className="text-sm text-primary-foreground/70 max-w-xs">
+                  Industry-aligned healthcare training with clear cohort start dates. Your pathway to a rewarding healthcare career.
                 </p>
               </div>
               <div>
