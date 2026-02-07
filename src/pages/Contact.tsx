@@ -8,9 +8,11 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { MapPin, Phone, Mail, Clock, CheckCircle, Send, MessageSquare } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useStateConfig } from "@/hooks/useStateConfig";
 
 const Contact = () => {
   const { toast } = useToast();
+  const { currentState } = useStateConfig();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -97,7 +99,7 @@ const Contact = () => {
                         </div>
                         <div className="space-y-2">
                           <Label htmlFor="phone">Phone</Label>
-                          <Input id="phone" type="tel" placeholder="(206) 555-0100" className="h-11" />
+                          <Input id="phone" type="tel" placeholder={currentState.contact.phone} className="h-11" />
                         </div>
                       </div>
 
@@ -157,8 +159,8 @@ const Contact = () => {
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground">
-                    123 Healthcare Drive, Suite 100<br />
-                    Seattle, WA 98101
+                    {currentState.contact.address}<br />
+                    {currentState.contact.city}, {currentState.contact.state} {currentState.contact.zip}
                   </p>
                 </CardContent>
               </Card>
@@ -174,8 +176,8 @@ const Contact = () => {
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground">
-                    Main: (206) 555-0100<br />
-                    Admissions: (206) 555-0101
+                    Main: {currentState.contact.phone}<br />
+                    Admissions: {currentState.contact.admissionsPhone}
                   </p>
                 </CardContent>
               </Card>
@@ -191,8 +193,8 @@ const Contact = () => {
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground">
-                    General: info@alikoacademy.edu<br />
-                    Admissions: admissions@alikoacademy.edu
+                    General: {currentState.contact.email}<br />
+                    Admissions: {currentState.contact.admissionsEmail}
                   </p>
                 </CardContent>
               </Card>
@@ -208,9 +210,9 @@ const Contact = () => {
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground">
-                    Monday – Friday: 8:00 AM – 6:00 PM<br />
-                    Saturday: 9:00 AM – 2:00 PM<br />
-                    Sunday: Closed
+                    {currentState.officeHours.weekday}<br />
+                    {currentState.officeHours.saturday}<br />
+                    {currentState.officeHours.sunday}
                   </p>
                 </CardContent>
               </Card>

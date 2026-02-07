@@ -3,8 +3,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Target, Eye, Heart, Users, GraduationCap, Building2, Award } from "lucide-react";
+import { useStateConfig } from "@/hooks/useStateConfig";
 
 const About = () => {
+  const { currentState } = useStateConfig();
+
   return (
     <Layout>
       {/* Hero Section with gradient background */}
@@ -57,7 +60,7 @@ const About = () => {
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground">
-                  To be the premier healthcare training institution in Washington State, recognized 
+                  To be the premier healthcare training institution in {currentState.name} State, recognized 
                   for excellence in education, graduate outcomes, and community partnerships.
                 </p>
               </CardContent>
@@ -101,7 +104,7 @@ const About = () => {
                   for their careers.
                 </p>
                 <p>
-                  Through partnerships with healthcare facilities throughout Washington State, we 
+                  Through partnerships with healthcare facilities throughout {currentState.name} State, we 
                   provide students with real-world clinical experiences that build confidence and 
                   competence.
                 </p>

@@ -2,8 +2,11 @@ import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Shield, CheckCircle, BookOpen, Scale, Award, GraduationCap, Building2, Users } from "lucide-react";
+import { useStateConfig } from "@/hooks/useStateConfig";
 
 const Accreditation = () => {
+  const { currentState } = useStateConfig();
+
   return (
     <Layout>
       {/* Hero Section */}
@@ -21,7 +24,7 @@ const Accreditation = () => {
           </h1>
           <p className="mt-4 text-lg text-muted-foreground max-w-3xl">
             Aliko Academy maintains rigorous quality standards and is committed to meeting 
-            all regulatory requirements for healthcare education in Washington State.
+            all regulatory requirements for healthcare education in {currentState.name} State.
           </p>
           
           {/* Quick visual */}
@@ -32,7 +35,7 @@ const Accreditation = () => {
               </div>
               <div>
                 <p className="font-semibold text-foreground">State Aligned</p>
-                <p className="text-xs">WA DOH Approved</p>
+                <p className="text-xs">{currentState.regulatory.departmentAbbr} Approved</p>
               </div>
             </div>
             <div className="flex items-center gap-2 text-muted-foreground">
@@ -40,7 +43,7 @@ const Accreditation = () => {
                 <Award className="h-5 w-5 text-accent" />
               </div>
               <div>
-                <p className="font-semibold text-foreground">8+</p>
+                <p className="font-semibold text-foreground">{currentState.regulatory.certifications.length}+</p>
                 <p className="text-xs">Certifications</p>
               </div>
             </div>
@@ -85,13 +88,12 @@ const Accreditation = () => {
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground mb-4">
-                  Our programs are designed to align with Washington State training requirements 
+                  Our programs are designed to align with {currentState.name} State training requirements 
                   for healthcare professionals.
                 </p>
                 <p className="text-muted-foreground">
                   Graduates are prepared to meet certification and licensing requirements 
-                  established by state regulatory agencies, including the Washington State 
-                  Department of Health.
+                  established by state regulatory agencies, including the {currentState.regulatory.department}.
                 </p>
               </CardContent>
             </Card>
@@ -112,7 +114,7 @@ const Accreditation = () => {
                 { title: "Clinical Partnerships", desc: "Formal agreements with healthcare facilities ensure quality clinical training experiences supervised by qualified professionals.", icon: Award, color: "accent" as const },
                 { title: "Student Support", desc: "Comprehensive student services including academic advising, tutoring, and career support to promote student success.", icon: Users, color: "primary" as const },
                 { title: "Continuous Improvement", desc: "Regular program evaluation, student feedback, and outcome tracking drive ongoing improvements to our educational offerings.", icon: GraduationCap, color: "accent" as const },
-              ].map((item, index) => (
+              ].map((item) => (
                 <Card key={item.title} className={`group hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border-l-4 ${
                   item.color === 'primary' ? 'border-l-primary' : 'border-l-accent'
                 }`}>
@@ -146,12 +148,7 @@ const Accreditation = () => {
               </p>
               <div className="grid md:grid-cols-2 gap-6">
                 <ul className="space-y-3">
-                  {[
-                    "Washington State CNA Certification",
-                    "AAPC CPC Certification",
-                    "AAMA CMA Certification",
-                    "ASCP Phlebotomy Certification",
-                  ].map((cert, index) => (
+                  {currentState.regulatory.certifications.slice(0, 4).map((cert) => (
                     <li key={cert} className="flex items-center gap-3">
                       <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
                         <CheckCircle className="h-4 w-4 text-primary" />
@@ -161,12 +158,7 @@ const Accreditation = () => {
                   ))}
                 </ul>
                 <ul className="space-y-3">
-                  {[
-                    "NHA EKG Technician Certification",
-                    "NHA CPCT Certification",
-                    "WA State HCA/HHA Certification",
-                    "AHA BLS Provider Certification",
-                  ].map((cert) => (
+                  {currentState.regulatory.certifications.slice(4).map((cert) => (
                     <li key={cert} className="flex items-center gap-3">
                       <div className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center shrink-0">
                         <CheckCircle className="h-4 w-4 text-accent" />

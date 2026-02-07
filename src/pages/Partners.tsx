@@ -4,86 +4,171 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Building2, MapPin, Stethoscope, Briefcase, Handshake, ArrowRight } from "lucide-react";
+import { useStateConfig } from "@/hooks/useStateConfig";
 
-const clinicalPartners = [
-  {
-    name: "Evergreen Health Center",
-    type: "Skilled Nursing Facility",
-    region: "Seattle, WA",
-    programs: ["CNA", "HHA", "Medication Aide"],
-  },
-  {
-    name: "Pacific Medical Group",
-    type: "Multi-Specialty Clinic",
-    region: "Bellevue, WA",
-    programs: ["Medical Assistant", "Phlebotomy", "EKG"],
-  },
-  {
-    name: "Cascade Rehabilitation",
-    type: "Rehabilitation Center",
-    region: "Tacoma, WA",
-    programs: ["CNA", "PCT"],
-  },
-  {
-    name: "Puget Sound Home Health",
-    type: "Home Health Agency",
-    region: "King County, WA",
-    programs: ["HHA", "CNA"],
-  },
-  {
-    name: "Northwest Cardiac Care",
-    type: "Cardiology Practice",
-    region: "Seattle, WA",
-    programs: ["EKG", "Medical Assistant"],
-  },
-  {
-    name: "Community Care Partners",
-    type: "Assisted Living",
-    region: "Snohomish County, WA",
-    programs: ["CNA", "Medication Aide", "HHA"],
-  },
-];
+interface ClinicalPartner {
+  name: string;
+  type: string;
+  region: string;
+  programs: string[];
+}
 
-const careerPartners = [
-  {
-    name: "Swedish Health Services",
-    industry: "Hospital System",
-    roles: "CNA, PCT, Medical Assistant, Unit Secretary",
-    region: "Seattle Metro",
+interface CareerPartner {
+  name: string;
+  industry: string;
+  roles: string;
+  region: string;
+}
+
+// Partner data organized by state
+const partnersByState: Record<string, { clinical: ClinicalPartner[]; career: CareerPartner[] }> = {
+  WA: {
+    clinical: [
+      {
+        name: "Evergreen Health Center",
+        type: "Skilled Nursing Facility",
+        region: "Seattle, WA",
+        programs: ["CNA", "HHA", "Medication Aide"],
+      },
+      {
+        name: "Pacific Medical Group",
+        type: "Multi-Specialty Clinic",
+        region: "Bellevue, WA",
+        programs: ["Medical Assistant", "Phlebotomy", "EKG"],
+      },
+      {
+        name: "Cascade Rehabilitation",
+        type: "Rehabilitation Center",
+        region: "Tacoma, WA",
+        programs: ["CNA", "PCT"],
+      },
+      {
+        name: "Puget Sound Home Health",
+        type: "Home Health Agency",
+        region: "King County, WA",
+        programs: ["HHA", "CNA"],
+      },
+      {
+        name: "Northwest Cardiac Care",
+        type: "Cardiology Practice",
+        region: "Seattle, WA",
+        programs: ["EKG", "Medical Assistant"],
+      },
+      {
+        name: "Community Care Partners",
+        type: "Assisted Living",
+        region: "Snohomish County, WA",
+        programs: ["CNA", "Medication Aide", "HHA"],
+      },
+    ],
+    career: [
+      {
+        name: "Swedish Health Services",
+        industry: "Hospital System",
+        roles: "CNA, PCT, Medical Assistant, Unit Secretary",
+        region: "Seattle Metro",
+      },
+      {
+        name: "Kaiser Permanente",
+        industry: "Integrated Healthcare",
+        roles: "Medical Assistant, Phlebotomist, EKG Tech",
+        region: "Washington State",
+      },
+      {
+        name: "BrightSpring Health Services",
+        industry: "Home Health & Hospice",
+        roles: "HHA, CNA, Care Coordinator",
+        region: "King & Pierce County",
+      },
+      {
+        name: "Virginia Mason Franciscan Health",
+        industry: "Hospital System",
+        roles: "CNA, PCT, Patient Services",
+        region: "Puget Sound Region",
+      },
+      {
+        name: "Multicare Health System",
+        industry: "Healthcare Network",
+        roles: "Medical Assistant, Patient Care Tech",
+        region: "Pierce County",
+      },
+      {
+        name: "SeaMar Community Health",
+        industry: "Community Health Center",
+        roles: "Medical Assistant, Phlebotomist",
+        region: "Western Washington",
+      },
+    ],
   },
-  {
-    name: "Kaiser Permanente",
-    industry: "Integrated Healthcare",
-    roles: "Medical Assistant, Phlebotomist, EKG Tech",
-    region: "Washington State",
+  OR: {
+    clinical: [
+      {
+        name: "Providence Portland Medical",
+        type: "Hospital System",
+        region: "Portland, OR",
+        programs: ["CNA", "PCT", "Medical Assistant"],
+      },
+      {
+        name: "Legacy Health",
+        type: "Multi-Specialty Clinic",
+        region: "Portland, OR",
+        programs: ["Phlebotomy", "EKG", "Medical Assistant"],
+      },
+    ],
+    career: [
+      {
+        name: "OHSU Health",
+        industry: "Academic Medical Center",
+        roles: "CNA, Medical Assistant, Phlebotomist",
+        region: "Portland Metro",
+      },
+    ],
   },
-  {
-    name: "BrightSpring Health Services",
-    industry: "Home Health & Hospice",
-    roles: "HHA, CNA, Care Coordinator",
-    region: "King & Pierce County",
+  CA: {
+    clinical: [
+      {
+        name: "Cedars-Sinai Training Center",
+        type: "Hospital System",
+        region: "Los Angeles, CA",
+        programs: ["CNA", "PCT", "Medical Assistant"],
+      },
+    ],
+    career: [
+      {
+        name: "Kaiser Permanente California",
+        industry: "Integrated Healthcare",
+        roles: "CNA, Medical Assistant, Phlebotomist",
+        region: "Southern California",
+      },
+    ],
   },
-  {
-    name: "Virginia Mason Franciscan Health",
-    industry: "Hospital System",
-    roles: "CNA, PCT, Patient Services",
-    region: "Puget Sound Region",
+  TX: {
+    clinical: [
+      {
+        name: "Houston Methodist Training",
+        type: "Hospital System",
+        region: "Houston, TX",
+        programs: ["CNA", "PCT", "Medical Assistant"],
+      },
+    ],
+    career: [
+      {
+        name: "Texas Medical Center",
+        industry: "Healthcare Network",
+        roles: "CNA, Medical Assistant, Patient Care Tech",
+        region: "Houston Metro",
+      },
+    ],
   },
-  {
-    name: "Multicare Health System",
-    industry: "Healthcare Network",
-    roles: "Medical Assistant, Patient Care Tech",
-    region: "Pierce County",
-  },
-  {
-    name: "SeaMar Community Health",
-    industry: "Community Health Center",
-    roles: "Medical Assistant, Phlebotomist",
-    region: "Western Washington",
-  },
-];
+};
 
 const Partners = () => {
+  const { currentState } = useStateConfig();
+  
+  const statePartners = partnersByState[currentState.id] || partnersByState.WA;
+  const clinicalPartners = statePartners.clinical;
+  const careerPartners = statePartners.career;
+
   return (
     <Layout>
       {/* Hero Section */}
@@ -100,7 +185,7 @@ const Partners = () => {
             Our Partners
           </h1>
           <p className="mt-4 text-lg text-muted-foreground max-w-3xl">
-            Aliko Academy partners with healthcare organizations throughout Washington State 
+            Aliko Academy partners with healthcare organizations throughout {currentState.name} State 
             to provide quality clinical training and career opportunities for our graduates.
           </p>
           
