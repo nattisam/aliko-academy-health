@@ -73,7 +73,7 @@ export function HeroSection() {
               size="lg" 
               className="text-base bg-accent text-accent-foreground hover:bg-accent/90 shadow-lg"
             >
-              <Link to="/admissions">Apply Now</Link>
+              <Link to="/apply">Apply Now</Link>
             </Button>
           </div>
 

@@ -12,6 +12,7 @@ import ExamPrepDetail from "./pages/ExamPrepDetail";
 import Schedule from "./pages/Schedule";
 import Tuition from "./pages/Tuition";
 import Admissions from "./pages/Admissions";
+import Apply from "./pages/Apply";
 import Partners from "./pages/Partners";
 import CareerServices from "./pages/CareerServices";
 import Accreditation from "./pages/Accreditation";
@@ -39,6 +40,7 @@ const App = () => (
             <Route path="/schedule" element={<Schedule />} />
             <Route path="/tuition" element={<Tuition />} />
             <Route path="/admissions" element={<Admissions />} />
+            <Route path="/apply" element={<Apply />} />
             <Route path="/partners" element={<Partners />} />
             <Route path="/career-services" element={<CareerServices />} />
             <Route path="/accreditation" element={<Accreditation />} />
