@@ -2,7 +2,8 @@ import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Building2, MapPin, Stethoscope, Briefcase } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Building2, MapPin, Stethoscope, Briefcase, Handshake, ArrowRight } from "lucide-react";
 
 const clinicalPartners = [
   {
@@ -85,15 +86,45 @@ const careerPartners = [
 const Partners = () => {
   return (
     <Layout>
-      <section className="py-12 lg:py-16 bg-card">
-        <div className="container-academy">
-          <h1 className="text-3xl lg:text-4xl font-bold text-foreground">
+      {/* Hero Section */}
+      <section className="relative py-16 lg:py-24 bg-gradient-to-br from-primary/5 via-card to-accent/5 overflow-hidden">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-64 h-64 bg-accent/5 rounded-full blur-3xl" />
+        
+        <div className="container-academy relative">
+          <div className="flex items-center gap-2 mb-4">
+            <div className="h-1 w-12 bg-accent rounded-full" />
+            <span className="text-sm font-medium text-accent">Our Network</span>
+          </div>
+          <h1 className="text-3xl lg:text-5xl font-bold text-foreground">
             Our Partners
           </h1>
           <p className="mt-4 text-lg text-muted-foreground max-w-3xl">
             Aliko Academy partners with healthcare organizations throughout Washington State 
             to provide quality clinical training and career opportunities for our graduates.
           </p>
+          
+          {/* Quick stats */}
+          <div className="mt-8 flex flex-wrap gap-6">
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                <Stethoscope className="h-5 w-5 text-primary" />
+              </div>
+              <div>
+                <p className="font-semibold text-foreground">{clinicalPartners.length}+</p>
+                <p className="text-xs">Clinical Sites</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center">
+                <Briefcase className="h-5 w-5 text-accent" />
+              </div>
+              <div>
+                <p className="font-semibold text-foreground">{careerPartners.length}+</p>
+                <p className="text-xs">Hiring Partners</p>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -102,20 +133,31 @@ const Partners = () => {
           {/* Clinical Partners */}
           <div>
             <div className="flex items-center gap-3 mb-2">
-              <Stethoscope className="h-6 w-6 text-primary" />
-              <h2 className="text-2xl font-bold text-foreground">Clinical Practice Partners</h2>
+              <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
+                <Stethoscope className="h-6 w-6 text-primary" />
+              </div>
+              <div>
+                <h2 className="text-2xl font-bold text-foreground">Clinical Practice Partners</h2>
+                <p className="text-sm text-muted-foreground">Hands-on training locations</p>
+              </div>
             </div>
-            <p className="text-muted-foreground mb-8 max-w-3xl">
+            <p className="text-muted-foreground mb-8 max-w-3xl mt-4">
               Our clinical partners provide hands-on training environments where students 
               develop practical skills under professional supervision.
             </p>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {clinicalPartners.map((partner) => (
-                <Card key={partner.name}>
-                  <CardHeader>
+              {clinicalPartners.map((partner, index) => (
+                <Card key={partner.name} className={`group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-l-4 ${
+                  index % 2 === 0 ? 'border-l-primary' : 'border-l-accent'
+                }`}>
+                  <CardHeader className="pb-3">
                     <div className="flex items-start gap-3">
-                      <Building2 className="h-5 w-5 text-primary shrink-0 mt-1" />
+                      <div className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${
+                        index % 2 === 0 ? 'bg-primary/10' : 'bg-accent/10'
+                      }`}>
+                        <Building2 className={`h-5 w-5 ${index % 2 === 0 ? 'text-primary' : 'text-accent'}`} />
+                      </div>
                       <div>
                         <CardTitle className="text-lg">{partner.name}</CardTitle>
                         <p className="text-sm text-muted-foreground">{partner.type}</p>
@@ -129,7 +171,7 @@ const Partners = () => {
                     </div>
                     <div className="flex flex-wrap gap-2">
                       {partner.programs.map((program) => (
-                        <Badge key={program} variant="secondary">
+                        <Badge key={program} variant="secondary" className="text-xs">
                           {program}
                         </Badge>
                       ))}
@@ -139,7 +181,7 @@ const Partners = () => {
               ))}
             </div>
 
-            <Card className="mt-8 bg-secondary/30 border-accent/30">
+            <Card className="mt-8 bg-muted/50 border-accent/30">
               <CardContent className="pt-6">
                 <p className="text-sm text-muted-foreground italic">
                   <strong>Disclaimer:</strong> Clinical placements are coordinated based on 
@@ -153,20 +195,31 @@ const Partners = () => {
           {/* Career Network Partners */}
           <div>
             <div className="flex items-center gap-3 mb-2">
-              <Briefcase className="h-6 w-6 text-primary" />
-              <h2 className="text-2xl font-bold text-foreground">Career Network Partners</h2>
+              <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center">
+                <Briefcase className="h-6 w-6 text-accent" />
+              </div>
+              <div>
+                <h2 className="text-2xl font-bold text-foreground">Career Network Partners</h2>
+                <p className="text-sm text-muted-foreground">Employers who hire our graduates</p>
+              </div>
             </div>
-            <p className="text-muted-foreground mb-8 max-w-3xl">
+            <p className="text-muted-foreground mb-8 max-w-3xl mt-4">
               These healthcare employers actively recruit Aliko Academy graduates and participate 
               in our career development initiatives.
             </p>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {careerPartners.map((partner) => (
-                <Card key={partner.name}>
-                  <CardHeader>
+              {careerPartners.map((partner, index) => (
+                <Card key={partner.name} className={`group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-l-4 ${
+                  index % 2 === 0 ? 'border-l-accent' : 'border-l-primary'
+                }`}>
+                  <CardHeader className="pb-3">
                     <div className="flex items-start gap-3">
-                      <Building2 className="h-5 w-5 text-primary shrink-0 mt-1" />
+                      <div className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${
+                        index % 2 === 0 ? 'bg-accent/10' : 'bg-primary/10'
+                      }`}>
+                        <Building2 className={`h-5 w-5 ${index % 2 === 0 ? 'text-accent' : 'text-primary'}`} />
+                      </div>
                       <div>
                         <CardTitle className="text-lg">{partner.name}</CardTitle>
                         <p className="text-sm text-muted-foreground">{partner.industry}</p>
@@ -189,7 +242,7 @@ const Partners = () => {
               ))}
             </div>
 
-            <Card className="mt-8 bg-secondary/30 border-accent/30">
+            <Card className="mt-8 bg-muted/50 border-accent/30">
               <CardContent className="pt-6">
                 <p className="text-sm text-muted-foreground italic">
                   <strong>Disclaimer:</strong> Aliko Academy does not guarantee employment. 
@@ -201,22 +254,30 @@ const Partners = () => {
           </div>
 
           {/* Become a Partner */}
-          <Card className="bg-card">
-            <CardHeader>
-              <CardTitle>Become a Partner</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground mb-4">
-                Interested in partnering with Aliko Academy for clinical education or workforce 
-                development? We welcome inquiries from healthcare organizations seeking to support 
-                the next generation of healthcare professionals.
-              </p>
-              <Link 
-                to="/contact" 
-                className="text-primary hover:underline font-medium"
-              >
-                Contact us to learn more →
-              </Link>
+          <Card className="bg-gradient-to-r from-primary to-primary/90 text-primary-foreground overflow-hidden relative">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl" />
+            <CardContent className="pt-8 pb-8 relative">
+              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+                <div className="flex items-start gap-4">
+                  <div className="w-14 h-14 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
+                    <Handshake className="h-7 w-7" />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-bold mb-2">Become a Partner</h3>
+                    <p className="opacity-90 max-w-xl">
+                      Interested in partnering with Aliko Academy for clinical education or workforce 
+                      development? We welcome inquiries from healthcare organizations seeking to support 
+                      the next generation of healthcare professionals.
+                    </p>
+                  </div>
+                </div>
+                <Button asChild variant="secondary" size="lg" className="shrink-0 shadow-lg">
+                  <Link to="/contact">
+                    Contact Us
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
+                </Button>
+              </div>
             </CardContent>
           </Card>
         </div>

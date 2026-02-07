@@ -12,7 +12,9 @@ import {
   CheckCircle, 
   BookOpen,
   Award,
-  ArrowLeft
+  ArrowLeft,
+  GraduationCap,
+  Sparkles
 } from "lucide-react";
 
 const ProgramDetail = () => {
@@ -26,21 +28,27 @@ const ProgramDetail = () => {
   return (
     <Layout>
       {/* Header */}
-      <section className="py-12 lg:py-16 bg-card border-b border-border">
-        <div className="container-academy">
+      <section className="relative py-16 lg:py-20 bg-gradient-to-br from-primary/5 via-card to-accent/5 overflow-hidden border-b border-border">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-64 h-64 bg-accent/5 rounded-full blur-3xl" />
+        
+        <div className="container-academy relative">
           <Link 
             to="/programs" 
-            className="inline-flex items-center text-sm text-muted-foreground hover:text-primary mb-6"
+            className="inline-flex items-center text-sm text-muted-foreground hover:text-primary mb-6 transition-colors"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Programs
           </Link>
 
-          <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
+          <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8">
             <div className="flex-1">
-              <div className="flex items-center gap-3 mb-2">
+              <div className="flex flex-wrap items-center gap-3 mb-4">
                 {program.featured && (
-                  <Badge variant="secondary">Featured Program</Badge>
+                  <Badge className="bg-gradient-to-r from-primary to-primary/80 text-primary-foreground">
+                    <Sparkles className="h-3 w-3 mr-1" />
+                    Featured Program
+                  </Badge>
                 )}
                 <Badge 
                   className={
@@ -52,44 +60,57 @@ const ProgramDetail = () => {
                   {program.enrollmentStatus === "open" ? "Enrollment Open" : "Enrollment Closed"}
                 </Badge>
               </div>
-              <h1 className="text-3xl lg:text-4xl font-bold text-foreground">
+              <h1 className="text-3xl lg:text-5xl font-bold text-foreground">
                 {program.name}
               </h1>
               <p className="mt-4 text-lg text-muted-foreground max-w-3xl">
                 {program.description}
               </p>
-            </div>
-
-            <Card className="lg:w-80 shrink-0">
-              <CardHeader>
-                <CardTitle className="text-lg">Program Quick Facts</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex items-center gap-3">
-                  <Clock className="h-5 w-5 text-muted-foreground" />
+              
+              {/* Quick stats row */}
+              <div className="mt-8 flex flex-wrap gap-6">
+                <div className="flex items-center gap-2">
+                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                    <Clock className="h-5 w-5 text-primary" />
+                  </div>
                   <div>
-                    <p className="text-sm font-medium">{program.duration}</p>
-                    <p className="text-xs text-muted-foreground">{program.hours.total} total hours</p>
+                    <p className="font-semibold text-foreground">{program.duration}</p>
+                    <p className="text-xs text-muted-foreground">{program.hours.total} hours</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-3">
-                  <MapPin className="h-5 w-5 text-muted-foreground" />
+                <div className="flex items-center gap-2">
+                  <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center">
+                    <MapPin className="h-5 w-5 text-accent" />
+                  </div>
                   <div>
-                    <p className="text-sm font-medium">{program.modality}</p>
+                    <p className="font-semibold text-foreground">{program.modality}</p>
                     <p className="text-xs text-muted-foreground">{program.location}</p>
                   </div>
                 </div>
+              </div>
+            </div>
+
+            <Card className="lg:w-80 shrink-0 shadow-xl border-t-4 border-t-primary">
+              <CardHeader>
                 <div className="flex items-center gap-3">
-                  <DollarSign className="h-5 w-5 text-muted-foreground" />
+                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                    <GraduationCap className="h-5 w-5 text-primary" />
+                  </div>
+                  <CardTitle className="text-lg">Program Quick Facts</CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/50">
+                  <DollarSign className="h-5 w-5 text-primary" />
                   <div>
-                    <p className="text-sm font-medium">${program.tuition.toLocaleString()}</p>
+                    <p className="text-lg font-bold text-foreground">${program.tuition.toLocaleString()}</p>
                     <p className="text-xs text-muted-foreground">Total tuition</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-3">
-                  <Calendar className="h-5 w-5 text-muted-foreground" />
+                <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/50">
+                  <Calendar className="h-5 w-5 text-accent" />
                   <div>
-                    <p className="text-sm font-medium">
+                    <p className="text-sm font-semibold text-foreground">
                       {program.enrollmentStatus === "open" 
                         ? `Starts ${program.startDate}` 
                         : "Check Schedule"}
@@ -97,7 +118,7 @@ const ProgramDetail = () => {
                     <p className="text-xs text-muted-foreground">Next cohort</p>
                   </div>
                 </div>
-                <Button asChild className="w-full" size="lg">
+                <Button asChild className="w-full shadow-lg bg-accent text-accent-foreground hover:bg-accent/90" size="lg">
                   <Link to="/admissions">
                     {program.enrollmentStatus === "open" ? "Apply Now" : "Join Waitlist"}
                   </Link>
@@ -114,108 +135,133 @@ const ProgramDetail = () => {
           <div className="grid lg:grid-cols-3 gap-12">
             <div className="lg:col-span-2 space-y-12">
               {/* Career Pathways */}
-              <div>
-                <h2 className="text-2xl font-bold text-foreground mb-4 flex items-center gap-2">
-                  <Award className="h-6 w-6 text-primary" />
-                  Career Pathways
-                </h2>
-                <p className="text-muted-foreground mb-4">
-                  Graduates of this program find employment in various healthcare settings:
-                </p>
-                <ul className="grid sm:grid-cols-2 gap-3">
-                  {program.careerPathways.map((pathway) => (
-                    <li key={pathway} className="flex items-center gap-2">
-                      <CheckCircle className="h-4 w-4 text-accent shrink-0" />
-                      <span className="text-sm">{pathway}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              <Card className="border-l-4 border-l-primary">
+                <CardHeader>
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                      <Award className="h-5 w-5 text-primary" />
+                    </div>
+                    <CardTitle className="text-xl">Career Pathways</CardTitle>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground mb-4">
+                    Graduates of this program find employment in various healthcare settings:
+                  </p>
+                  <ul className="grid sm:grid-cols-2 gap-3">
+                    {program.careerPathways.map((pathway) => (
+                      <li key={pathway} className="flex items-center gap-2 p-2 rounded-lg bg-muted/30">
+                        <CheckCircle className="h-4 w-4 text-accent shrink-0" />
+                        <span className="text-sm">{pathway}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
 
               {/* Curriculum */}
-              <div>
-                <h2 className="text-2xl font-bold text-foreground mb-4 flex items-center gap-2">
-                  <BookOpen className="h-6 w-6 text-primary" />
-                  Curriculum Overview
-                </h2>
-                <p className="text-muted-foreground mb-6">
-                  This program provides comprehensive training through a combination of theory, 
-                  hands-on lab practice, and clinical experience.
-                </p>
-                <div className="grid sm:grid-cols-3 gap-4">
-                  <Card>
-                    <CardContent className="pt-6 text-center">
+              <Card className="border-l-4 border-l-accent">
+                <CardHeader>
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center">
+                      <BookOpen className="h-5 w-5 text-accent" />
+                    </div>
+                    <CardTitle className="text-xl">Curriculum Overview</CardTitle>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground mb-6">
+                    This program provides comprehensive training through a combination of theory, 
+                    hands-on lab practice, and clinical experience.
+                  </p>
+                  <div className="grid sm:grid-cols-3 gap-4">
+                    <div className="text-center p-4 rounded-xl bg-gradient-to-br from-primary/10 to-primary/5">
                       <p className="text-3xl font-bold text-primary">{program.hours.theory}</p>
                       <p className="text-sm text-muted-foreground mt-1">Theory Hours</p>
-                    </CardContent>
-                  </Card>
-                  <Card>
-                    <CardContent className="pt-6 text-center">
-                      <p className="text-3xl font-bold text-primary">{program.hours.lab}</p>
+                    </div>
+                    <div className="text-center p-4 rounded-xl bg-gradient-to-br from-accent/10 to-accent/5">
+                      <p className="text-3xl font-bold text-accent">{program.hours.lab}</p>
                       <p className="text-sm text-muted-foreground mt-1">Lab Hours</p>
-                    </CardContent>
-                  </Card>
-                  <Card>
-                    <CardContent className="pt-6 text-center">
+                    </div>
+                    <div className="text-center p-4 rounded-xl bg-gradient-to-br from-primary/10 to-primary/5">
                       <p className="text-3xl font-bold text-primary">{program.hours.clinical}</p>
                       <p className="text-sm text-muted-foreground mt-1">Clinical Hours</p>
-                    </CardContent>
-                  </Card>
-                </div>
-              </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
 
               {/* Admission Requirements */}
-              <div>
-                <h2 className="text-2xl font-bold text-foreground mb-4">
-                  Admission Requirements
-                </h2>
-                <ul className="space-y-3">
-                  {program.requirements.map((req) => (
-                    <li key={req} className="flex items-start gap-3">
-                      <CheckCircle className="h-5 w-5 text-primary shrink-0 mt-0.5" />
-                      <span>{req}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              <Card className="border-l-4 border-l-primary">
+                <CardHeader>
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                      <CheckCircle className="h-5 w-5 text-primary" />
+                    </div>
+                    <CardTitle className="text-xl">Admission Requirements</CardTitle>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-3">
+                    {program.requirements.map((req) => (
+                      <li key={req} className="flex items-start gap-3">
+                        <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-0.5">
+                          <CheckCircle className="h-3.5 w-3.5 text-primary" />
+                        </div>
+                        <span>{req}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
 
               {/* Certification */}
-              <div>
-                <h2 className="text-2xl font-bold text-foreground mb-4">
-                  Certification Pathway
-                </h2>
-                <Card className="bg-secondary/50">
-                  <CardContent className="pt-6">
-                    <p className="text-muted-foreground">
-                      Upon successful completion of this program, you will be prepared to take:
-                    </p>
-                    <p className="mt-2 font-semibold text-foreground">
-                      {program.certification}
-                    </p>
-                  </CardContent>
-                </Card>
-              </div>
+              <Card className="bg-gradient-to-br from-accent/10 to-accent/5 border-accent/20">
+                <CardHeader>
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-lg bg-accent/20 flex items-center justify-center">
+                      <GraduationCap className="h-5 w-5 text-accent" />
+                    </div>
+                    <CardTitle className="text-xl">Certification Pathway</CardTitle>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground">
+                    Upon successful completion of this program, you will be prepared to take:
+                  </p>
+                  <p className="mt-3 text-lg font-semibold text-foreground">
+                    {program.certification}
+                  </p>
+                </CardContent>
+              </Card>
             </div>
 
             {/* Sidebar */}
             <div className="space-y-6">
               {/* Tuition Card */}
-              <Card>
+              <Card className="border-t-4 border-t-accent">
                 <CardHeader>
-                  <CardTitle>Tuition & Fees</CardTitle>
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center">
+                      <DollarSign className="h-4 w-4 text-accent" />
+                    </div>
+                    <CardTitle className="text-lg">Tuition & Fees</CardTitle>
+                  </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="flex justify-between items-center pb-4 border-b border-border">
                     <span>Program Tuition</span>
-                    <span className="font-semibold">${program.tuition.toLocaleString()}</span>
+                    <span className="text-lg font-bold text-accent">${program.tuition.toLocaleString()}</span>
                   </div>
                   <div className="text-sm text-muted-foreground">
-                    <p className="mb-2">Tuition includes:</p>
-                    <ul className="space-y-1">
-                      <li>• All course materials</li>
-                      <li>• Lab supplies and equipment</li>
-                      <li>• Clinical placement coordination</li>
-                      <li>• Certification exam preparation</li>
+                    <p className="mb-2 font-medium text-foreground">Tuition includes:</p>
+                    <ul className="space-y-2">
+                      {["All course materials", "Lab supplies and equipment", "Clinical placement coordination", "Certification exam preparation"].map((item) => (
+                        <li key={item} className="flex items-center gap-2">
+                          <CheckCircle className="h-3.5 w-3.5 text-accent" />
+                          <span>{item}</span>
+                        </li>
+                      ))}
                     </ul>
                   </div>
                   <Button asChild variant="outline" className="w-full">
@@ -225,15 +271,15 @@ const ProgramDetail = () => {
               </Card>
 
               {/* Start Date Card */}
-              <Card className="border-accent">
+              <Card className="bg-gradient-to-br from-accent/10 to-accent/5 border-accent/30">
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
+                  <CardTitle className="flex items-center gap-2 text-lg">
                     <Calendar className="h-5 w-5 text-accent" />
                     Next Start Date
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-2xl font-bold text-foreground mb-2">
+                  <p className="text-2xl font-bold text-foreground mb-3">
                     {program.startDate}
                   </p>
                   <Badge
@@ -245,16 +291,16 @@ const ProgramDetail = () => {
                   >
                     {program.enrollmentStatus === "open" ? "Enrollment Open" : "Enrollment Closed"}
                   </Badge>
-                  <Button asChild className="w-full mt-4">
+                  <Button asChild className="w-full mt-4 shadow-lg bg-accent text-accent-foreground hover:bg-accent/90">
                     <Link to="/admissions">Apply Now</Link>
                   </Button>
                 </CardContent>
               </Card>
 
               {/* Contact Card */}
-              <Card>
+              <Card className="border-l-4 border-l-primary">
                 <CardHeader>
-                  <CardTitle>Questions?</CardTitle>
+                  <CardTitle className="text-lg">Questions?</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground mb-4">

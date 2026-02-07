@@ -2,14 +2,23 @@ import { Layout } from "@/components/layout/Layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { Target, Eye, Heart, Users } from "lucide-react";
+import { Target, Eye, Heart, Users, GraduationCap, Building2, Award } from "lucide-react";
 
 const About = () => {
   return (
     <Layout>
-      <section className="py-12 lg:py-16 bg-card">
-        <div className="container-academy">
-          <h1 className="text-3xl lg:text-4xl font-bold text-foreground">
+      {/* Hero Section with gradient background */}
+      <section className="relative py-16 lg:py-24 bg-gradient-to-br from-primary/5 via-card to-accent/5 overflow-hidden">
+        {/* Decorative elements */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-64 h-64 bg-accent/5 rounded-full blur-3xl" />
+        
+        <div className="container-academy relative">
+          <div className="flex items-center gap-2 mb-4">
+            <div className="h-1 w-12 bg-accent rounded-full" />
+            <span className="text-sm font-medium text-accent">About Us</span>
+          </div>
+          <h1 className="text-3xl lg:text-5xl font-bold text-foreground">
             About Aliko Academy
           </h1>
           <p className="mt-4 text-lg text-muted-foreground max-w-3xl">
@@ -23,9 +32,11 @@ const About = () => {
         <div className="container-academy space-y-16">
           {/* Mission, Vision, Values */}
           <div className="grid md:grid-cols-3 gap-8">
-            <Card>
+            <Card className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border-t-4 border-t-primary">
               <CardHeader>
-                <Target className="h-8 w-8 text-primary mb-2" />
+                <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
+                  <Target className="h-7 w-7 text-primary" />
+                </div>
                 <CardTitle>Our Mission</CardTitle>
               </CardHeader>
               <CardContent>
@@ -37,9 +48,11 @@ const About = () => {
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border-t-4 border-t-accent">
               <CardHeader>
-                <Eye className="h-8 w-8 text-primary mb-2" />
+                <div className="w-14 h-14 rounded-xl bg-accent/10 flex items-center justify-center mb-4 group-hover:bg-accent/20 transition-colors">
+                  <Eye className="h-7 w-7 text-accent" />
+                </div>
                 <CardTitle>Our Vision</CardTitle>
               </CardHeader>
               <CardContent>
@@ -50,9 +63,11 @@ const About = () => {
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border-t-4 border-t-primary">
               <CardHeader>
-                <Heart className="h-8 w-8 text-primary mb-2" />
+                <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
+                  <Heart className="h-7 w-7 text-primary" />
+                </div>
                 <CardTitle>Our Values</CardTitle>
               </CardHeader>
               <CardContent>
@@ -66,10 +81,14 @@ const About = () => {
             </Card>
           </div>
 
-          {/* Our Story */}
+          {/* Our Story with visual stats */}
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
-              <h2 className="text-2xl font-bold text-foreground mb-4">Our Commitment</h2>
+              <div className="flex items-center gap-2 mb-4">
+                <div className="h-1 w-8 bg-primary rounded-full" />
+                <span className="text-sm font-medium text-primary">Our Story</span>
+              </div>
+              <h2 className="text-2xl lg:text-3xl font-bold text-foreground mb-6">Our Commitment</h2>
               <div className="space-y-4 text-muted-foreground">
                 <p>
                   Aliko Academy was founded with a clear purpose: to bridge the gap between aspiring 
@@ -88,89 +107,112 @@ const About = () => {
                 </p>
               </div>
             </div>
-            <Card className="bg-primary text-primary-foreground">
-              <CardContent className="pt-6">
-                <div className="space-y-6">
-                  <div>
-                    <p className="text-4xl font-bold">9</p>
-                    <p className="text-primary-foreground/80">Healthcare Programs</p>
-                  </div>
-                  <div>
-                    <p className="text-4xl font-bold">1000+</p>
-                    <p className="text-primary-foreground/80">Graduates Trained</p>
-                  </div>
-                  <div>
-                    <p className="text-4xl font-bold">50+</p>
-                    <p className="text-primary-foreground/80">Partner Organizations</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+            
+            {/* Stats Grid */}
+            <div className="grid grid-cols-2 gap-4">
+              <Card className="bg-gradient-to-br from-primary to-primary/80 text-primary-foreground">
+                <CardContent className="pt-6 text-center">
+                  <GraduationCap className="h-8 w-8 mx-auto mb-3 opacity-80" />
+                  <p className="text-4xl font-bold">9</p>
+                  <p className="text-sm opacity-80 mt-1">Healthcare Programs</p>
+                </CardContent>
+              </Card>
+              <Card className="bg-gradient-to-br from-accent to-accent/80 text-accent-foreground">
+                <CardContent className="pt-6 text-center">
+                  <Users className="h-8 w-8 mx-auto mb-3 opacity-80" />
+                  <p className="text-4xl font-bold">1000+</p>
+                  <p className="text-sm opacity-80 mt-1">Graduates Trained</p>
+                </CardContent>
+              </Card>
+              <Card className="bg-gradient-to-br from-accent to-accent/80 text-accent-foreground">
+                <CardContent className="pt-6 text-center">
+                  <Building2 className="h-8 w-8 mx-auto mb-3 opacity-80" />
+                  <p className="text-4xl font-bold">50+</p>
+                  <p className="text-sm opacity-80 mt-1">Partner Organizations</p>
+                </CardContent>
+              </Card>
+              <Card className="bg-gradient-to-br from-primary to-primary/80 text-primary-foreground">
+                <CardContent className="pt-6 text-center">
+                  <Award className="h-8 w-8 mx-auto mb-3 opacity-80" />
+                  <p className="text-4xl font-bold">95%</p>
+                  <p className="text-sm opacity-80 mt-1">Certification Rate</p>
+                </CardContent>
+              </Card>
+            </div>
           </div>
 
           {/* Leadership */}
-          <div>
-            <div className="flex items-center gap-3 mb-8">
-              <Users className="h-6 w-6 text-primary" />
-              <h2 className="text-2xl font-bold text-foreground">Leadership Team</h2>
-            </div>
-            <div className="grid md:grid-cols-3 gap-6">
-              <Card>
-                <CardContent className="pt-6 text-center">
-                  <div className="w-20 h-20 rounded-full bg-secondary mx-auto mb-4 flex items-center justify-center">
-                    <span className="text-2xl font-bold text-muted-foreground">AA</span>
-                  </div>
-                  <h3 className="font-semibold">Academy Director</h3>
-                  <p className="text-sm text-muted-foreground mt-1">Executive Leadership</p>
-                  <p className="text-sm text-muted-foreground mt-3">
-                    Oversees all academy operations, strategic planning, and regulatory compliance.
-                  </p>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardContent className="pt-6 text-center">
-                  <div className="w-20 h-20 rounded-full bg-secondary mx-auto mb-4 flex items-center justify-center">
-                    <span className="text-2xl font-bold text-muted-foreground">PD</span>
-                  </div>
-                  <h3 className="font-semibold">Program Director</h3>
-                  <p className="text-sm text-muted-foreground mt-1">Academic Leadership</p>
-                  <p className="text-sm text-muted-foreground mt-3">
-                    Manages curriculum development, instructor coordination, and academic standards.
-                  </p>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardContent className="pt-6 text-center">
-                  <div className="w-20 h-20 rounded-full bg-secondary mx-auto mb-4 flex items-center justify-center">
-                    <span className="text-2xl font-bold text-muted-foreground">SS</span>
-                  </div>
-                  <h3 className="font-semibold">Student Services Director</h3>
-                  <p className="text-sm text-muted-foreground mt-1">Student Success</p>
-                  <p className="text-sm text-muted-foreground mt-3">
-                    Leads admissions, career services, and student support initiatives.
-                  </p>
-                </CardContent>
-              </Card>
+          <div className="relative">
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-accent/5 rounded-3xl" />
+            <div className="relative py-12 px-6 lg:px-12">
+              <div className="flex items-center gap-3 mb-8">
+                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
+                  <Users className="h-6 w-6 text-primary" />
+                </div>
+                <h2 className="text-2xl font-bold text-foreground">Leadership Team</h2>
+              </div>
+              <div className="grid md:grid-cols-3 gap-6">
+                <Card className="hover:shadow-lg transition-shadow">
+                  <CardContent className="pt-6 text-center">
+                    <div className="w-24 h-24 rounded-full bg-gradient-to-br from-primary/20 to-primary/10 mx-auto mb-4 flex items-center justify-center ring-4 ring-primary/10">
+                      <span className="text-2xl font-bold text-primary">AA</span>
+                    </div>
+                    <h3 className="font-semibold text-lg">Academy Director</h3>
+                    <p className="text-sm text-accent font-medium mt-1">Executive Leadership</p>
+                    <p className="text-sm text-muted-foreground mt-3">
+                      Oversees all academy operations, strategic planning, and regulatory compliance.
+                    </p>
+                  </CardContent>
+                </Card>
+                <Card className="hover:shadow-lg transition-shadow">
+                  <CardContent className="pt-6 text-center">
+                    <div className="w-24 h-24 rounded-full bg-gradient-to-br from-accent/20 to-accent/10 mx-auto mb-4 flex items-center justify-center ring-4 ring-accent/10">
+                      <span className="text-2xl font-bold text-accent">PD</span>
+                    </div>
+                    <h3 className="font-semibold text-lg">Program Director</h3>
+                    <p className="text-sm text-primary font-medium mt-1">Academic Leadership</p>
+                    <p className="text-sm text-muted-foreground mt-3">
+                      Manages curriculum development, instructor coordination, and academic standards.
+                    </p>
+                  </CardContent>
+                </Card>
+                <Card className="hover:shadow-lg transition-shadow">
+                  <CardContent className="pt-6 text-center">
+                    <div className="w-24 h-24 rounded-full bg-gradient-to-br from-primary/20 to-primary/10 mx-auto mb-4 flex items-center justify-center ring-4 ring-primary/10">
+                      <span className="text-2xl font-bold text-primary">SS</span>
+                    </div>
+                    <h3 className="font-semibold text-lg">Student Services Director</h3>
+                    <p className="text-sm text-accent font-medium mt-1">Student Success</p>
+                    <p className="text-sm text-muted-foreground mt-3">
+                      Leads admissions, career services, and student support initiatives.
+                    </p>
+                  </CardContent>
+                </Card>
+              </div>
             </div>
           </div>
 
           {/* CTA */}
-          <div className="text-center bg-card rounded-lg p-8 lg:p-12">
-            <h2 className="text-2xl font-bold text-foreground mb-4">
-              Ready to Join Our Community?
-            </h2>
-            <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-              Take the first step toward your healthcare career. Explore our programs 
-              or contact us to learn more about how Aliko Academy can help you achieve 
-              your goals.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Button asChild size="lg">
-                <Link to="/programs">View Programs</Link>
-              </Button>
-              <Button asChild variant="outline" size="lg">
-                <Link to="/contact">Contact Us</Link>
-              </Button>
+          <div className="relative text-center bg-gradient-to-br from-primary/10 via-card to-accent/10 rounded-2xl p-8 lg:p-12 overflow-hidden">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-accent/10 rounded-full blur-2xl" />
+            <div className="absolute bottom-0 left-0 w-32 h-32 bg-primary/10 rounded-full blur-2xl" />
+            <div className="relative">
+              <h2 className="text-2xl lg:text-3xl font-bold text-foreground mb-4">
+                Ready to Join Our Community?
+              </h2>
+              <p className="text-muted-foreground mb-8 max-w-2xl mx-auto">
+                Take the first step toward your healthcare career. Explore our programs 
+                or contact us to learn more about how Aliko Academy can help you achieve 
+                your goals.
+              </p>
+              <div className="flex flex-wrap justify-center gap-4">
+                <Button asChild size="lg" className="shadow-lg">
+                  <Link to="/programs">View Programs</Link>
+                </Button>
+                <Button asChild variant="outline" size="lg">
+                  <Link to="/contact">Contact Us</Link>
+                </Button>
+              </div>
             </div>
           </div>
         </div>
