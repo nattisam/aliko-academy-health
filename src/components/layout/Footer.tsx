@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useStateConfig } from "@/hooks/useStateConfig";
 
 const footerLinks = {
   programs: [
@@ -28,6 +29,8 @@ const footerLinks = {
 };
 
 export function Footer() {
+  const { currentState } = useStateConfig();
+
   return (
     <footer className="bg-foreground text-primary-foreground">
       <div className="container-academy py-12 lg:py-16">
@@ -117,18 +120,18 @@ export function Footer() {
             <div>
               <h4 className="text-sm font-semibold mb-3">Contact Us</h4>
               <div className="space-y-2 text-sm text-primary-foreground/70">
-                <p>123 Healthcare Drive, Suite 100</p>
-                <p>Seattle, WA 98101</p>
-                <p>Phone: (206) 555-0100</p>
-                <p>Email: info@alikoacademy.edu</p>
+                <p>{currentState.contact.address}</p>
+                <p>{currentState.contact.city}, {currentState.contact.state} {currentState.contact.zip}</p>
+                <p>Phone: {currentState.contact.phone}</p>
+                <p>Email: {currentState.contact.email}</p>
               </div>
             </div>
             <div>
               <h4 className="text-sm font-semibold mb-3">Office Hours</h4>
               <div className="space-y-2 text-sm text-primary-foreground/70">
-                <p>Monday – Friday: 8:00 AM – 6:00 PM</p>
-                <p>Saturday: 9:00 AM – 2:00 PM</p>
-                <p>Sunday: Closed</p>
+                <p>{currentState.officeHours.weekday}</p>
+                <p>{currentState.officeHours.saturday}</p>
+                <p>{currentState.officeHours.sunday}</p>
               </div>
             </div>
           </div>
@@ -141,7 +144,7 @@ export function Footer() {
               © {new Date().getFullYear()} Aliko Academy. All rights reserved.
             </p>
             <p className="text-xs text-primary-foreground/50 text-center md:text-right max-w-xl">
-              Aliko Academy is designed to align with Washington State training requirements and maintains an accreditation-ready governance framework. Program outcomes vary by individual effort and market conditions.
+              Aliko Academy is designed to align with {currentState.name} State training requirements and maintains an accreditation-ready governance framework. Program outcomes vary by individual effort and market conditions.
             </p>
           </div>
         </div>

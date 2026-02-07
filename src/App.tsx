@@ -3,6 +3,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { StateProvider } from "@/contexts/StateContext";
 import Index from "./pages/Index";
 import Programs from "./pages/Programs";
 import ProgramDetail from "./pages/ProgramDetail";
@@ -24,31 +25,33 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/programs" element={<Programs />} />
-          <Route path="/programs/:programId" element={<ProgramDetail />} />
-          <Route path="/exam-prep" element={<ExamPrepPrograms />} />
-          <Route path="/exam-prep/:programId" element={<ExamPrepDetail />} />
-          <Route path="/schedule" element={<Schedule />} />
-          <Route path="/tuition" element={<Tuition />} />
-          <Route path="/admissions" element={<Admissions />} />
-          <Route path="/partners" element={<Partners />} />
-          <Route path="/career-services" element={<CareerServices />} />
-          <Route path="/accreditation" element={<Accreditation />} />
-          <Route path="/policies" element={<Policies />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/student-login" element={<StudentLogin />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
+    <StateProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/programs" element={<Programs />} />
+            <Route path="/programs/:programId" element={<ProgramDetail />} />
+            <Route path="/exam-prep" element={<ExamPrepPrograms />} />
+            <Route path="/exam-prep/:programId" element={<ExamPrepDetail />} />
+            <Route path="/schedule" element={<Schedule />} />
+            <Route path="/tuition" element={<Tuition />} />
+            <Route path="/admissions" element={<Admissions />} />
+            <Route path="/partners" element={<Partners />} />
+            <Route path="/career-services" element={<CareerServices />} />
+            <Route path="/accreditation" element={<Accreditation />} />
+            <Route path="/policies" element={<Policies />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/student-login" element={<StudentLogin />} />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </StateProvider>
   </QueryClientProvider>
 );
 
