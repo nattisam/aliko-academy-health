@@ -7,14 +7,14 @@ import { Badge } from "@/components/ui/badge";
 import { Clock, MapPin, Calendar, BookOpen, ArrowRight, Sparkles } from "lucide-react";
 
 export function ProgramsSnapshot() {
-  // Sort to show featured programs first, then by enrollment status
+  // Sort to show featured programs first, then by enrollment status, and limit to 3 for homepage
   const sortedPrograms = [...programs].sort((a, b) => {
     if (a.featured && !b.featured) return -1;
     if (!a.featured && b.featured) return 1;
     if (a.enrollmentStatus === "open" && b.enrollmentStatus !== "open") return -1;
     if (a.enrollmentStatus !== "open" && b.enrollmentStatus === "open") return 1;
     return 0;
-  });
+  }).slice(0, 3); // Show only 3 featured programs on homepage
 
   const featuredExamPrep = examPrepPrograms.filter(p => p.featured).slice(0, 2);
 
