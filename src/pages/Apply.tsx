@@ -110,6 +110,7 @@ const Apply = () => {
     highSchoolDiploma: null,
     immunizationRecords: null,
     resume: null,
+    otherDocuments: null,
   });
 
   const form = useForm<ApplicationFormData>({
@@ -638,6 +639,7 @@ const Apply = () => {
                           { id: "highSchoolDiploma", label: "High School Diploma or GED", required: true, hint: "Official transcript or diploma copy", icon: Award },
                           { id: "immunizationRecords", label: "Immunization Records", required: false, hint: "Required for clinical programs", icon: Heart },
                           { id: "resume", label: "Resume / CV", required: false, hint: "PDF or Word document", icon: FileText },
+                          { id: "otherDocuments", label: "Other Documents", required: false, hint: "Any additional supporting documents", icon: Upload },
                         ].map(({ id, label, required, hint, icon: Icon }) => (
                           <div 
                             key={id} 
