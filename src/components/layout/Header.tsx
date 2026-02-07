@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import logo from "@/assets/logo.png";
 
 const navigation = [
   { name: "Programs", href: "/programs" },
@@ -21,11 +22,8 @@ export function Header() {
     <header className="bg-card border-b border-border sticky top-0 z-50">
       <nav className="container-academy flex items-center justify-between py-4">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2">
-          <div className="flex flex-col">
-            <span className="text-xl font-bold text-primary">ALIKO ACADEMY</span>
-            <span className="text-xs text-muted-foreground tracking-widest">HEALTH</span>
-          </div>
+        <Link to="/" className="flex items-center">
+          <img src={logo} alt="Aliko Academy" className="h-10 md:h-12 w-auto" />
         </Link>
 
         {/* Desktop Navigation */}

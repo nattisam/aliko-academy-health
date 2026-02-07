@@ -2,11 +2,13 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { programs, type EnrollmentStatus } from "@/data/programs";
+import { examPrepPrograms } from "@/data/examPrepPrograms";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Clock, MapPin, Calendar, DollarSign } from "lucide-react";
+import { Clock, MapPin, Calendar, DollarSign, BookOpen } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 type ModalityFilter = "all" | "Hybrid" | "Online" | "In-Person";
 type StatusFilter = "all" | EnrollmentStatus;
@@ -22,7 +24,20 @@ const Programs = () => {
       return true;
     })
     .sort((a, b) => {
-      // Featured first, then open enrollment
+      if (a.featured && !b.featured) return -1;
+      if (!a.featured && b.featured) return 1;
+      if (a.enrollmentStatus === "open" && b.enrollmentStatus !== "open") return -1;
+      if (a.enrollmentStatus !== "open" && b.enrollmentStatus === "open") return 1;
+      return 0;
+    });
+
+  const filteredExamPrep = examPrepPrograms
+    .filter((program) => {
+      if (modalityFilter !== "all" && program.modality !== modalityFilter) return false;
+      if (statusFilter !== "all" && program.enrollmentStatus !== statusFilter) return false;
+      return true;
+    })
+    .sort((a, b) => {
       if (a.featured && !b.featured) return -1;
       if (!a.featured && b.featured) return 1;
       if (a.enrollmentStatus === "open" && b.enrollmentStatus !== "open") return -1;
@@ -35,11 +50,11 @@ const Programs = () => {
       <section className="py-12 lg:py-16 bg-card">
         <div className="container-academy">
           <h1 className="text-3xl lg:text-4xl font-bold text-foreground">
-            Healthcare Training Programs
+            Programs & Courses
           </h1>
           <p className="mt-4 text-lg text-muted-foreground max-w-3xl">
-            Explore our comprehensive healthcare training programs designed to prepare you for 
-            certification and a rewarding career in the healthcare industry.
+            Explore our comprehensive healthcare training programs and exam preparation courses 
+            designed to advance your career in the healthcare industry.
           </p>
         </div>
       </section>
@@ -75,67 +90,167 @@ const Programs = () => {
                 </SelectContent>
               </Select>
             </div>
-            <div className="ml-auto text-sm text-muted-foreground">
-              {filteredPrograms.length} program{filteredPrograms.length !== 1 ? "s" : ""}
-            </div>
           </div>
 
-          {/* Program Grid */}
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredPrograms.map((program) => (
-              <Card key={program.id} className="flex flex-col hover:shadow-lg transition-shadow">
-                <CardHeader className="pb-3">
-                  <div className="flex items-start justify-between gap-2">
-                    <CardTitle className="text-lg leading-tight">{program.name}</CardTitle>
-                    {program.featured && (
-                      <Badge variant="secondary" className="shrink-0 text-xs">Featured</Badge>
-                    )}
-                  </div>
-                  <p className="text-sm text-muted-foreground">{program.credential}</p>
-                </CardHeader>
-                <CardContent className="flex-1 space-y-3">
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <Clock className="h-4 w-4 shrink-0" />
-                    <span>{program.duration} • {program.hours.total} hours</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <MapPin className="h-4 w-4 shrink-0" />
-                    <span>{program.modality} • {program.location}</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <DollarSign className="h-4 w-4 shrink-0" />
-                    <span>${program.tuition.toLocaleString()} tuition</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Calendar className="h-4 w-4 shrink-0 text-muted-foreground" />
-                    <Badge
-                      variant={program.enrollmentStatus === "open" ? "default" : "secondary"}
-                      className={
-                        program.enrollmentStatus === "open"
-                          ? "bg-accent text-accent-foreground hover:bg-accent/90"
-                          : ""
-                      }
-                    >
-                      {program.enrollmentStatus === "open"
-                        ? `Starts ${program.startDate}`
-                        : "Enrollment Closed"}
-                    </Badge>
-                  </div>
-                </CardContent>
-                <CardFooter className="pt-0">
-                  <Button
-                    asChild
-                    className="w-full"
-                    variant={program.enrollmentStatus === "open" ? "default" : "outline"}
-                  >
-                    <Link to={`/programs/${program.id}`}>
-                      {program.enrollmentStatus === "open" ? "Apply Now" : "View Details"}
-                    </Link>
-                  </Button>
-                </CardFooter>
-              </Card>
-            ))}
-          </div>
+          <Tabs defaultValue="training" className="w-full">
+            <TabsList className="grid w-full grid-cols-2 mb-8">
+              <TabsTrigger value="training" className="text-sm">
+                Healthcare Training Programs
+                <Badge variant="secondary" className="ml-2">{filteredPrograms.length}</Badge>
+              </TabsTrigger>
+              <TabsTrigger value="exam-prep" className="text-sm">
+                Exam Review & Preparation
+                <Badge variant="secondary" className="ml-2">{filteredExamPrep.length}</Badge>
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="training">
+              <div className="mb-6">
+                <h2 className="text-xl font-semibold text-foreground">Healthcare Training Programs</h2>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Certificate programs delivered by Aliko Academy – Health
+                </p>
+              </div>
+
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredPrograms.map((program) => (
+                  <Card key={program.id} className="flex flex-col hover:shadow-lg transition-shadow">
+                    <CardHeader className="pb-3">
+                      <div className="flex items-start justify-between gap-2">
+                        <CardTitle className="text-lg leading-tight">{program.name}</CardTitle>
+                        {program.featured && (
+                          <Badge variant="secondary" className="shrink-0 text-xs">Featured</Badge>
+                        )}
+                      </div>
+                      <p className="text-sm text-muted-foreground">{program.credential}</p>
+                    </CardHeader>
+                    <CardContent className="flex-1 space-y-3">
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <Clock className="h-4 w-4 shrink-0" />
+                        <span>{program.duration} • {program.hours.total} hours</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <MapPin className="h-4 w-4 shrink-0" />
+                        <span>{program.modality} • {program.location}</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <DollarSign className="h-4 w-4 shrink-0" />
+                        <span>${program.tuition.toLocaleString()} tuition</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Calendar className="h-4 w-4 shrink-0 text-muted-foreground" />
+                        <Badge
+                          variant={program.enrollmentStatus === "open" ? "default" : "secondary"}
+                          className={
+                            program.enrollmentStatus === "open"
+                              ? "bg-accent text-accent-foreground hover:bg-accent/90"
+                              : ""
+                          }
+                        >
+                          {program.enrollmentStatus === "open"
+                            ? `Starts ${program.startDate}`
+                            : "Enrollment Closed"}
+                        </Badge>
+                      </div>
+                    </CardContent>
+                    <CardFooter className="pt-0">
+                      <Button
+                        asChild
+                        className="w-full"
+                        variant={program.enrollmentStatus === "open" ? "default" : "outline"}
+                      >
+                        <Link to={`/programs/${program.id}`}>
+                          {program.enrollmentStatus === "open" ? "Apply Now" : "View Details"}
+                        </Link>
+                      </Button>
+                    </CardFooter>
+                  </Card>
+                ))}
+              </div>
+            </TabsContent>
+
+            <TabsContent value="exam-prep">
+              <div className="mb-6">
+                <div className="flex items-center gap-2 mb-1">
+                  <BookOpen className="h-5 w-5 text-primary" />
+                  <h2 className="text-xl font-semibold text-foreground">Exam Review & Preparation Programs</h2>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  Non-credential, supplemental education programs
+                </p>
+                <p className="text-xs text-muted-foreground mt-2 italic">
+                  These courses are review and preparation programs only. Completion does not guarantee 
+                  exam success, certification, or licensure.
+                </p>
+              </div>
+
+              <div className="grid sm:grid-cols-2 gap-6">
+                {filteredExamPrep.map((program) => (
+                  <Card key={program.id} className="flex flex-col hover:shadow-lg transition-shadow">
+                    <CardHeader className="pb-3">
+                      <div className="flex items-start justify-between gap-2">
+                        <CardTitle className="text-lg leading-tight">{program.name}</CardTitle>
+                        {program.featured && (
+                          <Badge variant="secondary" className="shrink-0 text-xs">Featured</Badge>
+                        )}
+                      </div>
+                      <p className="text-sm text-muted-foreground">Non-Credential, Supplemental</p>
+                    </CardHeader>
+                    <CardContent className="flex-1 space-y-3">
+                      <p className="text-sm text-muted-foreground line-clamp-2">
+                        {program.description}
+                      </p>
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <Clock className="h-4 w-4 shrink-0" />
+                        <span>{program.duration} • {program.hours.total} hours</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <MapPin className="h-4 w-4 shrink-0" />
+                        <span>{program.modality} • {program.location}</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <DollarSign className="h-4 w-4 shrink-0" />
+                        <span>${program.tuition.toLocaleString()}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Calendar className="h-4 w-4 shrink-0 text-muted-foreground" />
+                        <Badge
+                          variant={program.enrollmentStatus === "open" ? "default" : "secondary"}
+                          className={
+                            program.enrollmentStatus === "open"
+                              ? "bg-accent text-accent-foreground hover:bg-accent/90"
+                              : ""
+                          }
+                        >
+                          {program.enrollmentStatus === "open"
+                            ? `Starts ${program.startDate}`
+                            : "Enrollment Closed"}
+                        </Badge>
+                      </div>
+                    </CardContent>
+                    <CardFooter className="pt-0">
+                      <Button
+                        asChild
+                        className="w-full"
+                        variant={program.enrollmentStatus === "open" ? "default" : "outline"}
+                      >
+                        <Link to={`/exam-prep/${program.id}`}>
+                          {program.enrollmentStatus === "open" ? "Enroll Now" : "View Details"}
+                        </Link>
+                      </Button>
+                    </CardFooter>
+                  </Card>
+                ))}
+              </div>
+
+              <div className="mt-8 p-4 bg-muted/50 rounded-lg border border-border">
+                <p className="text-sm text-muted-foreground italic">
+                  Offered in collaboration with Aliko Consultancy, an academic and career advisory partner. 
+                  Aliko Consultancy is not a licensing, accrediting, or credential-granting body.
+                </p>
+              </div>
+            </TabsContent>
+          </Tabs>
         </div>
       </section>
     </Layout>
