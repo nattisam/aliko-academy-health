@@ -4,8 +4,11 @@ import {
   Monitor, 
   Stethoscope, 
   Award, 
-  Briefcase 
+  Briefcase,
+  ArrowRight
 } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 
 const steps = [
   {
@@ -42,9 +45,18 @@ const steps = [
 
 export function HowItWorks() {
   return (
-    <section className="py-16 lg:py-24 bg-card">
-      <div className="container-academy">
-        <div className="text-center mb-12">
+    <section className="py-20 lg:py-28 bg-card relative overflow-hidden">
+      {/* Decorative Background */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute top-0 left-0 w-96 h-96 bg-primary rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-accent rounded-full blur-3xl translate-x-1/2 translate-y-1/2" />
+      </div>
+
+      <div className="container-academy relative z-10">
+        <div className="text-center mb-16">
+          <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-semibold mb-4">
+            Your Journey
+          </span>
           <h2 className="text-3xl lg:text-4xl font-bold text-foreground">
             How It Works
           </h2>
@@ -53,31 +65,40 @@ export function HowItWorks() {
           </p>
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {steps.map((step, index) => (
-            <div key={step.title} className="relative">
-              <div className="flex items-start gap-4">
-                <div className="flex-shrink-0">
-                  <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
-                    <step.icon className="h-6 w-6 text-primary" />
-                  </div>
+            <div 
+              key={step.title} 
+              className="group relative bg-background rounded-xl p-6 border border-border hover:border-primary/30 hover:shadow-lg transition-all duration-300"
+            >
+              {/* Step Number */}
+              <div className="absolute -top-3 -left-3 w-8 h-8 rounded-full bg-accent text-accent-foreground text-sm font-bold flex items-center justify-center shadow-md">
+                {index + 1}
+              </div>
+              
+              <div className="flex flex-col items-start">
+                <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
+                  <step.icon className="h-7 w-7 text-primary" />
                 </div>
-                <div>
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="text-sm font-semibold text-accent">
-                      Step {index + 1}
-                    </span>
-                  </div>
-                  <h3 className="text-lg font-semibold text-foreground mb-2">
-                    {step.title}
-                  </h3>
-                  <p className="text-sm text-muted-foreground">
-                    {step.description}
-                  </p>
-                </div>
+                <h3 className="text-lg font-semibold text-foreground mb-2">
+                  {step.title}
+                </h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {step.description}
+                </p>
               </div>
             </div>
           ))}
+        </div>
+
+        {/* CTA */}
+        <div className="mt-12 text-center">
+          <Button asChild size="lg" variant="outline" className="group">
+            <Link to="/admissions">
+              Start Your Journey Today
+              <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </Button>
         </div>
       </div>
     </section>
