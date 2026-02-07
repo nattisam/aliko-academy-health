@@ -1,36 +1,66 @@
-import { Shield, CheckCircle, Users } from "lucide-react";
+import { Shield, CheckCircle, Users, Award, BookOpen, Building2 } from "lucide-react";
+
+const trustItems = [
+  {
+    icon: Shield,
+    title: "Compliance Ready",
+    description: "Aligned with Washington State training requirements and ACHC standards.",
+  },
+  {
+    icon: CheckCircle,
+    title: "Quality Assured",
+    description: "Accreditation-ready governance with continuous improvement processes.",
+  },
+  {
+    icon: Users,
+    title: "Industry Connected",
+    description: "Clinical partnerships and career network for your professional growth.",
+  },
+];
+
+const stats = [
+  { icon: Award, value: "9+", label: "Certified Programs" },
+  { icon: BookOpen, value: "1000+", label: "Hours of Training" },
+  { icon: Building2, value: "50+", label: "Clinical Partners" },
+];
 
 export function TrustStrip() {
   return (
-    <section className="py-12 bg-primary">
-      <div className="container-academy">
-        <div className="grid md:grid-cols-3 gap-8 text-primary-foreground">
-          <div className="flex items-start gap-4">
-            <Shield className="h-8 w-8 shrink-0 opacity-90" />
-            <div>
-              <h3 className="font-semibold mb-1">Compliance Ready</h3>
-              <p className="text-sm opacity-80">
-                Designed to align with Washington State training requirements and ACHC standards.
-              </p>
-            </div>
+    <section className="relative overflow-hidden">
+      {/* Trust Features */}
+      <div className="py-16 bg-gradient-to-br from-primary via-primary to-primary/90">
+        <div className="container-academy">
+          <div className="grid md:grid-cols-3 gap-8">
+            {trustItems.map((item) => (
+              <div key={item.title} className="flex items-start gap-4 text-primary-foreground">
+                <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-white/10 flex items-center justify-center">
+                  <item.icon className="h-6 w-6" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-lg mb-1">{item.title}</h3>
+                  <p className="text-sm text-primary-foreground/80 leading-relaxed">
+                    {item.description}
+                  </p>
+                </div>
+              </div>
+            ))}
           </div>
-          <div className="flex items-start gap-4">
-            <CheckCircle className="h-8 w-8 shrink-0 opacity-90" />
-            <div>
-              <h3 className="font-semibold mb-1">Quality Assured</h3>
-              <p className="text-sm opacity-80">
-                Accreditation-ready governance framework with continuous improvement processes.
-              </p>
-            </div>
-          </div>
-          <div className="flex items-start gap-4">
-            <Users className="h-8 w-8 shrink-0 opacity-90" />
-            <div>
-              <h3 className="font-semibold mb-1">Industry Connected</h3>
-              <p className="text-sm opacity-80">
-                Clinical partnerships and career network to support your professional growth.
-              </p>
-            </div>
+        </div>
+      </div>
+
+      {/* Stats Bar */}
+      <div className="py-12 bg-foreground">
+        <div className="container-academy">
+          <div className="grid grid-cols-3 gap-8">
+            {stats.map((stat) => (
+              <div key={stat.label} className="text-center">
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <stat.icon className="h-6 w-6 text-accent" />
+                  <span className="text-3xl lg:text-4xl font-bold text-white">{stat.value}</span>
+                </div>
+                <span className="text-sm text-white/70">{stat.label}</span>
+              </div>
+            ))}
           </div>
         </div>
       </div>
