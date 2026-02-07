@@ -24,9 +24,14 @@ export function Header() {
         {/* Logo */}
         <Link to="/" className="flex items-center gap-3">
           <img src={logo} alt="Aliko Academy Health" className="h-14 md:h-16 w-auto" />
-          <span className="px-2.5 py-1 rounded-md bg-primary text-primary-foreground text-xs font-bold uppercase tracking-wider shadow-sm">
-            Health
-          </span>
+          <div className="flex flex-col">
+            <span className="text-sm font-bold text-foreground tracking-wide hidden sm:block">
+              ALIKO ACADEMY
+            </span>
+            <span className="px-2 py-0.5 rounded-md bg-primary text-primary-foreground text-xs font-bold uppercase tracking-wider shadow-sm w-fit">
+              Health
+            </span>
+          </div>
         </Link>
 
         {/* Desktop Navigation */}

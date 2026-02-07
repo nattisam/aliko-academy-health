@@ -76,7 +76,7 @@ const Admissions = () => {
           </p>
           <div className="mt-8">
             <Button asChild size="lg" className="shadow-lg bg-accent text-accent-foreground hover:bg-accent/90">
-              <Link to="/contact">
+              <Link to="/apply">
                 Start Your Application
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
@@ -233,11 +233,11 @@ const Admissions = () => {
                 about our programs and enrollment process.
               </p>
               <div className="flex flex-wrap justify-center gap-4">
-                <Button asChild size="lg" className="shadow-lg">
-                  <Link to="/contact">Contact Admissions</Link>
+                <Button asChild size="lg" className="shadow-lg bg-accent text-accent-foreground hover:bg-accent/90">
+                  <Link to="/apply">Start Your Application</Link>
                 </Button>
                 <Button asChild variant="outline" size="lg">
-                  <Link to="/programs">View Programs</Link>
+                  <Link to="/contact">Contact Admissions</Link>
                 </Button>
               </div>
             </div>

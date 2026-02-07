@@ -3,7 +3,7 @@ import { Layout } from "@/components/layout/Layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Building2, MapPin, Stethoscope, Briefcase, Handshake, ArrowRight } from "lucide-react";
+import { Building2, MapPin, Stethoscope, Briefcase, Handshake, ArrowRight, Heart, Users } from "lucide-react";
 import { useStateConfig } from "@/hooks/useStateConfig";
 
 interface ClinicalPartner {
@@ -215,127 +215,133 @@ const Partners = () => {
 
       <section className="py-12 lg:py-16">
         <div className="container-academy space-y-16">
-          {/* Clinical Partners */}
-          <div>
-            <div className="flex items-center gap-3 mb-2">
-              <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                <Stethoscope className="h-6 w-6 text-primary" />
+          {/* Clinical Partners - Blue/Primary themed section */}
+          <div className="relative">
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-primary/10 rounded-3xl" />
+            <div className="relative p-8 lg:p-10">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center shadow-lg">
+                  <Heart className="h-7 w-7 text-primary-foreground" />
+                </div>
+                <div>
+                  <Badge className="bg-primary/10 text-primary border-primary/20 mb-1">Clinical Training</Badge>
+                  <h2 className="text-2xl font-bold text-foreground">Clinical Practice Partners</h2>
+                  <p className="text-sm text-muted-foreground">Hands-on training locations for student clinical hours</p>
+                </div>
               </div>
-              <div>
-                <h2 className="text-2xl font-bold text-foreground">Clinical Practice Partners</h2>
-                <p className="text-sm text-muted-foreground">Hands-on training locations</p>
+              <p className="text-muted-foreground mb-8 max-w-3xl">
+                Our clinical partners provide hands-on training environments where students 
+                develop practical skills under professional supervision.
+              </p>
+
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+                {clinicalPartners.map((partner) => (
+                  <Card 
+                    key={partner.name} 
+                    className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 bg-background border-2 border-primary/10 hover:border-primary/30"
+                  >
+                    <CardHeader className="pb-3">
+                      <div className="flex items-start gap-3">
+                        <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center shrink-0">
+                          <Stethoscope className="h-5 w-5 text-primary" />
+                        </div>
+                        <div>
+                          <CardTitle className="text-lg text-foreground">{partner.name}</CardTitle>
+                          <p className="text-sm text-primary font-medium">{partner.type}</p>
+                        </div>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="space-y-3">
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <MapPin className="h-4 w-4 text-primary/60" />
+                        <span>{partner.region}</span>
+                      </div>
+                      <div className="flex flex-wrap gap-2">
+                        {partner.programs.map((program) => (
+                          <Badge 
+                            key={program} 
+                            variant="secondary" 
+                            className="text-xs bg-primary/10 text-primary border-0"
+                          >
+                            {program}
+                          </Badge>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
               </div>
-            </div>
-            <p className="text-muted-foreground mb-8 max-w-3xl mt-4">
-              Our clinical partners provide hands-on training environments where students 
-              develop practical skills under professional supervision.
-            </p>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {clinicalPartners.map((partner, index) => (
-                <Card key={partner.name} className={`group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-l-4 ${
-                  index % 2 === 0 ? 'border-l-primary' : 'border-l-accent'
-                }`}>
-                  <CardHeader className="pb-3">
-                    <div className="flex items-start gap-3">
-                      <div className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${
-                        index % 2 === 0 ? 'bg-primary/10' : 'bg-accent/10'
-                      }`}>
-                        <Building2 className={`h-5 w-5 ${index % 2 === 0 ? 'text-primary' : 'text-accent'}`} />
-                      </div>
-                      <div>
-                        <CardTitle className="text-lg">{partner.name}</CardTitle>
-                        <p className="text-sm text-muted-foreground">{partner.type}</p>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <MapPin className="h-4 w-4" />
-                      <span>{partner.region}</span>
-                    </div>
-                    <div className="flex flex-wrap gap-2">
-                      {partner.programs.map((program) => (
-                        <Badge key={program} variant="secondary" className="text-xs">
-                          {program}
-                        </Badge>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-
-            <Card className="mt-8 bg-muted/50 border-accent/30">
-              <CardContent className="pt-6">
+              <div className="mt-8 p-4 rounded-xl bg-background/80 border border-primary/20">
                 <p className="text-sm text-muted-foreground italic">
-                  <strong>Disclaimer:</strong> Clinical placements are coordinated based on 
+                  <strong className="text-primary">Disclaimer:</strong> Clinical placements are coordinated based on 
                   availability, program requirements, and student readiness. Placement at a 
                   specific partner facility is not guaranteed.
                 </p>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </div>
 
-          {/* Career Network Partners */}
-          <div>
-            <div className="flex items-center gap-3 mb-2">
-              <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center">
-                <Briefcase className="h-6 w-6 text-accent" />
+          {/* Career Network Partners - Orange/Accent themed section */}
+          <div className="relative">
+            <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-accent/10 rounded-3xl" />
+            <div className="relative p-8 lg:p-10">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-accent to-accent/80 flex items-center justify-center shadow-lg">
+                  <Users className="h-7 w-7 text-accent-foreground" />
+                </div>
+                <div>
+                  <Badge className="bg-accent/10 text-accent border-accent/20 mb-1">Employment Network</Badge>
+                  <h2 className="text-2xl font-bold text-foreground">Career Network Partners</h2>
+                  <p className="text-sm text-muted-foreground">Employers who actively hire our graduates</p>
+                </div>
               </div>
-              <div>
-                <h2 className="text-2xl font-bold text-foreground">Career Network Partners</h2>
-                <p className="text-sm text-muted-foreground">Employers who hire our graduates</p>
-              </div>
-            </div>
-            <p className="text-muted-foreground mb-8 max-w-3xl mt-4">
-              These healthcare employers actively recruit Aliko Academy graduates and participate 
-              in our career development initiatives.
-            </p>
+              <p className="text-muted-foreground mb-8 max-w-3xl">
+                These healthcare employers actively recruit Aliko Academy graduates and participate 
+                in our career development initiatives.
+              </p>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {careerPartners.map((partner, index) => (
-                <Card key={partner.name} className={`group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-l-4 ${
-                  index % 2 === 0 ? 'border-l-accent' : 'border-l-primary'
-                }`}>
-                  <CardHeader className="pb-3">
-                    <div className="flex items-start gap-3">
-                      <div className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${
-                        index % 2 === 0 ? 'bg-accent/10' : 'bg-primary/10'
-                      }`}>
-                        <Building2 className={`h-5 w-5 ${index % 2 === 0 ? 'text-accent' : 'text-primary'}`} />
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+                {careerPartners.map((partner) => (
+                  <Card 
+                    key={partner.name} 
+                    className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 bg-background border-2 border-accent/10 hover:border-accent/30"
+                  >
+                    <CardHeader className="pb-3">
+                      <div className="flex items-start gap-3">
+                        <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-accent/20 to-accent/10 flex items-center justify-center shrink-0">
+                          <Briefcase className="h-5 w-5 text-accent" />
+                        </div>
+                        <div>
+                          <CardTitle className="text-lg text-foreground">{partner.name}</CardTitle>
+                          <p className="text-sm text-accent font-medium">{partner.industry}</p>
+                        </div>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="space-y-3">
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <MapPin className="h-4 w-4 text-accent/60" />
+                        <span>{partner.region}</span>
                       </div>
                       <div>
-                        <CardTitle className="text-lg">{partner.name}</CardTitle>
-                        <p className="text-sm text-muted-foreground">{partner.industry}</p>
+                        <p className="text-sm">
+                          <span className="font-medium text-accent">Hiring for: </span>
+                          <span className="text-muted-foreground">{partner.roles}</span>
+                        </p>
                       </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <MapPin className="h-4 w-4" />
-                      <span>{partner.region}</span>
-                    </div>
-                    <div>
-                      <p className="text-sm">
-                        <span className="font-medium">Roles: </span>
-                        <span className="text-muted-foreground">{partner.roles}</span>
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
 
-            <Card className="mt-8 bg-muted/50 border-accent/30">
-              <CardContent className="pt-6">
+              <div className="mt-8 p-4 rounded-xl bg-background/80 border border-accent/20">
                 <p className="text-sm text-muted-foreground italic">
-                  <strong>Disclaimer:</strong> Aliko Academy does not guarantee employment. 
+                  <strong className="text-accent">Disclaimer:</strong> Aliko Academy does not guarantee employment. 
                   Career services support graduates in their job search through resume assistance, 
                   interview preparation, and employer connections.
                 </p>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </div>
 
           {/* Become a Partner */}

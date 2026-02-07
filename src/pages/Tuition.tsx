@@ -4,7 +4,7 @@ import { programs } from "@/data/programs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { CheckCircle, CreditCard, Building2, Users, DollarSign, BookOpen, Wallet } from "lucide-react";
+import { CheckCircle, CreditCard, Building2, Users, DollarSign, BookOpen, Wallet, Gift, GraduationCap } from "lucide-react";
 
 const Tuition = () => {
   return (
@@ -52,7 +52,7 @@ const Tuition = () => {
       </section>
 
       <section className="py-12">
-        <div className="container-academy space-y-12">
+        <div className="container-academy space-y-16">
           {/* Tuition Table */}
           <div>
             <div className="flex items-center gap-2 mb-2">
@@ -101,122 +101,139 @@ const Tuition = () => {
             </Card>
           </div>
 
-          {/* What's Included */}
-          <div>
-            <div className="flex items-center gap-2 mb-2">
-              <div className="h-1 w-8 bg-accent rounded-full" />
-              <span className="text-sm font-medium text-accent">Everything You Need</span>
-            </div>
-            <h2 className="text-2xl font-bold text-foreground mb-6">What's Included</h2>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[
-                { title: "Course Materials", desc: "All textbooks, workbooks, and digital learning resources", color: "primary" as const },
-                { title: "Lab Equipment", desc: "Access to all lab equipment and practice supplies", color: "accent" as const },
-                { title: "Clinical Placement", desc: "Coordination of clinical training at partner facilities", color: "primary" as const },
-                { title: "Exam Preparation", desc: "Practice tests and certification exam prep materials", color: "accent" as const },
-                { title: "LMS Access", desc: "Online learning platform access throughout your program", color: "primary" as const },
-                { title: "Career Services", desc: "Resume assistance and job search support", color: "accent" as const },
-              ].map((item, index) => (
-                <Card key={item.title} className={`group hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border-l-4 ${
-                  item.color === 'primary' ? 'border-l-primary' : 'border-l-accent'
-                }`}>
-                  <CardContent className="pt-6">
-                    <div className="flex items-start gap-4">
-                      <div className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${
-                        item.color === 'primary' ? 'bg-primary/10' : 'bg-accent/10'
-                      }`}>
-                        <CheckCircle className={`h-5 w-5 ${item.color === 'primary' ? 'text-primary' : 'text-accent'}`} />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold mb-1">{item.title}</h3>
-                        <p className="text-sm text-muted-foreground">{item.desc}</p>
-                      </div>
+          {/* What's Included - Distinct visual treatment with accent border and background */}
+          <div className="relative">
+            <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-accent/10 rounded-3xl" />
+            <div className="relative p-8 lg:p-10">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-12 h-12 rounded-xl bg-accent/20 flex items-center justify-center">
+                  <Gift className="h-6 w-6 text-accent" />
+                </div>
+                <div>
+                  <span className="text-sm font-medium text-accent">Everything You Need</span>
+                  <h2 className="text-2xl font-bold text-foreground">What's Included</h2>
+                </div>
+              </div>
+              <p className="text-muted-foreground mb-8 max-w-2xl">
+                Your tuition covers all the essentials for your training — no hidden fees or surprise costs.
+              </p>
+              
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {[
+                  { title: "Course Materials", desc: "All textbooks, workbooks, and digital learning resources", icon: BookOpen },
+                  { title: "Lab Equipment", desc: "Access to all lab equipment and practice supplies", icon: GraduationCap },
+                  { title: "Clinical Placement", desc: "Coordination of clinical training at partner facilities", icon: Building2 },
+                  { title: "Exam Preparation", desc: "Practice tests and certification exam prep materials", icon: CheckCircle },
+                  { title: "LMS Access", desc: "Online learning platform access throughout your program", icon: Users },
+                  { title: "Career Services", desc: "Resume assistance and job search support", icon: CreditCard },
+                ].map((item) => (
+                  <div 
+                    key={item.title} 
+                    className="flex items-start gap-3 p-4 rounded-xl bg-background/80 backdrop-blur-sm border border-accent/20 hover:border-accent/40 transition-colors"
+                  >
+                    <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center shrink-0">
+                      <item.icon className="h-5 w-5 text-accent" />
                     </div>
-                  </CardContent>
-                </Card>
-              ))}
+                    <div>
+                      <h3 className="font-semibold text-foreground">{item.title}</h3>
+                      <p className="text-sm text-muted-foreground">{item.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 
-          {/* Payment Options */}
-          <div>
-            <div className="flex items-center gap-2 mb-2">
-              <div className="h-1 w-8 bg-primary rounded-full" />
-              <span className="text-sm font-medium text-primary">Flexible Options</span>
-            </div>
-            <h2 className="text-2xl font-bold text-foreground mb-6">Payment Options</h2>
-            <div className="grid md:grid-cols-3 gap-6">
-              <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-t-4 border-t-primary">
-                <CardHeader>
-                  <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
-                    <CreditCard className="h-7 w-7 text-primary" />
-                  </div>
-                  <CardTitle>Pay in Full</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground mb-4">
-                    Pay your tuition in full before your program start date and focus on your studies.
-                  </p>
-                  <ul className="text-sm space-y-2">
-                    <li className="flex items-center gap-2">
-                      <CheckCircle className="h-4 w-4 text-primary" />
-                      <span>Simple, one-time payment</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <CheckCircle className="h-4 w-4 text-primary" />
-                      <span>No payment tracking needed</span>
-                    </li>
-                  </ul>
-                </CardContent>
-              </Card>
+          {/* Payment Options - Distinct visual treatment with primary border */}
+          <div className="relative">
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-primary/10 rounded-3xl" />
+            <div className="relative p-8 lg:p-10">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-12 h-12 rounded-xl bg-primary/20 flex items-center justify-center">
+                  <Wallet className="h-6 w-6 text-primary" />
+                </div>
+                <div>
+                  <span className="text-sm font-medium text-primary">Flexible Options</span>
+                  <h2 className="text-2xl font-bold text-foreground">Payment Options</h2>
+                </div>
+              </div>
+              <p className="text-muted-foreground mb-8 max-w-2xl">
+                Choose the payment method that works best for your situation.
+              </p>
+              
+              <div className="grid md:grid-cols-3 gap-6">
+                <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 bg-background border-2 border-primary/20 hover:border-primary/40">
+                  <CardHeader>
+                    <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center mb-4 group-hover:from-primary/30 group-hover:to-primary/20 transition-colors">
+                      <CreditCard className="h-7 w-7 text-primary" />
+                    </div>
+                    <CardTitle className="text-primary">Pay in Full</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground mb-4">
+                      Pay your tuition in full before your program start date and focus on your studies.
+                    </p>
+                    <ul className="text-sm space-y-2">
+                      <li className="flex items-center gap-2">
+                        <CheckCircle className="h-4 w-4 text-primary" />
+                        <span>Simple, one-time payment</span>
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <CheckCircle className="h-4 w-4 text-primary" />
+                        <span>No payment tracking needed</span>
+                      </li>
+                    </ul>
+                  </CardContent>
+                </Card>
 
-              <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-t-4 border-t-accent">
-                <CardHeader>
-                  <div className="w-14 h-14 rounded-xl bg-accent/10 flex items-center justify-center mb-4 group-hover:bg-accent/20 transition-colors">
-                    <Users className="h-7 w-7 text-accent" />
-                  </div>
-                  <CardTitle>Payment Plan</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground mb-4">
-                    Split your tuition into manageable installments during your program.
-                  </p>
-                  <ul className="text-sm space-y-2">
-                    <li className="flex items-center gap-2">
-                      <CheckCircle className="h-4 w-4 text-accent" />
-                      <span>Down payment required</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <CheckCircle className="h-4 w-4 text-accent" />
-                      <span>Monthly installments</span>
-                    </li>
-                  </ul>
-                </CardContent>
-              </Card>
+                <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 bg-background border-2 border-accent/20 hover:border-accent/40">
+                  <CardHeader>
+                    <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-accent/20 to-accent/10 flex items-center justify-center mb-4 group-hover:from-accent/30 group-hover:to-accent/20 transition-colors">
+                      <Users className="h-7 w-7 text-accent" />
+                    </div>
+                    <CardTitle className="text-accent">Payment Plan</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground mb-4">
+                      Split your tuition into manageable installments during your program.
+                    </p>
+                    <ul className="text-sm space-y-2">
+                      <li className="flex items-center gap-2">
+                        <CheckCircle className="h-4 w-4 text-accent" />
+                        <span>Down payment required</span>
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <CheckCircle className="h-4 w-4 text-accent" />
+                        <span>Monthly installments</span>
+                      </li>
+                    </ul>
+                  </CardContent>
+                </Card>
 
-              <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-t-4 border-t-primary">
-                <CardHeader>
-                  <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
-                    <Building2 className="h-7 w-7 text-primary" />
-                  </div>
-                  <CardTitle>Sponsor / Agency Pay</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground mb-4">
-                    Employer or workforce agency sponsoring your training? We work with sponsors.
-                  </p>
-                  <ul className="text-sm space-y-2">
-                    <li className="flex items-center gap-2">
-                      <CheckCircle className="h-4 w-4 text-primary" />
-                      <span>Employer reimbursement</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <CheckCircle className="h-4 w-4 text-primary" />
-                      <span>WorkSource eligible</span>
-                    </li>
-                  </ul>
-                </CardContent>
-              </Card>
+                <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 bg-background border-2 border-primary/20 hover:border-primary/40">
+                  <CardHeader>
+                    <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center mb-4 group-hover:from-primary/30 group-hover:to-primary/20 transition-colors">
+                      <Building2 className="h-7 w-7 text-primary" />
+                    </div>
+                    <CardTitle className="text-primary">Sponsor / Agency Pay</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground mb-4">
+                      Employer or workforce agency sponsoring your training? We work with sponsors.
+                    </p>
+                    <ul className="text-sm space-y-2">
+                      <li className="flex items-center gap-2">
+                        <CheckCircle className="h-4 w-4 text-primary" />
+                        <span>Employer reimbursement</span>
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <CheckCircle className="h-4 w-4 text-primary" />
+                        <span>WorkSource eligible</span>
+                      </li>
+                    </ul>
+                  </CardContent>
+                </Card>
+              </div>
             </div>
           </div>
 
@@ -269,7 +286,7 @@ const Tuition = () => {
                   <Link to="/contact">Contact Admissions</Link>
                 </Button>
                 <Button asChild variant="outline" size="lg">
-                  <Link to="/admissions">Apply Now</Link>
+                  <Link to="/apply">Apply Now</Link>
                 </Button>
               </div>
             </div>
