@@ -48,21 +48,33 @@ const benefits = [
     icon: GraduationCap,
     title: "Job-Ready Graduates",
     description: "Professionals trained to meet your organization's exact standards.",
+    gradient: "from-primary/15 to-primary/5",
+    iconBg: "bg-primary",
+    border: "border-primary/20",
   },
   {
     icon: HandCoins,
     title: "Tax Advantages",
     description: "Potential deductions for educational sponsorship investments.",
+    gradient: "from-accent/15 to-accent/5",
+    iconBg: "bg-accent",
+    border: "border-accent/20",
   },
   {
     icon: Users,
     title: "Talent Pipeline",
     description: "A steady flow of qualified healthcare workers when you need them.",
+    gradient: "from-primary/15 to-primary/5",
+    iconBg: "bg-primary",
+    border: "border-primary/20",
   },
   {
     icon: Shield,
     title: "Community Impact",
     description: "Recognized as a leader investing in healthcare workforce development.",
+    gradient: "from-accent/15 to-accent/5",
+    iconBg: "bg-accent",
+    border: "border-accent/20",
   },
 ];
 
@@ -113,25 +125,29 @@ export default function Enterprise() {
       </section>
 
       {/* Benefits */}
-      <section className="py-14 bg-background">
+      <section className="py-16 bg-background">
         <div className="container-academy">
-          <h2 className="text-2xl font-bold text-foreground text-center mb-2">
-            Why Organizations Partner With Us
-          </h2>
-          <p className="text-center text-muted-foreground mb-8 max-w-xl mx-auto">
-            Reduce hiring costs, strengthen your team, and make a lasting community impact.
-          </p>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div className="text-center mb-10">
+            <span className="inline-block text-xs font-semibold uppercase tracking-widest text-primary mb-2">Partnership Benefits</span>
+            <h2 className="text-2xl lg:text-3xl font-bold text-foreground">
+              Why Organizations Partner With Us
+            </h2>
+            <p className="mt-2 text-muted-foreground max-w-xl mx-auto">
+              Reduce hiring costs, strengthen your team, and make a lasting community impact.
+            </p>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {benefits.map((b) => (
-              <Card key={b.title} className="border-border/60 shadow-sm hover:shadow-md transition-shadow text-center">
-                <CardContent className="pt-6 pb-5">
-                  <div className="mx-auto w-11 h-11 rounded-lg bg-primary/10 flex items-center justify-center mb-3">
-                    <b.icon className="h-5 w-5 text-primary" />
-                  </div>
-                  <h3 className="font-semibold text-foreground mb-1.5 text-sm">{b.title}</h3>
-                  <p className="text-xs text-muted-foreground leading-relaxed">{b.description}</p>
-                </CardContent>
-              </Card>
+              <div
+                key={b.title}
+                className={`relative rounded-xl border ${b.border} bg-gradient-to-br ${b.gradient} p-6 text-center hover:shadow-lg hover:-translate-y-1 transition-all duration-300`}
+              >
+                <div className={`mx-auto w-12 h-12 rounded-full ${b.iconBg} flex items-center justify-center mb-4 shadow-md`}>
+                  <b.icon className="h-5 w-5 text-white" />
+                </div>
+                <h3 className="font-bold text-foreground mb-2">{b.title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{b.description}</p>
+              </div>
             ))}
           </div>
         </div>
@@ -142,7 +158,8 @@ export default function Enterprise() {
         <div className="container-academy">
           <div className="max-w-3xl mx-auto">
             <div className="text-center mb-8">
-              <h2 className="text-2xl font-bold text-foreground">
+              <span className="inline-block text-xs font-semibold uppercase tracking-widest text-accent mb-2">Get Started</span>
+              <h2 className="text-2xl lg:text-3xl font-bold text-foreground">
                 Request a Partnership
               </h2>
               <p className="mt-1.5 text-sm text-muted-foreground">
