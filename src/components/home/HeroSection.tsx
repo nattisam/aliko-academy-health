@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Play, GraduationCap, Clock, HeartHandshake } from "lucide-react";
 import { useState, useRef } from "react";
 import heroVideo from "@/assets/hero-video.mp4";
+import heroPoster from "@/assets/hero-poster.jpg";
 
 export function HeroSection() {
   const [isPlaying, setIsPlaying] = useState(true);
@@ -29,6 +30,8 @@ export function HeroSection() {
           muted
           loop
           playsInline
+          preload="metadata"
+          poster={heroPoster}
           className="w-full h-full object-cover"
         >
           <source src={heroVideo} type="video/mp4" />
