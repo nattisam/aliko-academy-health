@@ -10,6 +10,7 @@ const navigation = [
   { name: "Admissions", href: "/admissions" },
   { name: "Tuition", href: "/tuition" },
   { name: "Partners", href: "/partners" },
+  { name: "Enterprise", href: "/enterprise" },
   { name: "Career Services", href: "/career-services" },
   { name: "About", href: "/about" },
   { name: "Contact", href: "/contact" },

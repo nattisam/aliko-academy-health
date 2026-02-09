@@ -1,13 +1,30 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Play, GraduationCap, Clock, HeartHandshake } from "lucide-react";
-import { useState, useRef } from "react";
-import heroVideo from "@/assets/hero-video.mp4";
+import { useState, useRef, useEffect } from "react";
 import heroPoster from "@/assets/hero-poster.jpg";
 
 export function HeroSection() {
-  const [isPlaying, setIsPlaying] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [videoLoaded, setVideoLoaded] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+
+  // Lazy-load video after page paint
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (videoRef.current) {
+        videoRef.current.src = new URL("@/assets/hero-video.mp4", import.meta.url).href;
+        videoRef.current.load();
+      }
+    }, 100);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const handleVideoCanPlay = () => {
+    setVideoLoaded(true);
+    setIsPlaying(true);
+    videoRef.current?.play();
+  };
 
   const togglePlay = () => {
     if (videoRef.current) {
@@ -22,23 +39,30 @@ export function HeroSection() {
 
   return (
     <section className="relative min-h-[85vh] flex items-center overflow-hidden">
-      {/* Video Background */}
+      {/* Poster Background (instant) */}
       <div className="absolute inset-0 z-0">
+        <img
+          src={heroPoster}
+          alt=""
+          className={`w-full h-full object-cover transition-opacity duration-700 ${videoLoaded ? "opacity-0" : "opacity-100"}`}
+        />
+      </div>
+
+      {/* Video Background (lazy loaded) */}
+      <div className={`absolute inset-0 z-0 transition-opacity duration-700 ${videoLoaded ? "opacity-100" : "opacity-0"}`}>
         <video
           ref={videoRef}
-          autoPlay
           muted
           loop
           playsInline
-          preload="metadata"
-          poster={heroPoster}
+          preload="none"
+          onCanPlayThrough={handleVideoCanPlay}
           className="w-full h-full object-cover"
-        >
-          <source src={heroVideo} type="video/mp4" />
-        </video>
-        {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-foreground/90 via-foreground/70 to-foreground/40" />
+        />
       </div>
+
+      {/* Gradient Overlay */}
+      <div className="absolute inset-0 z-[1] bg-gradient-to-r from-foreground/90 via-foreground/70 to-foreground/40" />
 
       {/* Content */}
       <div className="container-academy relative z-10 py-16 lg:py-24">
@@ -108,20 +132,22 @@ export function HeroSection() {
       </div>
 
       {/* Video Control Button */}
-      <button
-        onClick={togglePlay}
-        className="absolute bottom-8 right-8 z-10 p-3 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 transition-colors"
-        aria-label={isPlaying ? "Pause video" : "Play video"}
-      >
-        {isPlaying ? (
-          <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-            <rect x="6" y="4" width="4" height="16" />
-            <rect x="14" y="4" width="4" height="16" />
-          </svg>
-        ) : (
-          <Play className="h-5 w-5" />
-        )}
-      </button>
+      {videoLoaded && (
+        <button
+          onClick={togglePlay}
+          className="absolute bottom-8 right-8 z-10 p-3 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 transition-colors"
+          aria-label={isPlaying ? "Pause video" : "Play video"}
+        >
+          {isPlaying ? (
+            <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+              <rect x="6" y="4" width="4" height="16" />
+              <rect x="14" y="4" width="4" height="16" />
+            </svg>
+          ) : (
+            <Play className="h-5 w-5" />
+          )}
+        </button>
+      )}
     </section>
   );
 }
