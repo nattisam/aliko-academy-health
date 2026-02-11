@@ -45,16 +45,16 @@ const steps = [
 
 export function HowItWorks() {
   return (
-    <section className="py-20 lg:py-28 bg-card relative overflow-hidden">
+    <section className="py-20 lg:py-28 bg-secondary relative overflow-hidden">
       {/* Decorative Background */}
       <div className="absolute inset-0 opacity-5">
-        <div className="absolute top-0 left-0 w-96 h-96 bg-primary rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-accent rounded-full blur-3xl translate-x-1/2 translate-y-1/2" />
+        <div className="absolute top-0 left-0 w-96 h-96 bg-teal rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-primary rounded-full blur-3xl translate-x-1/2 translate-y-1/2" />
       </div>
 
       <div className="container-academy relative z-10">
         <div className="text-center mb-16">
-          <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-semibold mb-4">
+          <span className="inline-block px-4 py-1.5 rounded-full bg-teal/10 text-teal text-sm font-semibold mb-4">
             Your Journey
           </span>
           <h2 className="text-3xl lg:text-4xl font-bold text-foreground">
@@ -69,16 +69,16 @@ export function HowItWorks() {
           {steps.map((step, index) => (
             <div 
               key={step.title} 
-              className="group relative bg-background rounded-xl p-6 border border-border hover:border-primary/30 hover:shadow-lg transition-all duration-300"
+              className="group relative bg-card rounded-xl p-6 border border-border hover:border-teal/30 hover:shadow-lg transition-all duration-300"
             >
               {/* Step Number */}
-              <div className="absolute -top-3 -left-3 w-8 h-8 rounded-full bg-accent text-accent-foreground text-sm font-bold flex items-center justify-center shadow-md">
+              <div className="absolute -top-3 -left-3 w-8 h-8 rounded-full bg-teal text-teal-foreground text-sm font-bold flex items-center justify-center shadow-md">
                 {index + 1}
               </div>
               
               <div className="flex flex-col items-start">
-                <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
-                  <step.icon className="h-7 w-7 text-primary" />
+                <div className="w-14 h-14 rounded-xl bg-teal/10 flex items-center justify-center mb-4 group-hover:bg-teal/20 transition-colors">
+                  <step.icon className="h-7 w-7 text-teal" />
                 </div>
                 <h3 className="text-lg font-semibold text-foreground mb-2">
                   {step.title}

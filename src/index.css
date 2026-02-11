@@ -17,51 +17,62 @@
     --primary: 216 79% 51%;
     --primary-foreground: 0 0% 100%;
 
-    /* Light Background - #F6F8FB */
-    --background: 216 33% 97%;
-    /* Dark Text - #1E1E1E */
-    --foreground: 0 0% 12%;
+    /* Clean White Background */
+    --background: 0 0% 100%;
+    /* Dark Text - #2D3748 (not pure black) */
+    --foreground: 215 19% 22%;
 
     /* Card - White */
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 12%;
+    --card-foreground: 215 19% 22%;
 
     /* Popover - White */
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 12%;
+    --popover-foreground: 215 19% 22%;
 
-    /* Secondary - Lighter blue */
-    --secondary: 216 33% 94%;
-    --secondary-foreground: 0 0% 12%;
+    /* Secondary - Very light blue */
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 215 19% 22%;
 
     /* Muted */
-    --muted: 216 20% 94%;
-    --muted-foreground: 216 10% 45%;
+    --muted: 210 30% 96%;
+    --muted-foreground: 215 14% 46%;
 
     /* Accent Orange - #F7941D */
     --accent: 32 93% 54%;
     --accent-foreground: 0 0% 100%;
 
+    /* Medical Teal - #1AABAB */
+    --teal: 180 73% 39%;
+    --teal-foreground: 0 0% 100%;
+
+    /* Health Red - #E53E3E (sparingly) */
+    --health-red: 0 74% 57%;
+    --health-red-foreground: 0 0% 100%;
+
     /* Destructive */
-    --destructive: 0 84% 60%;
+    --destructive: 0 74% 57%;
     --destructive-foreground: 0 0% 100%;
 
-    /* Divider Gray - #E2E6EC */
-    --border: 216 20% 91%;
-    --input: 216 20% 91%;
+    /* Divider Gray - #E2E8F0 */
+    --border: 214 20% 91%;
+    --input: 214 20% 91%;
     --ring: 216 79% 51%;
 
     --radius: 0.5rem;
 
     /* Sidebar */
     --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 0 0% 12%;
+    --sidebar-foreground: 215 19% 22%;
     --sidebar-primary: 216 79% 51%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 216 33% 94%;
-    --sidebar-accent-foreground: 0 0% 12%;
-    --sidebar-border: 216 20% 91%;
+    --sidebar-accent: 210 40% 96%;
+    --sidebar-accent-foreground: 215 19% 22%;
+    --sidebar-border: 214 20% 91%;
     --sidebar-ring: 216 79% 51%;
+
+    /* Footer deep blue */
+    --footer-bg: 216 50% 16%;
   }
 
   .dark {
@@ -89,6 +100,14 @@
     --accent: 32 93% 54%;
     --accent-foreground: 0 0% 100%;
 
+    /* Medical Teal */
+    --teal: 180 73% 39%;
+    --teal-foreground: 0 0% 100%;
+
+    /* Health Red */
+    --health-red: 0 74% 57%;
+    --health-red-foreground: 0 0% 100%;
+
     --destructive: 0 63% 31%;
     --destructive-foreground: 210 40% 98%;
 
@@ -105,6 +124,8 @@
     --sidebar-accent-foreground: 210 40% 98%;
     --sidebar-border: 217 33% 17%;
     --sidebar-ring: 216 79% 51%;
+
+    --footer-bg: 222 47% 8%;
   }
 }
 
