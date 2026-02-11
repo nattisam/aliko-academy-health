@@ -27,18 +27,18 @@ const stats = [
 export function TrustStrip() {
   return (
     <section className="relative overflow-hidden">
-      {/* Trust Features */}
-      <div className="py-16 bg-gradient-to-br from-primary via-primary to-primary/90">
+      {/* Trust Features — Medical Teal */}
+      <div className="py-16 bg-gradient-to-br from-teal via-teal to-teal/90">
         <div className="container-academy">
           <div className="grid md:grid-cols-3 gap-8">
             {trustItems.map((item) => (
-              <div key={item.title} className="flex items-start gap-4 text-primary-foreground">
-                <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-white/10 flex items-center justify-center">
+              <div key={item.title} className="flex items-start gap-4 text-teal-foreground">
+                <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-white/15 flex items-center justify-center">
                   <item.icon className="h-6 w-6" />
                 </div>
                 <div>
                   <h3 className="font-semibold text-lg mb-1">{item.title}</h3>
-                  <p className="text-sm text-primary-foreground/80 leading-relaxed">
+                  <p className="text-sm text-teal-foreground/80 leading-relaxed">
                     {item.description}
                   </p>
                 </div>
@@ -48,14 +48,14 @@ export function TrustStrip() {
         </div>
       </div>
 
-      {/* Stats Bar */}
-      <div className="py-12 bg-foreground">
+      {/* Stats Bar — Deep Blue */}
+      <div className="py-12 bg-footer-bg">
         <div className="container-academy">
           <div className="grid grid-cols-3 gap-8">
             {stats.map((stat) => (
               <div key={stat.label} className="text-center">
                 <div className="flex items-center justify-center gap-2 mb-2">
-                  <stat.icon className="h-6 w-6 text-accent" />
+                  <stat.icon className="h-6 w-6 text-teal" />
                   <span className="text-3xl lg:text-4xl font-bold text-white">{stat.value}</span>
                 </div>
                 <span className="text-sm text-white/70">{stat.label}</span>

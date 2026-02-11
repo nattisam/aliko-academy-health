@@ -20,19 +20,11 @@ export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="bg-card border-b border-border sticky top-0 z-50">
-      <nav className="container-academy flex items-center justify-between py-4">
+    <header className="bg-white border-b border-border sticky top-0 z-50">
+      <nav className="container-academy flex items-center justify-between py-3">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-3">
-          <img src={logo} alt="Aliko Academy Health" className="h-14 md:h-16 w-auto" />
-          <div className="flex flex-col">
-            <span className="text-sm font-bold text-foreground tracking-wide hidden sm:block">
-              ALIKO ACADEMY
-            </span>
-            <span className="px-2 py-0.5 rounded-md bg-primary text-primary-foreground text-xs font-bold uppercase tracking-wider shadow-sm w-fit">
-              Health
-            </span>
-          </div>
+        <Link to="/" className="flex items-center">
+          <img src={logo} alt="Aliko Academy Health" className="h-12 md:h-14 w-auto" />
         </Link>
 
         {/* Desktop Navigation */}
@@ -41,7 +33,7 @@ export function Header() {
             <Link
               key={item.name}
               to={item.href}
-              className="text-sm font-medium text-foreground hover:text-primary transition-colors"
+              className="text-sm font-medium text-foreground hover:text-teal transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-teal after:transition-all hover:after:w-full"
             >
               {item.name}
             </Link>
@@ -50,7 +42,7 @@ export function Header() {
 
         {/* Desktop CTA */}
         <div className="hidden lg:flex lg:items-center lg:gap-4">
-          <Link to="/student-login" className="text-sm font-bold text-accent hover:text-accent/80">
+          <Link to="/student-login" className="text-sm font-bold text-accent hover:text-accent/80 transition-colors">
             Student Login
           </Link>
           <Button asChild>
@@ -61,7 +53,7 @@ export function Header() {
         {/* Mobile menu button */}
         <button
           type="button"
-          className="lg:hidden -m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-foreground"
+          className="lg:hidden -m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-primary"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           aria-label="Toggle menu"
         >
@@ -76,7 +68,7 @@ export function Header() {
       {/* Mobile menu */}
       <div
         className={cn(
-          "lg:hidden border-t border-border overflow-hidden transition-all duration-300",
+          "lg:hidden border-t border-border overflow-hidden transition-all duration-300 bg-white",
           mobileMenuOpen ? "max-h-[500px]" : "max-h-0"
         )}
       >
@@ -85,7 +77,7 @@ export function Header() {
             <Link
               key={item.name}
               to={item.href}
-              className="block text-base font-medium text-foreground hover:text-primary"
+              className="block text-base font-medium text-foreground hover:text-teal transition-colors"
               onClick={() => setMobileMenuOpen(false)}
             >
               {item.name}
