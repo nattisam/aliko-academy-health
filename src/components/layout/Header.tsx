@@ -20,7 +20,7 @@ export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="bg-gradient-to-r from-white via-white to-[hsl(180,73%,39%)]/[0.04] border-b border-border/60 sticky top-0 z-50 backdrop-blur-sm">
+    <header className="bg-gradient-to-r from-[hsl(210,40%,97%)] to-[hsl(180,40%,96%)] border-b border-border/50 sticky top-0 z-50 backdrop-blur-sm">
       <nav className="container-academy flex items-center justify-between py-3">
         {/* Logo */}
         <Link to="/" className="flex items-center">
