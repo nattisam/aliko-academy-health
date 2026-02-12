@@ -22,22 +22,24 @@ export function Header() {
   return (
     <header className="bg-[hsl(216,50%,16%)] border-b border-border/50 sticky top-0 z-50 backdrop-blur-sm">
       <nav className="container-academy flex items-center justify-between py-3">
-        {/* Logo */}
-        <Link to="/" className="flex items-center">
-          <img src={logo} alt="Aliko Academy Health" className="h-10 md:h-12 w-auto object-contain" style={{ imageRendering: 'auto' }} />
-        </Link>
+        {/* Logo + Desktop Navigation */}
+        <div className="flex items-center gap-8">
+          <Link to="/" className="flex-shrink-0">
+            <img src={logo} alt="Aliko Academy Health" className="h-10 md:h-12 w-auto object-contain" />
+          </Link>
 
-        {/* Desktop Navigation */}
-        <div className="hidden lg:flex lg:items-center lg:gap-6">
-          {navigation.map((item) => (
-            <Link
-              key={item.name}
-              to={item.href}
-              className="text-sm font-bold text-white hover:text-teal transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-teal after:transition-all hover:after:w-full"
-            >
-              {item.name}
-            </Link>
-          ))}
+          {/* Desktop Navigation */}
+          <div className="hidden lg:flex lg:items-center lg:gap-5">
+            {navigation.map((item) => (
+              <Link
+                key={item.name}
+                to={item.href}
+                className="text-sm font-bold text-white hover:text-teal transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-teal after:transition-all hover:after:w-full"
+              >
+                {item.name}
+              </Link>
+            ))}
+          </div>
         </div>
 
         {/* Desktop CTA */}
