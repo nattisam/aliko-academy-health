@@ -44,10 +44,10 @@ export function Header() {
 
         {/* Desktop CTA */}
         <div className="hidden lg:flex lg:items-center lg:gap-4">
-          <Link to="/student-login" className="text-sm font-bold text-accent hover:text-white transition-colors">
+          <Link to="/student-login" className="px-4 py-2 rounded-md bg-teal text-accent font-bold text-sm hover:bg-teal/90 transition-colors">
             Student Login
           </Link>
-          <Button asChild className="bg-teal text-white hover:bg-teal/90">
+          <Button asChild className="bg-[hsl(0,72%,45%)] text-white hover:bg-[hsl(0,72%,38%)]">
             <Link to="/apply">Apply Now</Link>
           </Button>
         </div>

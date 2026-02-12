@@ -109,21 +109,21 @@ export function HeroSection() {
             <div className="text-center sm:text-left">
               <div className="flex items-center justify-center sm:justify-start gap-2 mb-1">
                 <GraduationCap className="h-5 w-5 text-teal" />
-                <span className="text-2xl lg:text-3xl font-bold text-white">9+</span>
+                <span className="text-2xl lg:text-3xl font-bold text-teal">9+</span>
               </div>
               <span className="text-sm text-white/70">Healthcare Programs</span>
             </div>
             <div className="text-center sm:text-left">
               <div className="flex items-center justify-center sm:justify-start gap-2 mb-1">
                 <Clock className="h-5 w-5 text-teal" />
-                <span className="text-2xl lg:text-3xl font-bold text-white">Flexible</span>
+                <span className="text-2xl lg:text-3xl font-bold text-teal">Flexible</span>
               </div>
               <span className="text-sm text-white/70">Schedules</span>
             </div>
             <div className="text-center sm:text-left">
               <div className="flex items-center justify-center sm:justify-start gap-2 mb-1">
                 <HeartHandshake className="h-5 w-5 text-teal" />
-                <span className="text-2xl lg:text-3xl font-bold text-white">100%</span>
+                <span className="text-2xl lg:text-3xl font-bold text-teal">100%</span>
               </div>
               <span className="text-sm text-white/70">Career Support</span>
             </div>
