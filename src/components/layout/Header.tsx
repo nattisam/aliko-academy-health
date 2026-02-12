@@ -20,7 +20,7 @@ export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="bg-[hsl(0,80%,93%)] border-b border-border/50 sticky top-0 z-50 backdrop-blur-sm">
+    <header className="bg-[hsl(0,72%,45%)] border-b border-border/50 sticky top-0 z-50 backdrop-blur-sm">
       <nav className="container-academy flex items-center justify-between py-3">
         {/* Logo */}
         <Link to="/" className="flex items-center">
@@ -33,7 +33,7 @@ export function Header() {
             <Link
               key={item.name}
               to={item.href}
-              className="text-sm font-bold text-foreground hover:text-teal transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-teal after:transition-all hover:after:w-full"
+              className="text-sm font-bold text-white hover:text-teal transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-teal after:transition-all hover:after:w-full"
             >
               {item.name}
             </Link>
@@ -42,10 +42,10 @@ export function Header() {
 
         {/* Desktop CTA */}
         <div className="hidden lg:flex lg:items-center lg:gap-4">
-          <Link to="/student-login" className="text-sm font-bold text-accent hover:text-accent/80 transition-colors">
+          <Link to="/student-login" className="text-sm font-bold text-accent hover:text-white transition-colors">
             Student Login
           </Link>
-          <Button asChild className="bg-[hsl(0,72%,45%)] text-white hover:bg-[hsl(0,72%,38%)]">
+          <Button asChild className="bg-teal text-white hover:bg-teal/90">
             <Link to="/apply">Apply Now</Link>
           </Button>
         </div>
