@@ -89,7 +89,7 @@ export function Footer() {
               <div>
                 <Link to="/" className="flex items-center gap-3 mb-4 group">
                   <div className="p-2 bg-white rounded-xl">
-                    <img src={logo} alt="Aliko Academy" className="h-10 w-auto" />
+                    <img src={logo} alt="Aliko Academy" className="h-12 w-auto" />
                   </div>
                 </Link>
                 <p className="text-sm text-white/70 max-w-xs">
