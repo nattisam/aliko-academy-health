@@ -24,7 +24,7 @@ export function Header() {
       <nav className="container-academy flex items-center justify-between py-3">
         {/* Logo */}
         <Link to="/" className="flex items-center">
-          <img src={logo} alt="Aliko Academy Health" className="h-10 md:h-12 w-auto object-contain" />
+          <img src={logo} alt="Aliko Academy Health" className="h-10 md:h-12 w-auto object-contain brightness-110" />
         </Link>
 
         {/* Desktop Navigation */}
