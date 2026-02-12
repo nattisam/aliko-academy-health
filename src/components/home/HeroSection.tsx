@@ -98,7 +98,7 @@ export function HeroSection() {
               asChild 
               size="lg" 
               variant="outline"
-              className="text-base bg-white/10 border-white/30 text-white hover:bg-white/20 backdrop-blur-sm"
+              className="text-base bg-[hsl(0,72%,45%)] border-[hsl(0,72%,45%)] text-white hover:bg-[hsl(0,72%,38%)]"
             >
               <Link to="/apply">Apply Now</Link>
             </Button>
