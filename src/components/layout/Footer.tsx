@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useStateConfig } from "@/hooks/useStateConfig";
 import { Mail, Phone, MapPin, Clock, ArrowRight } from "lucide-react";
-import logo from "@/assets/logo.png";
+import logo from "@/assets/logo-footer.png";
 
 const footerLinks = {
   programs: [
