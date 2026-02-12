@@ -94,7 +94,7 @@ export function HowItWorks() {
         {/* CTA */}
         <div className="mt-12 text-center">
           <Button asChild size="lg" variant="outline" className="group">
-            <Link to="/admissions">
+            <Link to="/apply">
               Start Your Journey Today
               <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
             </Link>
