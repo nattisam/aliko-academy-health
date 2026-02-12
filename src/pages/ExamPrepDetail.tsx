@@ -239,7 +239,7 @@ const ExamPrepDetail = () => {
                     size="lg"
                     disabled={program.enrollmentStatus !== "open"}
                   >
-                    <Link to="/admissions">
+                    <Link to="/apply">
                       {program.enrollmentStatus === "open" ? "Enroll Now" : "Join Waitlist"}
                     </Link>
                   </Button>

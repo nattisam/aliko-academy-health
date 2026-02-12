@@ -121,7 +121,7 @@ const Schedule = () => {
                         </TableCell>
                         <TableCell className="text-right">
                           <Button asChild size="sm" className="shadow-sm bg-accent text-accent-foreground hover:bg-accent/90">
-                            <Link to="/admissions">
+                            <Link to="/apply">
                               Apply Now
                               <ArrowRight className="ml-1 h-3 w-3" />
                             </Link>

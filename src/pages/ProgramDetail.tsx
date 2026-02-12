@@ -119,7 +119,7 @@ const ProgramDetail = () => {
                   </div>
                 </div>
                 <Button asChild className="w-full shadow-lg bg-accent text-accent-foreground hover:bg-accent/90" size="lg">
-                  <Link to="/admissions">
+                  <Link to="/apply">
                     {program.enrollmentStatus === "open" ? "Apply Now" : "Join Waitlist"}
                   </Link>
                 </Button>
@@ -292,7 +292,7 @@ const ProgramDetail = () => {
                     {program.enrollmentStatus === "open" ? "Enrollment Open" : "Enrollment Closed"}
                   </Badge>
                   <Button asChild className="w-full mt-4 shadow-lg bg-accent text-accent-foreground hover:bg-accent/90">
-                    <Link to="/admissions">Apply Now</Link>
+                    <Link to="/apply">Apply Now</Link>
                   </Button>
                 </CardContent>
               </Card>
