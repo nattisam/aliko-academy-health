@@ -71,8 +71,8 @@
     --sidebar-border: 214 20% 91%;
     --sidebar-ring: 216 79% 51%;
 
-    /* Footer - Medical Red */
-    --footer-bg: 0 74% 42%;
+    /* Footer - Primary Blue */
+    --footer-bg: 216 79% 51%;
   }
 
   .dark {
@@ -125,7 +125,7 @@
     --sidebar-border: 217 33% 17%;
     --sidebar-ring: 216 79% 51%;
 
-    --footer-bg: 0 74% 35%;
+    --footer-bg: 216 79% 40%;
   }
 }
 
