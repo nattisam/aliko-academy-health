@@ -72,7 +72,7 @@ export function Footer() {
                     <li key={link.name}>
                       <Link
                         to={link.href}
-                        className="text-sm text-white/70 hover:text-accent transition-colors duration-200"
+                        className="text-sm text-white/90 font-medium hover:text-accent transition-colors duration-200"
                       >
                         {link.name}
                       </Link>
@@ -90,7 +90,7 @@ export function Footer() {
                 <Link to="/" className="inline-block mb-4 bg-white rounded-xl p-3">
                     <img src={logo} alt="Aliko Academy" className="h-12 w-auto" />
                 </Link>
-                <p className="text-sm text-white/70 max-w-xs">
+                <p className="text-sm text-white/90 font-medium max-w-xs">
                   Industry-aligned healthcare training with clear cohort start dates. Your pathway to a rewarding healthcare career.
                 </p>
               </div>
@@ -99,7 +99,7 @@ export function Footer() {
                   <MapPin className="h-4 w-4 text-accent" />
                   Contact Us
                 </h4>
-                <div className="space-y-2 text-sm text-white/70">
+                <div className="space-y-2 text-sm text-white/90 font-medium">
                   <p>{currentState.contact.address}</p>
                   <p>{currentState.contact.city}, {currentState.contact.state} {currentState.contact.zip}</p>
                   <p className="flex items-center gap-2">
@@ -121,7 +121,7 @@ export function Footer() {
                   <Clock className="h-4 w-4 text-accent" />
                   Office Hours
                 </h4>
-                <div className="space-y-2 text-sm text-white/70">
+                <div className="space-y-2 text-sm text-white/90 font-medium">
                   <p>{currentState.officeHours.weekday}</p>
                   <p>{currentState.officeHours.saturday}</p>
                   <p>{currentState.officeHours.sunday}</p>
@@ -133,10 +133,10 @@ export function Footer() {
           {/* Bottom Bar */}
           <div className="mt-12 pt-8 border-t border-white/10">
             <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-              <p className="text-sm text-white/70">
+              <p className="text-sm text-white font-medium">
                 © {new Date().getFullYear()} <span className="text-accent">Aliko Academy</span>. All rights reserved.
               </p>
-              <p className="text-xs text-white/50 text-center md:text-right max-w-xl">
+              <p className="text-xs text-white/80 font-medium text-center md:text-right max-w-xl">
                 Aliko Academy is designed to align with {currentState.name} State training requirements and maintains an accreditation-ready governance framework.
               </p>
             </div>
