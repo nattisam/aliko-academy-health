@@ -66,13 +66,13 @@ export function Footer() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-12">
             {Object.entries(footerLinks).map(([key, links]) => (
               <div key={key}>
-                <h3 className="text-sm font-semibold uppercase tracking-wider mb-4 text-teal">{key}</h3>
+                <h3 className="text-sm font-semibold uppercase tracking-wider mb-4 text-accent">{key}</h3>
                 <ul className="space-y-3">
                   {links.map((link) => (
                     <li key={link.name}>
                       <Link
                         to={link.href}
-                        className="text-sm text-white/70 hover:text-teal transition-colors duration-200"
+                        className="text-sm text-white/70 hover:text-accent transition-colors duration-200"
                       >
                         {link.name}
                       </Link>
@@ -96,21 +96,21 @@ export function Footer() {
               </div>
               <div>
                 <h4 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
-                  <MapPin className="h-4 w-4 text-teal" />
+                  <MapPin className="h-4 w-4 text-accent" />
                   Contact Us
                 </h4>
                 <div className="space-y-2 text-sm text-white/70">
                   <p>{currentState.contact.address}</p>
                   <p>{currentState.contact.city}, {currentState.contact.state} {currentState.contact.zip}</p>
                   <p className="flex items-center gap-2">
-                    <Phone className="h-3.5 w-3.5 text-teal" />
-                    <a href={`tel:${currentState.contact.phone}`} className="hover:text-teal transition-colors">
+                    <Phone className="h-3.5 w-3.5 text-accent" />
+                    <a href={`tel:${currentState.contact.phone}`} className="hover:text-accent transition-colors">
                       {currentState.contact.phone}
                     </a>
                   </p>
                   <p className="flex items-center gap-2">
-                    <Mail className="h-3.5 w-3.5 text-teal" />
-                    <a href={`mailto:${currentState.contact.email}`} className="hover:text-teal transition-colors">
+                    <Mail className="h-3.5 w-3.5 text-accent" />
+                    <a href={`mailto:${currentState.contact.email}`} className="hover:text-accent transition-colors">
                       {currentState.contact.email}
                     </a>
                   </p>
@@ -118,7 +118,7 @@ export function Footer() {
               </div>
               <div>
                 <h4 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
-                  <Clock className="h-4 w-4 text-teal" />
+                  <Clock className="h-4 w-4 text-accent" />
                   Office Hours
                 </h4>
                 <div className="space-y-2 text-sm text-white/70">
@@ -134,7 +134,7 @@ export function Footer() {
           <div className="mt-12 pt-8 border-t border-white/10">
             <div className="flex flex-col md:flex-row justify-between items-center gap-4">
               <p className="text-sm text-white/70">
-                © {new Date().getFullYear()} <span className="text-teal">Aliko Academy</span>. All rights reserved.
+                © {new Date().getFullYear()} <span className="text-accent">Aliko Academy</span>. All rights reserved.
               </p>
               <p className="text-xs text-white/50 text-center md:text-right max-w-xl">
                 Aliko Academy is designed to align with {currentState.name} State training requirements and maintains an accreditation-ready governance framework.
