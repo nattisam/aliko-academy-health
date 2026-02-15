@@ -65,21 +65,21 @@ const Schedule = () => {
           {/* Open Enrollment */}
           <div>
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center">
-                <Sparkles className="h-5 w-5 text-accent" />
+              <div className="w-10 h-10 rounded-lg bg-teal/10 flex items-center justify-center">
+                <Sparkles className="h-5 w-5 text-teal" />
               </div>
               <div>
                 <h2 className="text-2xl font-bold text-foreground">Open for Enrollment</h2>
-                <Badge className="bg-accent text-accent-foreground mt-1">
+                <Badge variant="outline" className="border-teal text-teal mt-1">
                   {openPrograms.length} Programs Available
                 </Badge>
               </div>
             </div>
             <Card className="overflow-hidden">
-              <div className="bg-gradient-to-r from-accent to-accent/80 text-accent-foreground px-6 py-3">
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="h-5 w-5" />
-                  <span className="font-medium">Enroll Now — Limited Seats Available</span>
+              <div className="bg-teal/10 border-b border-teal/20 px-6 py-2.5">
+                <div className="flex items-center gap-2 text-teal">
+                  <CheckCircle className="h-4 w-4" />
+                  <span className="text-sm font-medium">Enroll Now — Limited Seats Available</span>
                 </div>
               </div>
               <CardContent className="p-0">
@@ -115,12 +115,12 @@ const Schedule = () => {
                         </TableCell>
                         <TableCell>
                           <div className="flex items-center gap-2">
-                            <Calendar className="h-4 w-4 text-accent" />
-                            <span className="font-medium text-accent">{program.startDate}</span>
+                            <Calendar className="h-4 w-4 text-teal" />
+                            <span className="font-medium text-teal">{program.startDate}</span>
                           </div>
                         </TableCell>
                         <TableCell className="text-right">
-                          <Button asChild size="sm" className="shadow-sm bg-accent text-accent-foreground hover:bg-accent/90">
+                          <Button asChild size="sm" className="shadow-sm">
                             <Link to="/apply">
                               Apply Now
                               <ArrowRight className="ml-1 h-3 w-3" />
