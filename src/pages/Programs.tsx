@@ -48,14 +48,14 @@ const Programs = () => {
   return (
     <Layout>
       {/* Hero Section */}
-      <section className="relative py-16 lg:py-24 bg-gradient-to-br from-primary/5 via-card to-accent/5 overflow-hidden">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-64 h-64 bg-accent/5 rounded-full blur-3xl" />
+      <section className="relative py-16 lg:py-24 overflow-hidden bg-gradient-to-br from-white via-teal/5 to-primary/5">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-teal/8 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl" />
         
         <div className="container-academy relative">
           <div className="flex items-center gap-2 mb-4">
-            <div className="h-1 w-12 bg-accent rounded-full" />
-            <span className="text-sm font-medium text-accent">Explore Programs</span>
+            <div className="h-1 w-12 bg-teal rounded-full" />
+            <span className="text-sm font-medium text-teal">Explore Programs</span>
           </div>
           <h1 className="text-3xl lg:text-5xl font-bold text-foreground">
             Programs & Courses
@@ -68,8 +68,8 @@ const Programs = () => {
           {/* Quick stats */}
           <div className="mt-8 flex flex-wrap gap-6">
             <div className="flex items-center gap-2 text-muted-foreground">
-              <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                <GraduationCap className="h-5 w-5 text-primary" />
+              <div className="w-10 h-10 rounded-lg bg-teal/10 flex items-center justify-center">
+                <GraduationCap className="h-5 w-5 text-teal" />
               </div>
               <div>
                 <p className="font-semibold text-foreground">{programs.length}</p>
@@ -77,8 +77,8 @@ const Programs = () => {
               </div>
             </div>
             <div className="flex items-center gap-2 text-muted-foreground">
-              <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center">
-                <BookOpen className="h-5 w-5 text-accent" />
+              <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                <BookOpen className="h-5 w-5 text-primary" />
               </div>
               <div>
                 <p className="font-semibold text-foreground">{examPrepPrograms.length}</p>

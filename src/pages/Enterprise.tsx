@@ -176,15 +176,15 @@ export default function Enterprise() {
                     Organization Details
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="grid sm:grid-cols-2 gap-4">
-                  <div className="space-y-1.5">
-                    <Label htmlFor="org-name" className="text-xs">Organization Name *</Label>
-                    <Input id="org-name" placeholder="e.g., Seattle General Hospital" required className="h-9 text-sm" />
+                <CardContent className="grid sm:grid-cols-2 gap-5">
+                  <div className="space-y-2">
+                    <Label htmlFor="org-name" className="text-sm font-medium">Organization Name *</Label>
+                    <Input id="org-name" placeholder="e.g., Seattle General Hospital" required className="h-11 text-base" />
                   </div>
-                  <div className="space-y-1.5">
-                    <Label htmlFor="org-type" className="text-xs">Organization Type *</Label>
+                  <div className="space-y-2">
+                    <Label htmlFor="org-type" className="text-sm font-medium">Organization Type *</Label>
                     <Select required>
-                      <SelectTrigger id="org-type" className="h-9 text-sm">
+                      <SelectTrigger id="org-type" className="h-11 text-base">
                         <SelectValue placeholder="Select type" />
                       </SelectTrigger>
                       <SelectContent>
@@ -196,14 +196,14 @@ export default function Enterprise() {
                       </SelectContent>
                     </Select>
                   </div>
-                  <div className="space-y-1.5">
-                    <Label htmlFor="org-website" className="text-xs">Website</Label>
-                    <Input id="org-website" placeholder="https://" type="url" className="h-9 text-sm" />
+                  <div className="space-y-2">
+                    <Label htmlFor="org-website" className="text-sm font-medium">Website</Label>
+                    <Input id="org-website" placeholder="https://" type="url" className="h-11 text-base" />
                   </div>
-                  <div className="space-y-1.5">
-                    <Label htmlFor="org-size" className="text-xs">Number of Employees</Label>
+                  <div className="space-y-2">
+                    <Label htmlFor="org-size" className="text-sm font-medium">Number of Employees</Label>
                     <Select>
-                      <SelectTrigger id="org-size" className="h-9 text-sm">
+                      <SelectTrigger id="org-size" className="h-11 text-base">
                         <SelectValue placeholder="Select range" />
                       </SelectTrigger>
                       <SelectContent>
@@ -215,9 +215,9 @@ export default function Enterprise() {
                       </SelectContent>
                     </Select>
                   </div>
-                  <div className="space-y-1.5 sm:col-span-2">
-                    <Label htmlFor="org-address" className="text-xs">Address *</Label>
-                    <Input id="org-address" placeholder="Street, City, State, ZIP" required className="h-9 text-sm" />
+                  <div className="space-y-2 sm:col-span-2">
+                    <Label htmlFor="org-address" className="text-sm font-medium">Address *</Label>
+                    <Input id="org-address" placeholder="Street, City, State, ZIP" required className="h-11 text-base" />
                   </div>
                 </CardContent>
               </Card>
@@ -230,31 +230,31 @@ export default function Enterprise() {
                     Contact Person
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="grid sm:grid-cols-2 gap-4">
-                  <div className="space-y-1.5">
-                    <Label htmlFor="contact-first" className="text-xs">First Name *</Label>
-                    <Input id="contact-first" required className="h-9 text-sm" />
+                <CardContent className="grid sm:grid-cols-2 gap-5">
+                  <div className="space-y-2">
+                    <Label htmlFor="contact-first" className="text-sm font-medium">First Name *</Label>
+                    <Input id="contact-first" required className="h-11 text-base" />
                   </div>
-                  <div className="space-y-1.5">
-                    <Label htmlFor="contact-last" className="text-xs">Last Name *</Label>
-                    <Input id="contact-last" required className="h-9 text-sm" />
+                  <div className="space-y-2">
+                    <Label htmlFor="contact-last" className="text-sm font-medium">Last Name *</Label>
+                    <Input id="contact-last" required className="h-11 text-base" />
                   </div>
-                  <div className="space-y-1.5">
-                    <Label htmlFor="contact-title" className="text-xs">Job Title *</Label>
-                    <Input id="contact-title" placeholder="e.g., HR Director" required className="h-9 text-sm" />
+                  <div className="space-y-2">
+                    <Label htmlFor="contact-title" className="text-sm font-medium">Job Title *</Label>
+                    <Input id="contact-title" placeholder="e.g., HR Director" required className="h-11 text-base" />
                   </div>
-                  <div className="space-y-1.5">
-                    <Label htmlFor="contact-email" className="text-xs">Email *</Label>
-                    <Input id="contact-email" type="email" required className="h-9 text-sm" />
+                  <div className="space-y-2">
+                    <Label htmlFor="contact-email" className="text-sm font-medium">Email *</Label>
+                    <Input id="contact-email" type="email" required className="h-11 text-base" />
                   </div>
-                  <div className="space-y-1.5">
-                    <Label htmlFor="contact-phone" className="text-xs">Phone *</Label>
-                    <Input id="contact-phone" type="tel" placeholder="(xxx) xxx-xxxx" required className="h-9 text-sm" />
+                  <div className="space-y-2">
+                    <Label htmlFor="contact-phone" className="text-sm font-medium">Phone *</Label>
+                    <Input id="contact-phone" type="tel" placeholder="(xxx) xxx-xxxx" required className="h-11 text-base" />
                   </div>
-                  <div className="space-y-1.5">
-                    <Label htmlFor="contact-preferred" className="text-xs">Preferred Contact Method</Label>
+                  <div className="space-y-2">
+                    <Label htmlFor="contact-preferred" className="text-sm font-medium">Preferred Contact Method</Label>
                     <Select>
-                      <SelectTrigger id="contact-preferred" className="h-9 text-sm">
+                      <SelectTrigger id="contact-preferred" className="h-11 text-base">
                         <SelectValue placeholder="Select" />
                       </SelectTrigger>
                       <SelectContent>
@@ -275,12 +275,12 @@ export default function Enterprise() {
                     Sponsorship Details
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-5">
-                  <div className="grid sm:grid-cols-2 gap-4">
-                    <div className="space-y-1.5">
-                      <Label htmlFor="sponsorship-type" className="text-xs">Sponsorship Type *</Label>
+                <CardContent className="space-y-6">
+                  <div className="grid sm:grid-cols-2 gap-5">
+                    <div className="space-y-2">
+                      <Label htmlFor="sponsorship-type" className="text-sm font-medium">Sponsorship Type *</Label>
                       <Select required>
-                        <SelectTrigger id="sponsorship-type" className="h-9 text-sm">
+                        <SelectTrigger id="sponsorship-type" className="h-11 text-base">
                           <SelectValue placeholder="Select type" />
                         </SelectTrigger>
                         <SelectContent>
@@ -292,14 +292,14 @@ export default function Enterprise() {
                         </SelectContent>
                       </Select>
                     </div>
-                    <div className="space-y-1.5">
-                      <Label htmlFor="num-students" className="text-xs">Students to Sponsor *</Label>
-                      <Input id="num-students" type="number" min="1" placeholder="e.g., 5" required className="h-9 text-sm" />
+                    <div className="space-y-2">
+                      <Label htmlFor="num-students" className="text-sm font-medium">Students to Sponsor *</Label>
+                      <Input id="num-students" type="number" min="1" placeholder="e.g., 5" required className="h-11 text-base" />
                     </div>
-                    <div className="space-y-1.5">
-                      <Label htmlFor="budget" className="text-xs">Estimated Budget</Label>
+                    <div className="space-y-2">
+                      <Label htmlFor="budget" className="text-sm font-medium">Estimated Budget</Label>
                       <Select>
-                        <SelectTrigger id="budget" className="h-9 text-sm">
+                        <SelectTrigger id="budget" className="h-11 text-base">
                           <SelectValue placeholder="Select range" />
                         </SelectTrigger>
                         <SelectContent>
@@ -311,20 +311,20 @@ export default function Enterprise() {
                         </SelectContent>
                       </Select>
                     </div>
-                    <div className="space-y-1.5">
-                      <Label htmlFor="preferred-start" className="text-xs">Preferred Start Date</Label>
-                      <Input id="preferred-start" type="month" min="2026-03" className="h-9 text-sm" />
+                    <div className="space-y-2">
+                      <Label htmlFor="preferred-start" className="text-sm font-medium">Preferred Start Date</Label>
+                      <Input id="preferred-start" type="month" min="2026-03" className="h-11 text-base" />
                     </div>
                   </div>
 
                   {/* Program Selection */}
                   <div className="space-y-2">
-                    <Label className="text-xs">Programs of Interest *</Label>
-                    <div className="grid sm:grid-cols-2 gap-2">
+                    <Label className="text-sm font-medium">Programs of Interest *</Label>
+                    <div className="grid sm:grid-cols-2 gap-2.5">
                       {programs.map((p) => (
                         <label
                           key={p.id}
-                          className={`flex items-center gap-2.5 p-2.5 rounded-lg border cursor-pointer transition-colors text-sm ${
+                          className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-colors text-base ${
                             selectedPrograms.includes(p.id)
                               ? "border-primary bg-primary/5"
                               : "border-border/60 hover:border-primary/40"
@@ -335,8 +335,8 @@ export default function Enterprise() {
                             onCheckedChange={() => toggleProgram(p.id)}
                           />
                           <div>
-                            <span className="font-medium text-foreground text-sm">{p.name}</span>
-                            <span className="block text-xs text-muted-foreground">
+                            <span className="font-medium text-foreground">{p.name}</span>
+                            <span className="block text-sm text-muted-foreground">
                               {p.duration} · ${p.tuition.toLocaleString()}
                             </span>
                           </div>
@@ -345,10 +345,10 @@ export default function Enterprise() {
                     </div>
                   </div>
 
-                  <div className="space-y-1.5">
-                    <Label className="text-xs">Are sponsored students your current employees?</Label>
+                  <div className="space-y-2">
+                    <Label className="text-sm font-medium">Are sponsored students your current employees?</Label>
                     <Select>
-                      <SelectTrigger className="h-9 text-sm">
+                      <SelectTrigger className="h-11 text-base">
                         <SelectValue placeholder="Select" />
                       </SelectTrigger>
                       <SelectContent>
@@ -371,19 +371,19 @@ export default function Enterprise() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="space-y-1.5">
-                    <Label htmlFor="goals" className="text-xs">Primary goals for this sponsorship</Label>
-                    <Textarea id="goals" rows={2} placeholder="e.g., Fill CNA staffing gaps, upskill employees..." className="text-sm" />
+                  <div className="space-y-2">
+                    <Label htmlFor="goals" className="text-sm font-medium">Primary goals for this sponsorship</Label>
+                    <Textarea id="goals" rows={3} placeholder="e.g., Fill CNA staffing gaps, upskill employees..." className="text-base" />
                   </div>
-                  <div className="space-y-1.5">
-                    <Label htmlFor="requirements" className="text-xs">Specific training requirements</Label>
-                    <Textarea id="requirements" rows={2} placeholder="e.g., Custom schedule, on-site training..." className="text-sm" />
+                  <div className="space-y-2">
+                    <Label htmlFor="requirements" className="text-sm font-medium">Specific training requirements</Label>
+                    <Textarea id="requirements" rows={3} placeholder="e.g., Custom schedule, on-site training..." className="text-base" />
                   </div>
-                  <div className="grid sm:grid-cols-2 gap-4">
-                    <div className="space-y-1.5">
-                      <Label className="text-xs">How did you hear about us?</Label>
+                  <div className="grid sm:grid-cols-2 gap-5">
+                    <div className="space-y-2">
+                      <Label className="text-sm font-medium">How did you hear about us?</Label>
                       <Select>
-                        <SelectTrigger className="h-9 text-sm">
+                        <SelectTrigger className="h-11 text-base">
                           <SelectValue placeholder="Select" />
                         </SelectTrigger>
                         <SelectContent>

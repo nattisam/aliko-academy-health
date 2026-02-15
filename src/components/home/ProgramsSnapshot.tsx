@@ -134,9 +134,6 @@ export function ProgramsSnapshot() {
                     <CardTitle className="text-lg leading-tight group-hover:text-primary transition-colors">
                       {program.name}
                     </CardTitle>
-                    <Badge variant="outline" className="shrink-0 text-xs border-accent text-accent">
-                      Exam Prep
-                    </Badge>
                   </div>
                   <p className="text-sm text-muted-foreground line-clamp-2">
                     {program.description}
