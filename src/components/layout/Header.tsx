@@ -7,6 +7,7 @@ import logo from "@/assets/logo.png";
 
 const navigation = [
   { name: "Programs", href: "/programs" },
+  { name: "Schedule", href: "/schedule" },
   { name: "Admissions", href: "/admissions" },
   { name: "Tuition", href: "/tuition" },
   { name: "Partners", href: "/partners" },
