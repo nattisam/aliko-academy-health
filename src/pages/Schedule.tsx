@@ -69,7 +69,7 @@ const Schedule = () => {
                 <Sparkles className="h-5 w-5 text-teal" />
               </div>
               <div>
-                <h2 className="text-2xl font-bold text-teal">Open for Enrollment</h2>
+                <h2 className="text-3xl font-bold text-teal">Open for Enrollment</h2>
                 <Badge variant="outline" className="border-teal text-teal mt-1">
                   {openPrograms.length} Programs Available
                 </Badge>
@@ -85,18 +85,18 @@ const Schedule = () => {
               <CardContent className="p-0">
                 <Table>
                   <TableHeader>
-                    <TableRow className="bg-muted/50">
-                      <TableHead className="font-semibold">Program</TableHead>
-                      <TableHead className="font-semibold">Duration</TableHead>
-                      <TableHead className="font-semibold">Modality</TableHead>
-                      <TableHead className="font-semibold">Start Date</TableHead>
-                      <TableHead className="text-right font-semibold">Action</TableHead>
+                     <TableRow className="bg-muted/50">
+                      <TableHead className="font-bold text-base">Program</TableHead>
+                      <TableHead className="font-bold text-base">Duration</TableHead>
+                      <TableHead className="font-bold text-base">Modality</TableHead>
+                      <TableHead className="font-bold text-base">Start Date</TableHead>
+                      <TableHead className="text-right font-bold text-base">Action</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {openPrograms.map((program, index) => (
                       <TableRow key={program.id} className={`${index % 2 === 0 ? 'bg-background' : 'bg-muted/30'} hover:bg-accent/5 transition-colors`}>
-                        <TableCell className="font-medium">
+                        <TableCell className="font-bold text-base">
                           <Link 
                             to={`/programs/${program.id}`}
                             className="hover:text-primary transition-colors"
@@ -104,7 +104,7 @@ const Schedule = () => {
                             {program.name}
                           </Link>
                         </TableCell>
-                        <TableCell>
+                        <TableCell className="text-base">
                           <div className="flex items-center gap-2">
                             <Clock className="h-4 w-4 text-muted-foreground" />
                             {program.duration}
@@ -113,10 +113,10 @@ const Schedule = () => {
                         <TableCell>
                           <Badge variant="outline">{program.modality}</Badge>
                         </TableCell>
-                        <TableCell>
+                        <TableCell className="text-base">
                           <div className="flex items-center gap-2">
                             <Calendar className="h-4 w-4 text-teal" />
-                            <span className="font-medium text-teal">{program.startDate}</span>
+                            <span className="font-bold text-teal">{program.startDate}</span>
                           </div>
                         </TableCell>
                         <TableCell className="text-right">
@@ -157,12 +157,12 @@ const Schedule = () => {
                 <CardContent className="p-0">
                   <Table>
                     <TableHeader>
-                      <TableRow className="bg-muted/50">
-                        <TableHead className="font-semibold">Program</TableHead>
-                        <TableHead className="font-semibold">Duration</TableHead>
-                        <TableHead className="font-semibold">Modality</TableHead>
-                        <TableHead className="font-semibold">Status</TableHead>
-                        <TableHead className="text-right font-semibold">Action</TableHead>
+                       <TableRow className="bg-muted/50">
+                        <TableHead className="font-semibold text-sm">Program</TableHead>
+                        <TableHead className="font-semibold text-sm">Duration</TableHead>
+                        <TableHead className="font-semibold text-sm">Modality</TableHead>
+                        <TableHead className="font-semibold text-sm">Status</TableHead>
+                        <TableHead className="text-right font-semibold text-sm">Action</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
