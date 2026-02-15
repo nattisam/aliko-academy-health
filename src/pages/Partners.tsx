@@ -181,7 +181,7 @@ const Partners = () => {
             <div className="h-1 w-12 bg-accent rounded-full" />
             <span className="text-sm font-medium text-accent">Our Network</span>
           </div>
-          <h1 className="text-3xl lg:text-5xl font-bold text-foreground">
+          <h1 className="text-3xl lg:text-5xl font-bold text-primary">
             Our Partners
           </h1>
           <p className="mt-4 text-lg text-muted-foreground max-w-3xl">

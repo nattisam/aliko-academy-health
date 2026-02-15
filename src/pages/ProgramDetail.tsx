@@ -60,7 +60,7 @@ const ProgramDetail = () => {
                   {program.enrollmentStatus === "open" ? "Enrollment Open" : "Enrollment Closed"}
                 </Badge>
               </div>
-              <h1 className="text-3xl lg:text-5xl font-bold text-foreground">
+              <h1 className="text-3xl lg:text-5xl font-bold text-primary">
                 {program.name}
               </h1>
               <p className="mt-4 text-lg text-muted-foreground max-w-3xl">
