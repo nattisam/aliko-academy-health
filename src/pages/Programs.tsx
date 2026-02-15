@@ -184,7 +184,7 @@ const Programs = () => {
                         >
                           {program.enrollmentStatus === "open"
                             ? `Starts ${program.startDate}`
-                            : "Enrollment Closed"}
+                            : "Start Date: TBD"}
                         </Badge>
                       </div>
                     </CardContent>
@@ -262,7 +262,7 @@ const Programs = () => {
                         >
                           {program.enrollmentStatus === "open"
                             ? `Starts ${program.startDate}`
-                            : "Enrollment Closed"}
+                            : "Start Date: TBD"}
                         </Badge>
                       </div>
                     </CardContent>
