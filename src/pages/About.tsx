@@ -21,7 +21,7 @@ const About = () => {
             <div className="h-1 w-12 bg-accent rounded-full" />
             <span className="text-sm font-medium text-accent">About Us</span>
           </div>
-          <h1 className="text-3xl lg:text-5xl font-bold text-foreground">
+          <h1 className="text-3xl lg:text-5xl font-bold text-primary">
             About Aliko Academy
           </h1>
           <p className="mt-4 text-lg text-muted-foreground max-w-3xl">
