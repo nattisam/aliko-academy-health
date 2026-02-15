@@ -69,7 +69,7 @@ const Schedule = () => {
                 <Sparkles className="h-5 w-5 text-teal" />
               </div>
               <div>
-                <h2 className="text-2xl font-bold text-foreground">Open for Enrollment</h2>
+                <h2 className="text-2xl font-bold text-teal">Open for Enrollment</h2>
                 <Badge variant="outline" className="border-teal text-teal mt-1">
                   {openPrograms.length} Programs Available
                 </Badge>
@@ -143,8 +143,8 @@ const Schedule = () => {
                   <Calendar className="h-5 w-5 text-primary" />
                 </div>
                 <div>
-                  <h2 className="text-2xl font-bold text-foreground">Upcoming Cohorts</h2>
-                  <Badge variant="secondary" className="mt-1">{closedPrograms.length} Programs</Badge>
+                  <h2 className="text-2xl font-bold text-destructive">Upcoming Cohorts</h2>
+                  <Badge variant="destructive" className="mt-1">{closedPrograms.length} Programs</Badge>
                 </div>
               </div>
               <Card className="overflow-hidden">
@@ -186,7 +186,7 @@ const Schedule = () => {
                             <Badge variant="outline">{program.modality}</Badge>
                           </TableCell>
                           <TableCell>
-                            <Badge variant="secondary">Coming Soon</Badge>
+                            <Badge variant="destructive">Coming Soon</Badge>
                           </TableCell>
                           <TableCell className="text-right">
                             <Button asChild size="sm" variant="outline">
