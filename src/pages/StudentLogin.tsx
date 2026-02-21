@@ -36,7 +36,7 @@ const StudentLogin = () => {
                 
                 <Button asChild size="lg" className="w-full">
                   <a 
-                    href="https://lms.alikoacademy.edu" 
+                    href="https://academy.alikohub.com/category/Health" 
                     target="_blank" 
                     rel="noopener noreferrer"
                   >
