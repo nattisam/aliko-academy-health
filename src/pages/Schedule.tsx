@@ -162,13 +162,12 @@ const Schedule = () => {
                     </div>
                   </div>
                   <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                    <h3 className="text-xl font-bold mb-3">CNA Weekday – Morning</h3>
-                    <div className="space-y-2">
+                    <Badge className="bg-accent/90 backdrop-blur-sm text-white border-accent/50 hover:bg-accent text-sm px-3 py-1">Morning Class</Badge>
+                    <div className="space-y-2 mt-3">
                       <div className="flex items-center gap-2 p-2.5 rounded-lg bg-white/15 backdrop-blur-sm">
-                        <Clock className="h-4 w-4 text-yellow-300 shrink-0" />
-                        <span className="font-semibold">8:00 AM – 12:00 PM</span>
+                        <Clock className="h-4 w-4 text-blue-200 shrink-0" />
+                        <span className="font-bold text-blue-200 text-lg">8:00 AM – 12:00 PM</span>
                       </div>
-                      <Badge className="bg-white/20 backdrop-blur-sm text-white border-white/30 hover:bg-white/30">Morning Class</Badge>
                     </div>
                   </div>
                 </div>
@@ -185,13 +184,12 @@ const Schedule = () => {
                     </div>
                   </div>
                   <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                    <h3 className="text-xl font-bold mb-3">CNA Weekday – Evening</h3>
-                    <div className="space-y-2">
+                    <Badge className="bg-accent/90 backdrop-blur-sm text-white border-accent/50 hover:bg-accent text-sm px-3 py-1">Night Class</Badge>
+                    <div className="space-y-2 mt-3">
                       <div className="flex items-center gap-2 p-2.5 rounded-lg bg-white/15 backdrop-blur-sm">
-                        <Clock className="h-4 w-4 text-blue-300 shrink-0" />
-                        <span className="font-semibold">5:00 PM – 9:00 PM</span>
+                        <Clock className="h-4 w-4 text-blue-200 shrink-0" />
+                        <span className="font-bold text-blue-200 text-lg">5:00 PM – 9:00 PM</span>
                       </div>
-                      <Badge className="bg-white/20 backdrop-blur-sm text-white border-white/30 hover:bg-white/30">Night Class</Badge>
                     </div>
                   </div>
                 </div>
@@ -208,19 +206,19 @@ const Schedule = () => {
                     </div>
                   </div>
                   <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                    <h3 className="text-xl font-bold mb-3">CNA Weekend</h3>
-                    <div className="space-y-2">
+                    <Badge className="bg-accent/90 backdrop-blur-sm text-white border-accent/50 hover:bg-accent text-sm px-3 py-1">Weekend Class</Badge>
+                    <div className="space-y-2 mt-3">
                       <div className="flex items-center gap-2 p-2.5 rounded-lg bg-white/15 backdrop-blur-sm">
-                        <Sun className="h-4 w-4 text-yellow-300 shrink-0" />
-                        <span className="font-semibold text-sm">8:00 AM – 12:00 PM</span>
+                        <Sun className="h-4 w-4 text-blue-200 shrink-0" />
+                        <span className="font-bold text-blue-200 text-sm">8:00 AM – 12:00 PM</span>
                       </div>
                       <div className="flex items-center gap-2 p-2.5 rounded-lg bg-white/10 backdrop-blur-sm">
                         <Clock className="h-4 w-4 text-white/60 shrink-0" />
                         <span className="font-medium text-sm text-white/70">12:00 – 1:00 PM Lunch</span>
                       </div>
                       <div className="flex items-center gap-2 p-2.5 rounded-lg bg-white/15 backdrop-blur-sm">
-                        <Sun className="h-4 w-4 text-orange-300 shrink-0" />
-                        <span className="font-semibold text-sm">1:00 PM – 5:00 PM</span>
+                        <Sun className="h-4 w-4 text-blue-200 shrink-0" />
+                        <span className="font-bold text-blue-200 text-sm">1:00 PM – 5:00 PM</span>
                       </div>
                     </div>
                   </div>
