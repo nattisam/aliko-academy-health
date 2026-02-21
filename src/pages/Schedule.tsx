@@ -5,7 +5,10 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Calendar, Clock, ArrowRight, CheckCircle, Users, Sparkles } from "lucide-react";
+import { Calendar, Clock, ArrowRight, CheckCircle, Users, Sparkles, Sun, Moon, CalendarDays } from "lucide-react";
+import morningImg from "@/assets/schedule-morning.jpg";
+import eveningImg from "@/assets/schedule-evening.jpg";
+import weekendImg from "@/assets/schedule-weekend.jpg";
 
 const Schedule = () => {
   // Sort programs by start date
@@ -135,7 +138,7 @@ const Schedule = () => {
             </Card>
           </div>
 
-          {/* CNA Class Schedule */}
+          {/* CNA Class Schedule - Photo Cards */}
           <div>
             <div className="flex items-center gap-3 mb-6">
               <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center">
@@ -149,75 +152,84 @@ const Schedule = () => {
 
             <div className="grid md:grid-cols-3 gap-6">
               {/* Weekday Morning */}
-              <Card className="border-2 border-primary/20 hover:border-primary/40 transition-colors">
-                <CardHeader className="pb-3">
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-2">
-                    <Clock className="h-6 w-6 text-primary" />
-                  </div>
-                  <CardTitle className="text-lg text-primary">CNA Weekday – Morning</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2 p-3 rounded-lg bg-muted/50">
-                      <Calendar className="h-4 w-4 text-primary shrink-0" />
-                      <span className="font-medium">8:00 AM – 12:00 PM</span>
+              <div className="group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-1">
+                <div className="aspect-[3/4] relative">
+                  <img src={morningImg} alt="Morning class" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+                  <div className="absolute top-4 left-4">
+                    <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                      <Sun className="h-6 w-6 text-yellow-300" />
                     </div>
-                    <Badge variant="outline" className="border-primary/30 text-primary">Morning Class</Badge>
                   </div>
-                </CardContent>
-              </Card>
+                  <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                    <h3 className="text-xl font-bold mb-3">CNA Weekday – Morning</h3>
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2 p-2.5 rounded-lg bg-white/15 backdrop-blur-sm">
+                        <Clock className="h-4 w-4 text-yellow-300 shrink-0" />
+                        <span className="font-semibold">8:00 AM – 12:00 PM</span>
+                      </div>
+                      <Badge className="bg-white/20 backdrop-blur-sm text-white border-white/30 hover:bg-white/30">Morning Class</Badge>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
               {/* Weekday Evening */}
-              <Card className="border-2 border-accent/20 hover:border-accent/40 transition-colors">
-                <CardHeader className="pb-3">
-                  <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center mb-2">
-                    <Clock className="h-6 w-6 text-accent" />
-                  </div>
-                  <CardTitle className="text-lg text-accent">CNA Weekday – Evening</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2 p-3 rounded-lg bg-muted/50">
-                      <Calendar className="h-4 w-4 text-accent shrink-0" />
-                      <span className="font-medium">5:00 PM – 9:00 PM</span>
+              <div className="group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-1">
+                <div className="aspect-[3/4] relative">
+                  <img src={eveningImg} alt="Evening class" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+                  <div className="absolute top-4 left-4">
+                    <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                      <Moon className="h-6 w-6 text-blue-300" />
                     </div>
-                    <Badge variant="outline" className="border-accent/30 text-accent">Night Class</Badge>
                   </div>
-                </CardContent>
-              </Card>
+                  <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                    <h3 className="text-xl font-bold mb-3">CNA Weekday – Evening</h3>
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2 p-2.5 rounded-lg bg-white/15 backdrop-blur-sm">
+                        <Clock className="h-4 w-4 text-blue-300 shrink-0" />
+                        <span className="font-semibold">5:00 PM – 9:00 PM</span>
+                      </div>
+                      <Badge className="bg-white/20 backdrop-blur-sm text-white border-white/30 hover:bg-white/30">Night Class</Badge>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
               {/* Weekend */}
-              <Card className="border-2 border-primary/20 hover:border-primary/40 transition-colors">
-                <CardHeader className="pb-3">
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-2">
-                    <Calendar className="h-6 w-6 text-primary" />
+              <div className="group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-1">
+                <div className="aspect-[3/4] relative">
+                  <img src={weekendImg} alt="Weekend class" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent" />
+                  <div className="absolute top-4 left-4">
+                    <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                      <CalendarDays className="h-6 w-6 text-green-300" />
+                    </div>
                   </div>
-                  <CardTitle className="text-lg text-primary">CNA Weekend</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2 p-3 rounded-lg bg-muted/50">
-                      <Calendar className="h-4 w-4 text-primary shrink-0" />
-                      <span className="font-medium">8:00 AM – 12:00 PM</span>
+                  <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                    <h3 className="text-xl font-bold mb-3">CNA Weekend</h3>
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2 p-2.5 rounded-lg bg-white/15 backdrop-blur-sm">
+                        <Sun className="h-4 w-4 text-yellow-300 shrink-0" />
+                        <span className="font-semibold text-sm">8:00 AM – 12:00 PM</span>
+                      </div>
+                      <div className="flex items-center gap-2 p-2.5 rounded-lg bg-white/10 backdrop-blur-sm">
+                        <Clock className="h-4 w-4 text-white/60 shrink-0" />
+                        <span className="font-medium text-sm text-white/70">12:00 – 1:00 PM Lunch</span>
+                      </div>
+                      <div className="flex items-center gap-2 p-2.5 rounded-lg bg-white/15 backdrop-blur-sm">
+                        <Sun className="h-4 w-4 text-orange-300 shrink-0" />
+                        <span className="font-semibold text-sm">1:00 PM – 5:00 PM</span>
+                      </div>
                     </div>
-                    <Badge variant="outline" className="border-primary/30 text-primary">Morning Class</Badge>
-                    <div className="flex items-center gap-2 p-3 rounded-lg bg-muted/50">
-                      <Clock className="h-4 w-4 text-muted-foreground shrink-0" />
-                      <span className="font-medium">12:00 PM – 1:00 PM</span>
-                    </div>
-                    <Badge variant="outline">Lunch Break</Badge>
-                    <div className="flex items-center gap-2 p-3 rounded-lg bg-muted/50">
-                      <Calendar className="h-4 w-4 text-primary shrink-0" />
-                      <span className="font-medium">1:00 PM – 5:00 PM</span>
-                    </div>
-                    <Badge variant="outline" className="border-primary/30 text-primary">Afternoon Class</Badge>
                   </div>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* CNA 20-Day Calendar */}
+          {/* CNA 20-Day Calendar - Single unified table */}
           <div>
             <div className="flex items-center gap-3 mb-6">
               <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
@@ -231,95 +243,88 @@ const Schedule = () => {
 
             <Card className="overflow-hidden">
               <div className="bg-gradient-to-r from-primary to-primary/80 text-primary-foreground px-6 py-3">
-                <div className="flex items-center gap-2">
-                  <Calendar className="h-5 w-5" />
-                  <span className="font-medium">20-Day Training Schedule</span>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Calendar className="h-5 w-5" />
+                    <span className="font-medium">20-Day Training Schedule</span>
+                  </div>
+                  <div className="flex items-center gap-4 text-xs">
+                    <span className="flex items-center gap-1"><span className="w-3 h-3 rounded bg-primary/30 inline-block" /> Theory & Exams</span>
+                    <span className="flex items-center gap-1"><span className="w-3 h-3 rounded bg-accent/40 inline-block" /> Skills Practice</span>
+                    <span className="flex items-center gap-1"><span className="w-3 h-3 rounded bg-teal/40 inline-block" /> Clinical</span>
+                  </div>
                 </div>
               </div>
-              <CardContent className="p-0 overflow-x-auto">
-                <Table>
-                  <TableHeader>
-                    <TableRow className="bg-muted/50">
-                      <TableHead className="font-semibold text-center min-w-[150px]">Day 1 (4 hrs)</TableHead>
-                      <TableHead className="font-semibold text-center min-w-[150px]">Day 2 (4 hrs)</TableHead>
-                      <TableHead className="font-semibold text-center min-w-[150px]">Day 3 (4 hrs)</TableHead>
-                      <TableHead className="font-semibold text-center min-w-[150px]">Day 4 (4 hrs)</TableHead>
-                      <TableHead className="font-semibold text-center min-w-[150px]">Day 5 (4 hrs)</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    <TableRow>
-                      <TableCell className="text-center align-top">Ch.1 & Ch.2</TableCell>
-                      <TableCell className="text-center align-top">Ch.2 & Ch.3</TableCell>
-                      <TableCell className="text-center align-top">Exam Ch1–3<br/>Ch.4<br/>Skills Ch4</TableCell>
-                      <TableCell className="text-center align-top">Exam Ch4<br/>Ch.5</TableCell>
-                      <TableCell className="text-center align-top">Ch.6<br/>Skills Ch5–6</TableCell>
-                    </TableRow>
-                  </TableBody>
-                </Table>
+              <CardContent className="p-4 overflow-x-auto">
+                {/* Week 1: Days 1-5 */}
+                <div className="mb-3">
+                  <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2 px-1">Week 1 — Theory Foundation</p>
+                  <div className="grid grid-cols-5 gap-2">
+                    {[
+                      { day: 1, hrs: 4, content: "Ch.1 & Ch.2" },
+                      { day: 2, hrs: 4, content: "Ch.2 & Ch.3" },
+                      { day: 3, hrs: 4, content: "Exam Ch1–3\nCh.4\nSkills Ch4" },
+                      { day: 4, hrs: 4, content: "Exam Ch4\nCh.5" },
+                      { day: 5, hrs: 4, content: "Ch.6\nSkills Ch5–6" },
+                    ].map((d) => (
+                      <div key={d.day} className="rounded-xl border border-border bg-muted/30 p-3 text-center hover:bg-muted/50 transition-colors">
+                        <p className="text-xs font-bold text-primary mb-0.5">Day {d.day}</p>
+                        <p className="text-[10px] text-muted-foreground mb-2">{d.hrs} hrs</p>
+                        <p className="text-xs whitespace-pre-line leading-relaxed">{d.content}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
 
-                <Table>
-                  <TableHeader>
-                    <TableRow className="bg-muted/50">
-                      <TableHead className="font-semibold text-center min-w-[150px]">Day 6 (4 hrs)</TableHead>
-                      <TableHead className="font-semibold text-center min-w-[150px]">Day 7 (4 hrs)</TableHead>
-                      <TableHead className="font-semibold text-center min-w-[150px]">Day 8 (5 hrs)</TableHead>
-                      <TableHead className="font-semibold text-center min-w-[150px]">Day 9 (5 hrs)</TableHead>
-                      <TableHead className="font-semibold text-center min-w-[150px]">Day 10 (5 hrs)</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    <TableRow>
-                      <TableCell className="text-center align-top">Exam Ch5–6<br/>Ch.7<br/>Skills Ch7</TableCell>
-                      <TableCell className="text-center align-top">Ch.8<br/>Skills Ch8<br/>Exam Ch7–8</TableCell>
-                      <TableCell className="text-center align-top">Ch.9 & Ch.10<br/>Skills Ch9–10<br/>Exam Ch9–10</TableCell>
-                      <TableCell className="text-center align-top">Skill Practice</TableCell>
-                      <TableCell className="text-center align-top">Skill Practice</TableCell>
-                    </TableRow>
-                  </TableBody>
-                </Table>
+                {/* Week 2: Days 6-10 */}
+                <div className="mb-3">
+                  <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2 px-1">Week 2 — Advanced Theory & Skills Intro</p>
+                  <div className="grid grid-cols-5 gap-2">
+                    {[
+                      { day: 6, hrs: 4, content: "Exam Ch5–6\nCh.7\nSkills Ch7" },
+                      { day: 7, hrs: 4, content: "Ch.8\nSkills Ch8\nExam Ch7–8" },
+                      { day: 8, hrs: 5, content: "Ch.9 & Ch.10\nSkills Ch9–10\nExam Ch9–10" },
+                      { day: 9, hrs: 5, content: "Skill Practice", isSkill: true },
+                      { day: 10, hrs: 5, content: "Skill Practice", isSkill: true },
+                    ].map((d) => (
+                      <div key={d.day} className={`rounded-xl border p-3 text-center hover:shadow-sm transition-all ${
+                        'isSkill' in d && d.isSkill ? 'border-accent/30 bg-accent/5' : 'border-border bg-muted/30 hover:bg-muted/50'
+                      }`}>
+                        <p className={`text-xs font-bold mb-0.5 ${'isSkill' in d && d.isSkill ? 'text-accent' : 'text-primary'}`}>Day {d.day}</p>
+                        <p className="text-[10px] text-muted-foreground mb-2">{d.hrs} hrs</p>
+                        <p className={`text-xs whitespace-pre-line leading-relaxed ${'isSkill' in d && d.isSkill ? 'font-medium text-accent' : ''}`}>{d.content}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
 
-                <Table>
-                  <TableHeader>
-                    <TableRow className="bg-accent/10">
-                      <TableHead className="font-semibold text-center min-w-[150px]">Day 11 (5 hrs)</TableHead>
-                      <TableHead className="font-semibold text-center min-w-[150px]">Day 12 (5 hrs)</TableHead>
-                      <TableHead className="font-semibold text-center min-w-[150px]">Day 13 (5 hrs)</TableHead>
-                      <TableHead className="font-semibold text-center min-w-[150px]">Day 14 (5 hrs)</TableHead>
-                      <TableHead className="font-semibold text-center min-w-[150px]">Day 15 (5 hrs)</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    <TableRow>
-                      <TableCell className="text-center align-top font-medium text-accent">Full Skills Practice</TableCell>
-                      <TableCell className="text-center align-top font-medium text-accent">Full Skills Practice</TableCell>
-                      <TableCell className="text-center align-top font-medium text-accent">Full Skills Practice</TableCell>
-                      <TableCell className="text-center align-top font-medium text-accent">Full Skills Practice</TableCell>
-                      <TableCell className="text-center align-top font-medium text-accent">Full Skills Practice</TableCell>
-                    </TableRow>
-                  </TableBody>
-                </Table>
+                {/* Week 3: Days 11-15 */}
+                <div className="mb-3">
+                  <p className="text-xs font-semibold text-accent uppercase tracking-wider mb-2 px-1">Week 3 — Full Skills Practice</p>
+                  <div className="grid grid-cols-5 gap-2">
+                    {[11, 12, 13, 14, 15].map((day) => (
+                      <div key={day} className="rounded-xl border border-accent/30 bg-accent/5 p-3 text-center hover:bg-accent/10 transition-colors">
+                        <p className="text-xs font-bold text-accent mb-0.5">Day {day}</p>
+                        <p className="text-[10px] text-muted-foreground mb-2">5 hrs</p>
+                        <p className="text-xs font-medium text-accent">Full Skills Practice</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
 
-                <Table>
-                  <TableHeader>
-                    <TableRow className="bg-primary/10">
-                      <TableHead className="font-semibold text-center min-w-[150px]">Day 16 (8 hrs)</TableHead>
-                      <TableHead className="font-semibold text-center min-w-[150px]">Day 17 (8 hrs)</TableHead>
-                      <TableHead className="font-semibold text-center min-w-[150px]">Day 18 (8 hrs)</TableHead>
-                      <TableHead className="font-semibold text-center min-w-[150px]">Day 19 (8 hrs)</TableHead>
-                      <TableHead className="font-semibold text-center min-w-[150px]">Day 20 (8 hrs)</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    <TableRow>
-                      <TableCell className="text-center align-top font-medium text-primary">Clinical</TableCell>
-                      <TableCell className="text-center align-top font-medium text-primary">Clinical</TableCell>
-                      <TableCell className="text-center align-top font-medium text-primary">Clinical</TableCell>
-                      <TableCell className="text-center align-top font-medium text-primary">Clinical</TableCell>
-                      <TableCell className="text-center align-top font-medium text-primary">Clinical</TableCell>
-                    </TableRow>
-                  </TableBody>
-                </Table>
+                {/* Week 4: Days 16-20 */}
+                <div>
+                  <p className="text-xs font-semibold text-primary uppercase tracking-wider mb-2 px-1">Week 4 — Clinical Rotation</p>
+                  <div className="grid grid-cols-5 gap-2">
+                    {[16, 17, 18, 19, 20].map((day) => (
+                      <div key={day} className="rounded-xl border border-primary/30 bg-primary/5 p-3 text-center hover:bg-primary/10 transition-colors">
+                        <p className="text-xs font-bold text-primary mb-0.5">Day {day}</p>
+                        <p className="text-[10px] text-muted-foreground mb-2">8 hrs</p>
+                        <p className="text-xs font-medium text-primary">Clinical</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </div>
