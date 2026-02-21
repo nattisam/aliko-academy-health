@@ -135,6 +135,195 @@ const Schedule = () => {
             </Card>
           </div>
 
+          {/* CNA Class Schedule */}
+          <div>
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center">
+                <Clock className="h-5 w-5 text-accent" />
+              </div>
+              <div>
+                <h2 className="text-2xl font-bold text-foreground">CNA Class Schedules</h2>
+                <p className="text-sm text-muted-foreground">Choose the schedule that fits your lifestyle</p>
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-6">
+              {/* Weekday Morning */}
+              <Card className="border-2 border-primary/20 hover:border-primary/40 transition-colors">
+                <CardHeader className="pb-3">
+                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-2">
+                    <Clock className="h-6 w-6 text-primary" />
+                  </div>
+                  <CardTitle className="text-lg text-primary">CNA Weekday – Morning</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2 p-3 rounded-lg bg-muted/50">
+                      <Calendar className="h-4 w-4 text-primary shrink-0" />
+                      <span className="font-medium">8:00 AM – 12:00 PM</span>
+                    </div>
+                    <Badge variant="outline" className="border-primary/30 text-primary">Morning Class</Badge>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Weekday Evening */}
+              <Card className="border-2 border-accent/20 hover:border-accent/40 transition-colors">
+                <CardHeader className="pb-3">
+                  <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center mb-2">
+                    <Clock className="h-6 w-6 text-accent" />
+                  </div>
+                  <CardTitle className="text-lg text-accent">CNA Weekday – Evening</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2 p-3 rounded-lg bg-muted/50">
+                      <Calendar className="h-4 w-4 text-accent shrink-0" />
+                      <span className="font-medium">5:00 PM – 9:00 PM</span>
+                    </div>
+                    <Badge variant="outline" className="border-accent/30 text-accent">Night Class</Badge>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Weekend */}
+              <Card className="border-2 border-primary/20 hover:border-primary/40 transition-colors">
+                <CardHeader className="pb-3">
+                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-2">
+                    <Calendar className="h-6 w-6 text-primary" />
+                  </div>
+                  <CardTitle className="text-lg text-primary">CNA Weekend</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2 p-3 rounded-lg bg-muted/50">
+                      <Calendar className="h-4 w-4 text-primary shrink-0" />
+                      <span className="font-medium">8:00 AM – 12:00 PM</span>
+                    </div>
+                    <Badge variant="outline" className="border-primary/30 text-primary">Morning Class</Badge>
+                    <div className="flex items-center gap-2 p-3 rounded-lg bg-muted/50">
+                      <Clock className="h-4 w-4 text-muted-foreground shrink-0" />
+                      <span className="font-medium">12:00 PM – 1:00 PM</span>
+                    </div>
+                    <Badge variant="outline">Lunch Break</Badge>
+                    <div className="flex items-center gap-2 p-3 rounded-lg bg-muted/50">
+                      <Calendar className="h-4 w-4 text-primary shrink-0" />
+                      <span className="font-medium">1:00 PM – 5:00 PM</span>
+                    </div>
+                    <Badge variant="outline" className="border-primary/30 text-primary">Afternoon Class</Badge>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+
+          {/* CNA 20-Day Calendar */}
+          <div>
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                <Calendar className="h-5 w-5 text-primary" />
+              </div>
+              <div>
+                <h2 className="text-2xl font-bold text-foreground">CNA Program – 20-Day Calendar</h2>
+                <p className="text-sm text-muted-foreground">Complete program breakdown by day</p>
+              </div>
+            </div>
+
+            <Card className="overflow-hidden">
+              <div className="bg-gradient-to-r from-primary to-primary/80 text-primary-foreground px-6 py-3">
+                <div className="flex items-center gap-2">
+                  <Calendar className="h-5 w-5" />
+                  <span className="font-medium">20-Day Training Schedule</span>
+                </div>
+              </div>
+              <CardContent className="p-0 overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow className="bg-muted/50">
+                      <TableHead className="font-semibold text-center min-w-[150px]">Day 1 (4 hrs)</TableHead>
+                      <TableHead className="font-semibold text-center min-w-[150px]">Day 2 (4 hrs)</TableHead>
+                      <TableHead className="font-semibold text-center min-w-[150px]">Day 3 (4 hrs)</TableHead>
+                      <TableHead className="font-semibold text-center min-w-[150px]">Day 4 (4 hrs)</TableHead>
+                      <TableHead className="font-semibold text-center min-w-[150px]">Day 5 (4 hrs)</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell className="text-center align-top">Ch.1 & Ch.2</TableCell>
+                      <TableCell className="text-center align-top">Ch.2 & Ch.3</TableCell>
+                      <TableCell className="text-center align-top">Exam Ch1–3<br/>Ch.4<br/>Skills Ch4</TableCell>
+                      <TableCell className="text-center align-top">Exam Ch4<br/>Ch.5</TableCell>
+                      <TableCell className="text-center align-top">Ch.6<br/>Skills Ch5–6</TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+
+                <Table>
+                  <TableHeader>
+                    <TableRow className="bg-muted/50">
+                      <TableHead className="font-semibold text-center min-w-[150px]">Day 6 (4 hrs)</TableHead>
+                      <TableHead className="font-semibold text-center min-w-[150px]">Day 7 (4 hrs)</TableHead>
+                      <TableHead className="font-semibold text-center min-w-[150px]">Day 8 (5 hrs)</TableHead>
+                      <TableHead className="font-semibold text-center min-w-[150px]">Day 9 (5 hrs)</TableHead>
+                      <TableHead className="font-semibold text-center min-w-[150px]">Day 10 (5 hrs)</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell className="text-center align-top">Exam Ch5–6<br/>Ch.7<br/>Skills Ch7</TableCell>
+                      <TableCell className="text-center align-top">Ch.8<br/>Skills Ch8<br/>Exam Ch7–8</TableCell>
+                      <TableCell className="text-center align-top">Ch.9 & Ch.10<br/>Skills Ch9–10<br/>Exam Ch9–10</TableCell>
+                      <TableCell className="text-center align-top">Skill Practice</TableCell>
+                      <TableCell className="text-center align-top">Skill Practice</TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+
+                <Table>
+                  <TableHeader>
+                    <TableRow className="bg-accent/10">
+                      <TableHead className="font-semibold text-center min-w-[150px]">Day 11 (5 hrs)</TableHead>
+                      <TableHead className="font-semibold text-center min-w-[150px]">Day 12 (5 hrs)</TableHead>
+                      <TableHead className="font-semibold text-center min-w-[150px]">Day 13 (5 hrs)</TableHead>
+                      <TableHead className="font-semibold text-center min-w-[150px]">Day 14 (5 hrs)</TableHead>
+                      <TableHead className="font-semibold text-center min-w-[150px]">Day 15 (5 hrs)</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell className="text-center align-top font-medium text-accent">Full Skills Practice</TableCell>
+                      <TableCell className="text-center align-top font-medium text-accent">Full Skills Practice</TableCell>
+                      <TableCell className="text-center align-top font-medium text-accent">Full Skills Practice</TableCell>
+                      <TableCell className="text-center align-top font-medium text-accent">Full Skills Practice</TableCell>
+                      <TableCell className="text-center align-top font-medium text-accent">Full Skills Practice</TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+
+                <Table>
+                  <TableHeader>
+                    <TableRow className="bg-primary/10">
+                      <TableHead className="font-semibold text-center min-w-[150px]">Day 16 (8 hrs)</TableHead>
+                      <TableHead className="font-semibold text-center min-w-[150px]">Day 17 (8 hrs)</TableHead>
+                      <TableHead className="font-semibold text-center min-w-[150px]">Day 18 (8 hrs)</TableHead>
+                      <TableHead className="font-semibold text-center min-w-[150px]">Day 19 (8 hrs)</TableHead>
+                      <TableHead className="font-semibold text-center min-w-[150px]">Day 20 (8 hrs)</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell className="text-center align-top font-medium text-primary">Clinical</TableCell>
+                      <TableCell className="text-center align-top font-medium text-primary">Clinical</TableCell>
+                      <TableCell className="text-center align-top font-medium text-primary">Clinical</TableCell>
+                      <TableCell className="text-center align-top font-medium text-primary">Clinical</TableCell>
+                      <TableCell className="text-center align-top font-medium text-primary">Clinical</TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
+          </div>
+
           {/* Closed Enrollment */}
           {closedPrograms.length > 0 && (
             <div>
