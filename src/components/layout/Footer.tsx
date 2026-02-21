@@ -88,7 +88,7 @@ export function Footer() {
             <div className="grid md:grid-cols-3 gap-8">
               <div>
                 <Link to="/" className="inline-block mb-4 bg-white rounded-xl p-3">
-                    <img src={logo} alt="Aliko Academy" className="h-12 w-auto" />
+                    <img src={logo} alt="Aliko Academy" className="h-16 w-auto" />
                 </Link>
                 <p className="text-sm text-white/70 max-w-xs">
                   Industry-aligned healthcare training with clear cohort start dates. Your pathway to a rewarding healthcare career.
