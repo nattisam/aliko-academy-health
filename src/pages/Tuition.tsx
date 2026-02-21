@@ -74,27 +74,44 @@ const Tuition = () => {
                       <TableHead className="font-semibold">Program</TableHead>
                       <TableHead className="font-semibold">Duration</TableHead>
                       <TableHead className="font-semibold">Total Hours</TableHead>
+                      <TableHead className="text-right font-semibold">Registration Fee</TableHead>
                       <TableHead className="text-right font-semibold">Tuition</TableHead>
+                      <TableHead className="text-right font-semibold">Total Cost</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {programs.map((program, index) => (
-                      <TableRow key={program.id} className={index % 2 === 0 ? 'bg-background' : 'bg-muted/30'}>
-                        <TableCell className="font-medium">
-                          <Link 
-                            to={`/programs/${program.id}`}
-                            className="hover:text-primary transition-colors"
-                          >
-                            {program.name}
-                          </Link>
-                        </TableCell>
-                        <TableCell>{program.duration}</TableCell>
-                        <TableCell>{program.hours.total} hours</TableCell>
-                        <TableCell className="text-right font-semibold text-primary">
-                          ${program.tuition.toLocaleString()}
-                        </TableCell>
-                      </TableRow>
-                    ))}
+                    {programs.map((program, index) => {
+                      const hasPricing = program.enrollmentStatus === "open";
+                      return (
+                        <TableRow key={program.id} className={index % 2 === 0 ? 'bg-background' : 'bg-muted/30'}>
+                          <TableCell className="font-medium">
+                            <Link 
+                              to={`/programs/${program.id}`}
+                              className="hover:text-primary transition-colors"
+                            >
+                              {program.name}
+                            </Link>
+                          </TableCell>
+                          <TableCell>{program.duration}</TableCell>
+                          <TableCell>{program.hours.total} hours</TableCell>
+                          <TableCell className="text-right">
+                            {hasPricing && 'registrationFee' in program
+                              ? `$${program.registrationFee.toLocaleString()}`
+                              : <span className="text-muted-foreground">TBD</span>}
+                          </TableCell>
+                          <TableCell className="text-right">
+                            {hasPricing
+                              ? `$${program.tuition.toLocaleString()}`
+                              : <span className="text-muted-foreground">TBD</span>}
+                          </TableCell>
+                          <TableCell className="text-right font-semibold text-primary">
+                            {hasPricing && 'totalCost' in program
+                              ? `$${program.totalCost.toLocaleString()}`
+                              : <span className="text-muted-foreground">TBD</span>}
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
                   </TableBody>
                 </Table>
               </CardContent>
