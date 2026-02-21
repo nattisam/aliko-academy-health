@@ -19,7 +19,7 @@ const StudentLogin = () => {
             <Card className="shadow-2xl border-0">
               <CardHeader className="text-center pb-4">
                 <div className="mx-auto mb-4">
-                  <img src={logo} alt="Aliko Academy Health" className="h-14 w-auto mx-auto" />
+                  <img src={logo} alt="Aliko Academy Health" className="h-20 w-auto mx-auto" />
                 </div>
                 <CardTitle className="text-2xl text-foreground">Student Portal</CardTitle>
               </CardHeader>

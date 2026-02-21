@@ -26,7 +26,7 @@ export function Header() {
         {/* Logo + Desktop Navigation */}
         <div className="flex items-center gap-8">
           <Link to="/" className="flex-shrink-0">
-            <img src={logo} alt="Aliko Academy Health" className="h-10 md:h-12 w-auto object-contain" />
+            <img src={logo} alt="Aliko Academy Health" className="h-14 md:h-16 w-auto object-contain" />
           </Link>
 
           {/* Desktop Navigation */}
