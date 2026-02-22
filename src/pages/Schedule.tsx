@@ -18,9 +18,10 @@ const FormatContent = ({ content }: { content: string }) => {
       {lines.map((line, i) => {
         const isExam = line.toLowerCase().startsWith('exam');
         const isSkill = line.toLowerCase().startsWith('skill');
+        const isChapter = line.toLowerCase().startsWith('chapter') || line.toLowerCase().startsWith('ch');
         return (
           <p key={i} className={`text-xs leading-snug ${
-            isExam ? 'font-semibold text-teal' : isSkill ? 'font-medium text-accent' : 'text-foreground/70'
+            isChapter ? 'font-bold text-foreground' : isExam ? 'font-semibold text-teal' : isSkill ? 'font-medium text-accent' : 'text-foreground/70'
           }`}>
             {line}
           </p>
