@@ -61,13 +61,40 @@ const Tuition = () => {
             </div>
             <h2 className="text-2xl font-bold text-foreground mb-6">Program Tuition</h2>
             <Card className="overflow-hidden">
-              <div className="bg-gradient-to-r from-primary to-primary/80 text-primary-foreground px-6 py-3">
+              <div className="bg-gradient-to-r from-primary to-primary/80 text-primary-foreground px-4 sm:px-6 py-3">
                 <div className="flex items-center gap-2">
                   <DollarSign className="h-5 w-5" />
-                  <span className="font-medium">Healthcare Training Programs</span>
+                  <span className="font-medium text-sm sm:text-base">Healthcare Training Programs</span>
                 </div>
               </div>
-              <CardContent className="p-0">
+              {/* Mobile card layout */}
+              <div className="block md:hidden p-4 space-y-4">
+                {programs.map((program) => {
+                  const hasPricing = program.enrollmentStatus === "open";
+                  return (
+                    <div key={program.id} className="border border-border rounded-xl p-4 space-y-2 bg-background">
+                      <Link to={`/programs/${program.id}`} className="font-semibold hover:text-primary transition-colors block">
+                        {program.name}
+                      </Link>
+                      <div className="text-sm text-muted-foreground">{program.duration} • {program.hours.total} hours</div>
+                      <div className="flex items-center justify-between pt-2 border-t border-border">
+                        <div className="text-xs text-muted-foreground">
+                          <p>Registration: {hasPricing && 'registrationFee' in program ? `$${program.registrationFee.toLocaleString()}` : 'TBD'}</p>
+                          <p>Tuition: {hasPricing ? `$${program.tuition.toLocaleString()}` : 'TBD'}</p>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-xs text-muted-foreground">Total</p>
+                          <p className="font-bold text-primary text-lg">
+                            {hasPricing && 'totalCost' in program ? `$${program.totalCost.toLocaleString()}` : 'TBD'}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+              {/* Desktop table */}
+              <CardContent className="p-0 hidden md:block">
                 <Table>
                   <TableHeader>
                     <TableRow className="bg-muted/50">
@@ -85,10 +112,7 @@ const Tuition = () => {
                       return (
                         <TableRow key={program.id} className={index % 2 === 0 ? 'bg-background' : 'bg-muted/30'}>
                           <TableCell className="font-medium">
-                            <Link 
-                              to={`/programs/${program.id}`}
-                              className="hover:text-primary transition-colors"
-                            >
+                            <Link to={`/programs/${program.id}`} className="hover:text-primary transition-colors">
                               {program.name}
                             </Link>
                           </TableCell>
@@ -135,7 +159,7 @@ const Tuition = () => {
                 Your tuition covers all the essentials for your training — no hidden fees or surprise costs.
               </p>
               
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {[
                   { title: "Course Materials", desc: "All textbooks, workbooks, and digital learning resources", icon: BookOpen },
                   { title: "Lab Equipment", desc: "Access to all lab equipment and practice supplies", icon: GraduationCap },
@@ -178,7 +202,7 @@ const Tuition = () => {
                 Choose the payment method that works best for your situation.
               </p>
               
-              <div className="grid md:grid-cols-3 gap-6">
+              <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
                 <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 bg-background border-2 border-primary/20 hover:border-primary/40">
                   <CardHeader>
                     <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center mb-4 group-hover:from-primary/30 group-hover:to-primary/20 transition-colors">

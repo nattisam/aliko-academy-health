@@ -85,7 +85,35 @@ const Schedule = () => {
                   <span className="text-sm font-medium">Enroll Now — Limited Seats Available</span>
                 </div>
               </div>
-              <CardContent className="p-0">
+              {/* Mobile card layout */}
+              <div className="block md:hidden p-4 space-y-4">
+                {openPrograms.map((program) => (
+                  <div key={program.id} className="border border-border rounded-xl p-4 space-y-3 bg-background">
+                    <Link to={`/programs/${program.id}`} className="font-bold text-base hover:text-primary transition-colors block">
+                      {program.name}
+                    </Link>
+                    <div className="flex flex-wrap gap-3 text-sm text-muted-foreground">
+                      <div className="flex items-center gap-1.5">
+                        <Clock className="h-4 w-4" />
+                        <span>{program.duration}</span>
+                      </div>
+                      <Badge variant="outline">{program.modality}</Badge>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Calendar className="h-4 w-4 text-teal" />
+                      <span className="font-bold text-teal">{program.startDate}</span>
+                    </div>
+                    <Button asChild size="sm" className="w-full shadow-sm">
+                      <Link to="/apply">
+                        Apply Now
+                        <ArrowRight className="ml-1 h-3 w-3" />
+                      </Link>
+                    </Button>
+                  </div>
+                ))}
+              </div>
+              {/* Desktop table */}
+              <CardContent className="p-0 hidden md:block">
                 <Table>
                   <TableHeader>
                      <TableRow className="bg-muted/50">
@@ -100,10 +128,7 @@ const Schedule = () => {
                     {openPrograms.map((program, index) => (
                       <TableRow key={program.id} className={`${index % 2 === 0 ? 'bg-background' : 'bg-muted/30'} hover:bg-accent/5 transition-colors`}>
                         <TableCell className="font-bold text-base">
-                          <Link 
-                            to={`/programs/${program.id}`}
-                            className="hover:text-primary transition-colors"
-                          >
+                          <Link to={`/programs/${program.id}`} className="hover:text-primary transition-colors">
                             {program.name}
                           </Link>
                         </TableCell>
@@ -150,7 +175,7 @@ const Schedule = () => {
               </div>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
               {/* Weekday Morning */}
               <div className="group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-1">
                 <div className="aspect-[3/4] relative">
@@ -241,23 +266,23 @@ const Schedule = () => {
 
             <Card className="overflow-hidden">
               <div className="bg-gradient-to-r from-primary to-primary/80 text-primary-foreground px-6 py-3">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <Calendar className="h-5 w-5" />
-                    <span className="font-medium">20-Day Training Schedule</span>
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                    <div className="flex items-center gap-2">
+                      <Calendar className="h-5 w-5" />
+                      <span className="font-medium">20-Day Training Schedule</span>
+                    </div>
+                    <div className="flex flex-wrap items-center gap-3 text-xs">
+                      <span className="flex items-center gap-1"><span className="w-3 h-3 rounded bg-primary/30 inline-block" /> Theory</span>
+                      <span className="flex items-center gap-1"><span className="w-3 h-3 rounded bg-accent/40 inline-block" /> Skills</span>
+                      <span className="flex items-center gap-1"><span className="w-3 h-3 rounded bg-teal/40 inline-block" /> Clinical</span>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-4 text-xs">
-                    <span className="flex items-center gap-1"><span className="w-3 h-3 rounded bg-primary/30 inline-block" /> Theory & Exams</span>
-                    <span className="flex items-center gap-1"><span className="w-3 h-3 rounded bg-accent/40 inline-block" /> Skills Practice</span>
-                    <span className="flex items-center gap-1"><span className="w-3 h-3 rounded bg-teal/40 inline-block" /> Clinical</span>
-                  </div>
-                </div>
               </div>
               <CardContent className="p-4 overflow-x-auto">
                 {/* Week 1: Days 1-5 */}
                 <div className="mb-3">
                   <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2 px-1">Week 1 — Theory Foundation</p>
-                  <div className="grid grid-cols-5 gap-2">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2">
                     {[
                       { day: 1, hrs: 4, content: "Ch.1 & Ch.2" },
                       { day: 2, hrs: 4, content: "Ch.2 & Ch.3" },
@@ -277,7 +302,7 @@ const Schedule = () => {
                 {/* Week 2: Days 6-10 */}
                 <div className="mb-3">
                   <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2 px-1">Week 2 — Advanced Theory & Skills Intro</p>
-                  <div className="grid grid-cols-5 gap-2">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2">
                     {[
                       { day: 6, hrs: 4, content: "Exam Ch5–6\nCh.7\nSkills Ch7" },
                       { day: 7, hrs: 4, content: "Ch.8\nSkills Ch8\nExam Ch7–8" },
@@ -299,7 +324,7 @@ const Schedule = () => {
                 {/* Week 3: Days 11-15 */}
                 <div className="mb-3">
                   <p className="text-xs font-semibold text-accent uppercase tracking-wider mb-2 px-1">Week 3 — Full Skills Practice</p>
-                  <div className="grid grid-cols-5 gap-2">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2">
                     {[11, 12, 13, 14, 15].map((day) => (
                       <div key={day} className="rounded-xl border border-accent/30 bg-accent/5 p-3 text-center hover:bg-accent/10 transition-colors">
                         <p className="text-xs font-bold text-accent mb-0.5">Day {day}</p>
@@ -313,7 +338,7 @@ const Schedule = () => {
                 {/* Week 4: Days 16-20 */}
                 <div>
                   <p className="text-xs font-semibold text-primary uppercase tracking-wider mb-2 px-1">Week 4 — Clinical Rotation</p>
-                  <div className="grid grid-cols-5 gap-2">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2">
                     {[16, 17, 18, 19, 20].map((day) => (
                       <div key={day} className="rounded-xl border border-primary/30 bg-primary/5 p-3 text-center hover:bg-primary/10 transition-colors">
                         <p className="text-xs font-bold text-primary mb-0.5">Day {day}</p>
@@ -346,7 +371,29 @@ const Schedule = () => {
                     <span className="font-medium">Coming Soon — Join the Waitlist</span>
                   </div>
                 </div>
-                <CardContent className="p-0">
+                {/* Mobile card layout */}
+                <div className="block md:hidden p-4 space-y-4">
+                  {closedPrograms.map((program) => (
+                    <div key={program.id} className="border border-border rounded-xl p-4 space-y-3 bg-background">
+                      <Link to={`/programs/${program.id}`} className="font-medium hover:text-primary transition-colors block">
+                        {program.name}
+                      </Link>
+                      <div className="flex flex-wrap gap-3 text-sm text-muted-foreground">
+                        <div className="flex items-center gap-1.5">
+                          <Clock className="h-4 w-4" />
+                          <span>{program.duration}</span>
+                        </div>
+                        <Badge variant="outline">{program.modality}</Badge>
+                        <Badge variant="destructive">Coming Soon</Badge>
+                      </div>
+                      <Button asChild size="sm" variant="outline" className="w-full">
+                        <Link to={`/programs/${program.id}`}>View Details</Link>
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+                {/* Desktop table */}
+                <CardContent className="p-0 hidden md:block">
                   <Table>
                     <TableHeader>
                        <TableRow className="bg-muted/50">
@@ -361,10 +408,7 @@ const Schedule = () => {
                       {closedPrograms.map((program, index) => (
                         <TableRow key={program.id} className={`${index % 2 === 0 ? 'bg-background' : 'bg-muted/30'} hover:bg-primary/5 transition-colors`}>
                           <TableCell className="font-medium">
-                            <Link 
-                              to={`/programs/${program.id}`}
-                              className="hover:text-primary transition-colors"
-                            >
+                            <Link to={`/programs/${program.id}`} className="hover:text-primary transition-colors">
                               {program.name}
                             </Link>
                           </TableCell>
