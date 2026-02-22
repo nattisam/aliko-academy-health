@@ -34,7 +34,7 @@ const About = () => {
       <section className="py-12 lg:py-16">
         <div className="container-academy space-y-16">
           {/* Mission, Vision, Values */}
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
             <Card className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border-t-4 border-t-primary">
               <CardHeader>
                 <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
@@ -154,7 +154,7 @@ const About = () => {
                 </div>
                 <h2 className="text-2xl font-bold text-foreground">Leadership Team</h2>
               </div>
-              <div className="grid md:grid-cols-3 gap-6">
+              <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
                 <Card className="hover:shadow-lg transition-shadow">
                   <CardContent className="pt-6 text-center">
                     <div className="w-24 h-24 rounded-full bg-gradient-to-br from-primary/20 to-primary/10 mx-auto mb-4 flex items-center justify-center ring-4 ring-primary/10">
