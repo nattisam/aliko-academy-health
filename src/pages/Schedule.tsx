@@ -10,6 +10,26 @@ import morningImg from "@/assets/schedule-morning.jpg";
 import eveningImg from "@/assets/schedule-evening.jpg";
 import weekendImg from "@/assets/schedule-weekend.jpg";
 
+// Helper to color-code schedule content lines
+const FormatContent = ({ content }: { content: string }) => {
+  const lines = content.split('\n');
+  return (
+    <div className="space-y-0.5">
+      {lines.map((line, i) => {
+        const isExam = line.toLowerCase().startsWith('exam');
+        const isSkill = line.toLowerCase().startsWith('skill');
+        return (
+          <p key={i} className={`text-xs leading-snug ${
+            isExam ? 'font-semibold text-teal' : isSkill ? 'font-medium text-accent' : 'text-foreground/70'
+          }`}>
+            {line}
+          </p>
+        );
+      })}
+    </div>
+  );
+};
+
 const Schedule = () => {
   // Sort programs by start date
   const sortedPrograms = [...programs].sort((a, b) => {
@@ -290,10 +310,12 @@ const Schedule = () => {
                       { day: 4, hrs: 4, content: "Exam Ch4\nCh.5" },
                       { day: 5, hrs: 4, content: "Ch.6\nSkills Ch5–6" },
                     ].map((d) => (
-                      <div key={d.day} className="rounded-xl border border-border bg-muted/30 p-3 text-center hover:bg-muted/50 transition-colors">
-                        <p className="text-xs font-bold text-primary mb-0.5">Day {d.day}</p>
-                        <p className="text-[10px] text-muted-foreground mb-2">{d.hrs} hrs</p>
-                        <p className="text-xs whitespace-pre-line leading-relaxed">{d.content}</p>
+                      <div key={d.day} className="rounded-xl border border-border bg-card shadow-sm p-3 hover:shadow-md transition-all">
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-xs font-bold text-primary">Day {d.day}</span>
+                          <span className="text-[10px] text-muted-foreground bg-muted rounded-full px-2 py-0.5">{d.hrs}h</span>
+                        </div>
+                        <FormatContent content={d.content} />
                       </div>
                     ))}
                   </div>
@@ -310,12 +332,14 @@ const Schedule = () => {
                       { day: 9, hrs: 5, content: "Skill Practice", isSkill: true },
                       { day: 10, hrs: 5, content: "Skill Practice", isSkill: true },
                     ].map((d) => (
-                      <div key={d.day} className={`rounded-xl border p-3 text-center hover:shadow-sm transition-all ${
-                        'isSkill' in d && d.isSkill ? 'border-accent/30 bg-accent/5' : 'border-border bg-muted/30 hover:bg-muted/50'
+                      <div key={d.day} className={`rounded-xl border shadow-sm p-3 hover:shadow-md transition-all ${
+                        'isSkill' in d && d.isSkill ? 'border-accent/30 bg-accent/5' : 'border-border bg-card'
                       }`}>
-                        <p className={`text-xs font-bold mb-0.5 ${'isSkill' in d && d.isSkill ? 'text-accent' : 'text-primary'}`}>Day {d.day}</p>
-                        <p className="text-[10px] text-muted-foreground mb-2">{d.hrs} hrs</p>
-                        <p className={`text-xs whitespace-pre-line leading-relaxed ${'isSkill' in d && d.isSkill ? 'font-medium text-accent' : ''}`}>{d.content}</p>
+                        <div className="flex items-center justify-between mb-2">
+                          <span className={`text-xs font-bold ${'isSkill' in d && d.isSkill ? 'text-accent' : 'text-primary'}`}>Day {d.day}</span>
+                          <span className="text-[10px] text-muted-foreground bg-muted rounded-full px-2 py-0.5">{d.hrs}h</span>
+                        </div>
+                        <FormatContent content={d.content} />
                       </div>
                     ))}
                   </div>
@@ -326,9 +350,11 @@ const Schedule = () => {
                   <p className="text-xs font-semibold text-accent uppercase tracking-wider mb-2 px-1">Week 3 — Full Skills Practice</p>
                   <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2">
                     {[11, 12, 13, 14, 15].map((day) => (
-                      <div key={day} className="rounded-xl border border-accent/30 bg-accent/5 p-3 text-center hover:bg-accent/10 transition-colors">
-                        <p className="text-xs font-bold text-accent mb-0.5">Day {day}</p>
-                        <p className="text-[10px] text-muted-foreground mb-2">5 hrs</p>
+                      <div key={day} className="rounded-xl border border-accent/30 bg-accent/5 shadow-sm p-3 hover:shadow-md transition-all">
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-xs font-bold text-accent">Day {day}</span>
+                          <span className="text-[10px] text-muted-foreground bg-muted rounded-full px-2 py-0.5">5h</span>
+                        </div>
                         <p className="text-xs font-medium text-accent">Full Skills Practice</p>
                       </div>
                     ))}
@@ -340,9 +366,11 @@ const Schedule = () => {
                   <p className="text-xs font-semibold text-primary uppercase tracking-wider mb-2 px-1">Week 4 — Clinical Rotation</p>
                   <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2">
                     {[16, 17, 18, 19, 20].map((day) => (
-                      <div key={day} className="rounded-xl border border-primary/30 bg-primary/5 p-3 text-center hover:bg-primary/10 transition-colors">
-                        <p className="text-xs font-bold text-primary mb-0.5">Day {day}</p>
-                        <p className="text-[10px] text-muted-foreground mb-2">8 hrs</p>
+                      <div key={day} className="rounded-xl border border-primary/30 bg-primary/5 shadow-sm p-3 hover:shadow-md transition-all">
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-xs font-bold text-primary">Day {day}</span>
+                          <span className="text-[10px] text-muted-foreground bg-muted rounded-full px-2 py-0.5">8h</span>
+                        </div>
                         <p className="text-xs font-medium text-primary">Clinical</p>
                       </div>
                     ))}
