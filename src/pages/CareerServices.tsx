@@ -113,7 +113,7 @@ const CareerServices = () => {
       <section className="py-12 lg:py-16">
         <div className="container-academy">
           {/* Services Grid */}
-          <div className="grid md:grid-cols-2 gap-8 mb-16">
+          <div className="grid sm:grid-cols-2 gap-6 sm:gap-8 mb-16">
             {services.map((service) => (
               <Card key={service.title} className={`group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-t-4 ${
                 service.color === 'primary' ? 'border-t-primary' : 'border-t-accent'
@@ -176,7 +176,7 @@ const CareerServices = () => {
               <span className="text-sm font-medium text-accent">Your Journey</span>
             </div>
             <h2 className="text-2xl lg:text-3xl font-bold text-foreground mb-8">How Career Services Works</h2>
-            <div className="grid md:grid-cols-3 gap-6">
+            <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
               {[
                 { step: 1, title: "Complete Training", desc: "Focus on your studies and certification. Career services support begins in the final weeks of your program.", icon: Rocket, color: "primary" as const },
                 { step: 2, title: "Meet Your Advisor", desc: "Schedule a one-on-one session to discuss your career goals, review your resume, and create a job search plan.", icon: Users, color: "accent" as const },

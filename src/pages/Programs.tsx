@@ -92,7 +92,7 @@ const Programs = () => {
       <section className="py-8">
         <div className="container-academy">
           {/* Filters */}
-          <div className="flex flex-wrap gap-4 mb-8 pb-8 border-b border-border">
+          <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 mb-8 pb-8 border-b border-border">
             <div className="flex items-center gap-2">
               <span className="text-sm font-medium text-muted-foreground">Modality:</span>
               <Select value={modalityFilter} onValueChange={(v) => setModalityFilter(v as ModalityFilter)}>
@@ -124,15 +124,15 @@ const Programs = () => {
 
           <Tabs defaultValue="training" className="w-full">
             <TabsList className="grid w-full grid-cols-2 mb-8 h-auto p-1">
-              <TabsTrigger value="training" className="text-sm py-3 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-                <GraduationCap className="h-4 w-4 mr-2" />
-                Healthcare Training
-                <Badge variant="secondary" className="ml-2 bg-background/50">{filteredPrograms.length}</Badge>
+              <TabsTrigger value="training" className="text-xs sm:text-sm py-2.5 sm:py-3 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+                <GraduationCap className="h-4 w-4 mr-1 sm:mr-2 shrink-0" />
+                <span className="hidden sm:inline">Healthcare </span>Training
+                <Badge variant="secondary" className="ml-1.5 sm:ml-2 bg-background/50 text-[10px] sm:text-xs">{filteredPrograms.length}</Badge>
               </TabsTrigger>
-              <TabsTrigger value="exam-prep" className="text-sm py-3 data-[state=active]:bg-accent data-[state=active]:text-accent-foreground">
-                <BookOpen className="h-4 w-4 mr-2" />
-                Exam Preparation
-                <Badge variant="secondary" className="ml-2 bg-background/50">{filteredExamPrep.length}</Badge>
+              <TabsTrigger value="exam-prep" className="text-xs sm:text-sm py-2.5 sm:py-3 data-[state=active]:bg-accent data-[state=active]:text-accent-foreground">
+                <BookOpen className="h-4 w-4 mr-1 sm:mr-2 shrink-0" />
+                <span className="hidden sm:inline">Exam </span>Prep
+                <Badge variant="secondary" className="ml-1.5 sm:ml-2 bg-background/50 text-[10px] sm:text-xs">{filteredExamPrep.length}</Badge>
               </TabsTrigger>
             </TabsList>
 
