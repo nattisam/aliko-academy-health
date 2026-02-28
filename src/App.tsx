@@ -29,6 +29,13 @@ import InstitutionalTraining from "./pages/InstitutionalTraining";
 import InstitutionalCategoryDetail from "./pages/InstitutionalCategoryDetail";
 import AdminLogin from "./pages/admin/AdminLogin";
 import Dashboard from "./pages/admin/Dashboard";
+import AdminPrograms from "./pages/admin/AdminPrograms";
+import AdminCohorts from "./pages/admin/AdminCohorts";
+import AdminStudents from "./pages/admin/AdminStudents";
+import AdminApplications from "./pages/admin/AdminApplications";
+import AdminEnterpriseLeads from "./pages/admin/AdminEnterpriseLeads";
+import AdminExamPrep from "./pages/admin/AdminExamPrep";
+import AdminContent from "./pages/admin/AdminContent";
 
 const queryClient = new QueryClient();
 
@@ -66,6 +73,13 @@ const App = () => (
               {/* Admin routes */}
               <Route path="/admin/login" element={<AdminLogin />} />
               <Route path="/admin" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+              <Route path="/admin/programs" element={<ProtectedRoute><AdminPrograms /></ProtectedRoute>} />
+              <Route path="/admin/cohorts" element={<ProtectedRoute><AdminCohorts /></ProtectedRoute>} />
+              <Route path="/admin/students" element={<ProtectedRoute><AdminStudents /></ProtectedRoute>} />
+              <Route path="/admin/applications" element={<ProtectedRoute><AdminApplications /></ProtectedRoute>} />
+              <Route path="/admin/enterprise-leads" element={<ProtectedRoute><AdminEnterpriseLeads /></ProtectedRoute>} />
+              <Route path="/admin/exam-prep" element={<ProtectedRoute><AdminExamPrep /></ProtectedRoute>} />
+              <Route path="/admin/content" element={<ProtectedRoute><AdminContent /></ProtectedRoute>} />
 
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
