@@ -89,8 +89,7 @@ const InstitutionalTraining = () => {
             </h1>
 
             <p className="mt-6 text-lg lg:text-xl text-white/75 max-w-2xl">
-              Capacity-building programs designed for governments, NGOs,
-              hospitals, development agencies, and corporate institutions.
+              Tailored training for governments, NGOs, hospitals, and corporations building stronger health workforces.
             </p>
 
             <div className="mt-8 flex flex-col sm:flex-row gap-4">
@@ -187,8 +186,7 @@ const InstitutionalTraining = () => {
               Program Categories
             </h2>
             <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
-              Six specialized training divisions covering the full spectrum of
-              institutional health needs.
+              Six divisions. One mission — build health capacity where it matters most.
             </p>
           </div>
 
@@ -225,7 +223,7 @@ const InstitutionalTraining = () => {
                     </p>
                     <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
                       <Users className="h-4 w-4 shrink-0 text-primary/60" />
-                      <span>{cat.programs.length} programs available</span>
+                      <span>{cat.programs.length} programs</span>
                     </div>
                     <div className="flex flex-wrap gap-1.5 mb-6">
                       {cat.durationOptions.map((d) => (
@@ -234,11 +232,8 @@ const InstitutionalTraining = () => {
                         </Badge>
                       ))}
                     </div>
-                    <Button asChild className="w-full group/btn">
-                      <Link to={`/institutional-training/${cat.slug}`}>
-                        Explore Programs
-                        <ArrowRight className="ml-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
-                      </Link>
+                    <Button disabled className="w-full opacity-70 cursor-not-allowed">
+                      Coming Soon
                     </Button>
                   </CardContent>
                 </Card>
