@@ -73,18 +73,17 @@ const InstitutionalTraining = () => {
           <div className="max-w-3xl">
             <Badge className="mb-6 bg-teal/20 text-teal-foreground border-teal/30 hover:bg-teal/30">
               <BookOpen className="h-3 w-3 mr-1" />
-              Government & Institutional Training
+              Institutional & Specialty Training
             </Badge>
 
             <h1 className="text-3xl lg:text-5xl xl:text-6xl font-bold text-white leading-tight">
               Strengthening Health Systems Through{" "}
-              <span className="text-teal">Government Training</span>
+              <span className="text-teal">Institutional Training</span>
             </h1>
 
             <p className="mt-6 text-lg lg:text-xl text-white/75 max-w-2xl">
-              Capacity-building programs designed for government ministries,
-              public health agencies, defense health services, and regional
-              governmental bodies.
+              Capacity-building programs designed for governments, NGOs,
+              hospitals, development agencies, and corporate institutions.
             </p>
 
             <div className="mt-8 flex flex-col sm:flex-row gap-4">
@@ -102,7 +101,7 @@ const InstitutionalTraining = () => {
               >
                 <Link to="/contact">
                   <FileText className="mr-2 h-5 w-5" />
-                  Request Government Proposal
+                  Request Institutional Proposal
                 </Link>
               </Button>
             </div>
@@ -115,14 +114,13 @@ const InstitutionalTraining = () => {
         <div className="container-academy">
           <div className="text-center mb-14">
             <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-semibold mb-4">
-              Government Partners
+              Our Partners
             </span>
             <h2 className="text-3xl lg:text-4xl font-bold text-foreground">
               Who We Serve
             </h2>
             <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
-              We design training solutions exclusively for government
-              institutions and public sector health agencies.
+              We design training solutions for the world's most critical health institutions.
             </p>
           </div>
 
@@ -164,7 +162,7 @@ const InstitutionalTraining = () => {
             </h2>
             <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
               Six specialized training divisions covering the full spectrum of
-              government health needs.
+              institutional health needs.
             </p>
           </div>
 
@@ -232,7 +230,7 @@ const InstitutionalTraining = () => {
               Pricing
             </span>
             <h2 className="text-3xl lg:text-4xl font-bold text-foreground">
-              Government Packages
+              Institutional Packages
             </h2>
             <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
               Flexible pricing structured around your team size and
@@ -308,7 +306,7 @@ const InstitutionalTraining = () => {
           </p>
           <Button asChild size="lg" className="text-base">
             <Link to="/contact">
-              Contact Our Government Team
+              Contact Our Institutional Team
               <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
           </Button>

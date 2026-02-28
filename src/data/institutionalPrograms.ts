@@ -28,40 +28,40 @@ export interface WhoWeServeCard {
 
 export const whoWeServe: WhoWeServeCard[] = [
   {
-    title: "Federal Ministries of Health",
-    description: "National-level health ministries building workforce capacity across departments and agencies.",
+    title: "Government Ministries & Agencies",
+    description: "National and subnational health ministries, public health agencies, and defense health services building workforce capacity.",
     icon: "Landmark",
     filterCategories: ["public-health", "executive", "wash"],
   },
   {
-    title: "State & Local Health Departments",
-    description: "Subnational health authorities strengthening service delivery and emergency preparedness.",
-    icon: "Building2",
-    filterCategories: ["public-health", "clinical", "wash"],
-  },
-  {
-    title: "Government Hospitals & Facilities",
-    description: "Public health institutions upgrading clinical staff skills and operational standards.",
+    title: "Hospitals & Health Systems",
+    description: "Public and private healthcare institutions upgrading clinical staff skills and operational standards.",
     icon: "Hospital",
     filterCategories: ["clinical", "digital-health", "corporate"],
   },
   {
-    title: "Defense & Military Health Services",
-    description: "Military medical corps and defense health agencies requiring specialized workforce training.",
-    icon: "ShieldCheck",
-    filterCategories: ["public-health", "clinical", "corporate"],
-  },
-  {
-    title: "Public Health Agencies & CDCs",
-    description: "Disease control centers and public health agencies building surveillance and response capacity.",
+    title: "International & Development Organizations",
+    description: "UN agencies, multilateral bodies, and international NGOs delivering health programs globally.",
     icon: "Globe",
-    filterCategories: ["public-health", "executive", "digital-health"],
+    filterCategories: ["public-health", "wash", "executive"],
   },
   {
-    title: "African Union & Regional Government Bodies",
-    description: "Continental and regional governmental institutions shaping health policy, governance, and cross-border cooperation.",
+    title: "African Union & Regional Bodies",
+    description: "Continental and regional institutions shaping cross-border health policy, governance, and cooperation.",
     icon: "MapPin",
     filterCategories: ["executive", "public-health", "wash"],
+  },
+  {
+    title: "Private Corporations & Employers",
+    description: "Companies investing in occupational health, workplace safety, and corporate wellness programs.",
+    icon: "Building2",
+    filterCategories: ["corporate", "clinical", "digital-health"],
+  },
+  {
+    title: "Defense & Security Health Services",
+    description: "Military medical corps and security agencies requiring specialized health workforce training.",
+    icon: "ShieldCheck",
+    filterCategories: ["public-health", "clinical", "corporate"],
   },
 ];
 
