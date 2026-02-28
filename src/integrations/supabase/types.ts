@@ -14,16 +14,379 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      applications: {
+        Row: {
+          cohort_id: string | null
+          created_at: string
+          id: string
+          notes: string | null
+          program_id: string | null
+          source: Database["public"]["Enums"]["application_source"]
+          status: Database["public"]["Enums"]["application_status"]
+          student_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          cohort_id?: string | null
+          created_at?: string
+          id?: string
+          notes?: string | null
+          program_id?: string | null
+          source?: Database["public"]["Enums"]["application_source"]
+          status?: Database["public"]["Enums"]["application_status"]
+          student_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          cohort_id?: string | null
+          created_at?: string
+          id?: string
+          notes?: string | null
+          program_id?: string | null
+          source?: Database["public"]["Enums"]["application_source"]
+          status?: Database["public"]["Enums"]["application_status"]
+          student_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "applications_cohort_id_fkey"
+            columns: ["cohort_id"]
+            isOneToOne: false
+            referencedRelation: "cohorts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "applications_program_id_fkey"
+            columns: ["program_id"]
+            isOneToOne: false
+            referencedRelation: "programs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "applications_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "students"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cohorts: {
+        Row: {
+          created_at: string
+          current_enrolled: number
+          days_of_week: string | null
+          end_date: string | null
+          id: string
+          location: string | null
+          max_seats: number | null
+          name: string
+          program_id: string
+          start_date: string
+          status: Database["public"]["Enums"]["cohort_status"]
+          time_range: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          current_enrolled?: number
+          days_of_week?: string | null
+          end_date?: string | null
+          id?: string
+          location?: string | null
+          max_seats?: number | null
+          name: string
+          program_id: string
+          start_date: string
+          status?: Database["public"]["Enums"]["cohort_status"]
+          time_range?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          current_enrolled?: number
+          days_of_week?: string | null
+          end_date?: string | null
+          id?: string
+          location?: string | null
+          max_seats?: number | null
+          name?: string
+          program_id?: string
+          start_date?: string
+          status?: Database["public"]["Enums"]["cohort_status"]
+          time_range?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cohorts_program_id_fkey"
+            columns: ["program_id"]
+            isOneToOne: false
+            referencedRelation: "programs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      content_blocks: {
+        Row: {
+          id: string
+          key: string
+          updated_at: string
+          value: string | null
+        }
+        Insert: {
+          id?: string
+          key: string
+          updated_at?: string
+          value?: string | null
+        }
+        Update: {
+          id?: string
+          key?: string
+          updated_at?: string
+          value?: string | null
+        }
+        Relationships: []
+      }
+      enterprise_leads: {
+        Row: {
+          contact_name: string
+          created_at: string
+          email: string
+          id: string
+          message: string | null
+          organization_name: string
+          phone: string | null
+          status: Database["public"]["Enums"]["enterprise_lead_status"]
+          updated_at: string
+        }
+        Insert: {
+          contact_name: string
+          created_at?: string
+          email: string
+          id?: string
+          message?: string | null
+          organization_name: string
+          phone?: string | null
+          status?: Database["public"]["Enums"]["enterprise_lead_status"]
+          updated_at?: string
+        }
+        Update: {
+          contact_name?: string
+          created_at?: string
+          email?: string
+          id?: string
+          message?: string | null
+          organization_name?: string
+          phone?: string | null
+          status?: Database["public"]["Enums"]["enterprise_lead_status"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      exam_prep_offerings: {
+        Row: {
+          created_at: string
+          display_order: number
+          full_description: string | null
+          id: string
+          is_active: boolean
+          name: string
+          price: number | null
+          short_description: string | null
+          slug: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          display_order?: number
+          full_description?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+          price?: number | null
+          short_description?: string | null
+          slug: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          display_order?: number
+          full_description?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+          price?: number | null
+          short_description?: string | null
+          slug?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          email: string | null
+          full_name: string | null
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      programs: {
+        Row: {
+          category: Database["public"]["Enums"]["program_category"]
+          created_at: string
+          display_order: number
+          duration_weeks: number | null
+          full_description: string | null
+          id: string
+          is_active: boolean
+          name: string
+          short_description: string | null
+          slug: string
+          tuition: number | null
+          updated_at: string
+        }
+        Insert: {
+          category?: Database["public"]["Enums"]["program_category"]
+          created_at?: string
+          display_order?: number
+          duration_weeks?: number | null
+          full_description?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+          short_description?: string | null
+          slug: string
+          tuition?: number | null
+          updated_at?: string
+        }
+        Update: {
+          category?: Database["public"]["Enums"]["program_category"]
+          created_at?: string
+          display_order?: number
+          duration_weeks?: number | null
+          full_description?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+          short_description?: string | null
+          slug?: string
+          tuition?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      students: {
+        Row: {
+          address: string | null
+          created_at: string
+          date_of_birth: string | null
+          email: string
+          first_name: string
+          id: string
+          last_name: string
+          phone: string | null
+          updated_at: string
+        }
+        Insert: {
+          address?: string | null
+          created_at?: string
+          date_of_birth?: string | null
+          email: string
+          first_name: string
+          id?: string
+          last_name: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Update: {
+          address?: string | null
+          created_at?: string
+          date_of_birth?: string | null
+          email?: string
+          first_name?: string
+          id?: string
+          last_name?: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      is_admin_or_above: { Args: never; Returns: boolean }
+      is_super_admin: { Args: never; Returns: boolean }
+      is_viewer_or_above: { Args: never; Returns: boolean }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "super_admin" | "admin" | "staff" | "viewer"
+      application_source: "website_form" | "enterprise" | "manual"
+      application_status:
+        | "new"
+        | "in_review"
+        | "accepted"
+        | "rejected"
+        | "enrolled"
+        | "withdrawn"
+      cohort_status: "open_for_enrollment" | "waitlist" | "closed"
+      enterprise_lead_status:
+        | "new"
+        | "contacted"
+        | "proposal_sent"
+        | "won"
+        | "lost"
+      program_category: "training" | "exam_prep"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +513,26 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["super_admin", "admin", "staff", "viewer"],
+      application_source: ["website_form", "enterprise", "manual"],
+      application_status: [
+        "new",
+        "in_review",
+        "accepted",
+        "rejected",
+        "enrolled",
+        "withdrawn",
+      ],
+      cohort_status: ["open_for_enrollment", "waitlist", "closed"],
+      enterprise_lead_status: [
+        "new",
+        "contacted",
+        "proposal_sent",
+        "won",
+        "lost",
+      ],
+      program_category: ["training", "exam_prep"],
+    },
   },
 } as const
