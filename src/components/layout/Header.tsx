@@ -49,19 +49,19 @@ export function Header() {
     <header className="bg-[hsl(216,50%,16%)] border-b border-border/50 sticky top-0 z-50 backdrop-blur-sm">
       <nav className="container-academy flex items-center justify-between py-3">
         {/* Logo + Desktop Navigation */}
-        <div className="flex items-center gap-8">
+        <div className="flex items-center gap-4 xl:gap-5 2xl:gap-8">
           <Link to="/" className="flex-shrink-0">
-            <img src={logo} alt="Aliko Academy Health" className="h-14 md:h-16 w-auto object-contain" />
+            <img src={logo} alt="Aliko Academy Health" className="h-12 xl:h-14 2xl:h-16 w-auto object-contain" />
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden xl:flex xl:items-center xl:gap-3 2xl:gap-4">
+          <div className="hidden xl:flex xl:items-center xl:gap-2 2xl:gap-4">
             {navigation.map((item) =>
               item.dropdown ? (
                 <div key={item.name} className="relative" ref={dropdownRef}>
                   <button
                     onClick={() => setDropdownOpen(!dropdownOpen)}
-                    className="flex items-center gap-0.5 text-xs 2xl:text-sm font-semibold text-white hover:text-teal transition-colors whitespace-nowrap relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-teal after:transition-all hover:after:w-full"
+                    className="flex items-center gap-0.5 text-[13px] 2xl:text-sm font-semibold text-white hover:text-teal transition-colors whitespace-nowrap relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-teal after:transition-all hover:after:w-full"
                   >
                     {item.name}
                     <ChevronDown className={cn("h-3 w-3 transition-transform", dropdownOpen && "rotate-180")} />
@@ -85,7 +85,7 @@ export function Header() {
                 <Link
                   key={item.name}
                   to={item.href}
-                  className="text-xs 2xl:text-sm font-semibold text-white hover:text-teal transition-colors whitespace-nowrap relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-teal after:transition-all hover:after:w-full"
+                  className="text-[13px] 2xl:text-sm font-semibold text-white hover:text-teal transition-colors whitespace-nowrap relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-teal after:transition-all hover:after:w-full"
                 >
                   {item.name}
                 </Link>
@@ -96,10 +96,10 @@ export function Header() {
 
         {/* Desktop CTA */}
         <div className="hidden xl:flex xl:items-center xl:gap-2 2xl:gap-3 flex-shrink-0">
-          <Link to="/student-login" className="px-3 py-1.5 rounded-md bg-accent text-white font-semibold text-xs 2xl:text-sm hover:bg-accent/90 transition-colors whitespace-nowrap">
+          <Link to="/student-login" className="px-3 py-1.5 rounded-md bg-accent text-white font-semibold text-[13px] 2xl:text-sm hover:bg-accent/90 transition-colors whitespace-nowrap">
             Student Login
           </Link>
-          <Button asChild size="sm" className="bg-[hsl(0,72%,45%)] text-white hover:bg-[hsl(0,72%,38%)] text-xs 2xl:text-sm whitespace-nowrap">
+          <Button asChild size="sm" className="bg-[hsl(0,72%,45%)] text-white hover:bg-[hsl(0,72%,38%)] text-[13px] 2xl:text-sm whitespace-nowrap">
             <Link to="/apply">Apply Now</Link>
           </Button>
         </div>
