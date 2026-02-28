@@ -35,6 +35,7 @@ const mainNav = [
   { title: "Applications", url: "/admin/applications", icon: FileText },
   { title: "Enterprise Leads", url: "/admin/enterprise-leads", icon: Building2 },
   { title: "Exam Prep", url: "/admin/exam-prep", icon: BookOpen },
+  { title: "Institutional", url: "/admin/institutional", icon: Building2 },
   { title: "Content", url: "/admin/content", icon: FileEdit },
 ];
 
