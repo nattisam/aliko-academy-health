@@ -66,7 +66,7 @@ const InstitutionalCategoryDetail = () => {
   useEffect(() => {
     if (!categorySlug) return;
     Promise.all([
-      supabase.from("institutional_categories").select("*").eq("slug", categorySlug).eq("is_active", true).single(),
+      supabase.from("institutional_categories").select("*").eq("slug", categorySlug).eq("is_active", true).maybeSingle(),
       supabase.from("institutional_programs").select("*").eq("is_active", true).order("display_order"),
     ]).then(([{ data: cat }, { data: progs }]) => {
       if (cat) {
