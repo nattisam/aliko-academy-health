@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { programs } from "@/data/programs";
+import { institutionalCategories } from "@/data/institutionalPrograms";
 import {
   Building2,
   HeartPulse,
@@ -81,14 +82,9 @@ const benefits = [
 
 export default function Enterprise() {
   const { toast } = useToast();
-  const [selectedPrograms, setSelectedPrograms] = useState<string[]>([]);
+  const [selectedProgram, setSelectedProgram] = useState<string>("");
+  const [selectedInstitutional, setSelectedInstitutional] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const toggleProgram = (programId: string) => {
-    setSelectedPrograms((prev) =>
-      prev.includes(programId) ? prev.filter((id) => id !== programId) : [...prev, programId]
-    );
-  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -104,7 +100,8 @@ export default function Enterprise() {
         phone: (formData.get("contact-phone") as string) || "",
         message: [
           formData.get("contact-title") && `Title: ${formData.get("contact-title")}`,
-          selectedPrograms.length > 0 && `Programs: ${selectedPrograms.join(", ")}`,
+          selectedProgram && `Program: ${selectedProgram}`,
+          selectedInstitutional && `Institutional Training: ${selectedInstitutional}`,
           formData.get("additional-info") && `Notes: ${formData.get("additional-info")}`,
         ].filter(Boolean).join("\n"),
       });
@@ -114,7 +111,8 @@ export default function Enterprise() {
         description: "Our enterprise team will contact you within 1-2 business days.",
       });
       (e.target as HTMLFormElement).reset();
-      setSelectedPrograms([]);
+      setSelectedProgram("");
+      setSelectedInstitutional("");
     } catch (err: any) {
       toast({
         title: "Submission Error",
@@ -341,31 +339,37 @@ export default function Enterprise() {
                     </div>
                   </div>
 
-                  {/* Program Selection */}
-                  <div className="space-y-2">
-                    <Label className="text-sm font-medium">Programs of Interest *</Label>
-                    <div className="grid sm:grid-cols-2 gap-2.5">
-                      {programs.map((p) => (
-                        <label
-                          key={p.id}
-                          className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-colors text-base ${
-                            selectedPrograms.includes(p.id)
-                              ? "border-primary bg-primary/5"
-                              : "border-border/60 hover:border-primary/40"
-                          }`}
-                        >
-                          <Checkbox
-                            checked={selectedPrograms.includes(p.id)}
-                            onCheckedChange={() => toggleProgram(p.id)}
-                          />
-                          <div>
-                            <span className="font-medium text-foreground">{p.name}</span>
-                            <span className="block text-sm text-muted-foreground">
-                              {p.duration} · ${p.tuition.toLocaleString()}
-                            </span>
-                          </div>
-                        </label>
-                      ))}
+                   {/* Program Selection */}
+                  <div className="grid sm:grid-cols-2 gap-5">
+                    <div className="space-y-2">
+                      <Label className="text-sm font-medium">Training Program of Interest</Label>
+                      <Select value={selectedProgram} onValueChange={setSelectedProgram}>
+                        <SelectTrigger className="h-11 text-base">
+                          <SelectValue placeholder="Select a program" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {programs.map((p) => (
+                            <SelectItem key={p.id} value={p.name}>
+                              {p.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="space-y-2">
+                      <Label className="text-sm font-medium">Institutional Training Course</Label>
+                      <Select value={selectedInstitutional} onValueChange={setSelectedInstitutional}>
+                        <SelectTrigger className="h-11 text-base">
+                          <SelectValue placeholder="Select a course" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {institutionalCategories.map((cat) => (
+                            <SelectItem key={cat.id} value={cat.name}>
+                              {cat.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                     </div>
                   </div>
 
