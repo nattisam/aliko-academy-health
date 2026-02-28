@@ -1,13 +1,24 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import logo from "@/assets/logo-new.png";
 
+const institutionalDropdown = [
+  { name: "Overview", href: "/institutional-training" },
+  { name: "Public Health & Emergency Response", href: "/institutional-training/public-health" },
+  { name: "Digital Health & Health Technology", href: "/institutional-training/digital-health" },
+  { name: "Clinical & Advanced Workforce", href: "/institutional-training/clinical" },
+  { name: "Occupational & Corporate Health", href: "/institutional-training/corporate" },
+  { name: "WASH & Environmental Health", href: "/institutional-training/wash" },
+  { name: "Executive & Policy Programs", href: "/institutional-training/executive" },
+];
+
 const navigation = [
   { name: "Home", href: "/" },
   { name: "Programs", href: "/programs" },
+  { name: "Institutional Training", href: "/institutional-training", dropdown: institutionalDropdown },
   { name: "Schedule", href: "/schedule" },
   { name: "Admissions", href: "/admissions" },
   { name: "Tuition", href: "/tuition" },
@@ -20,6 +31,19 @@ const navigation = [
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [mobileDropdownOpen, setMobileDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
     <header className="bg-[hsl(216,50%,16%)] border-b border-border/50 sticky top-0 z-50 backdrop-blur-sm">
@@ -32,15 +56,41 @@ export function Header() {
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex lg:items-center lg:gap-5">
-            {navigation.map((item) => (
-              <Link
-                key={item.name}
-                to={item.href}
-                className="text-sm font-bold text-white hover:text-teal transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-teal after:transition-all hover:after:w-full"
-              >
-                {item.name}
-              </Link>
-            ))}
+            {navigation.map((item) =>
+              item.dropdown ? (
+                <div key={item.name} className="relative" ref={dropdownRef}>
+                  <button
+                    onClick={() => setDropdownOpen(!dropdownOpen)}
+                    className="flex items-center gap-1 text-sm font-bold text-white hover:text-teal transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-teal after:transition-all hover:after:w-full"
+                  >
+                    {item.name}
+                    <ChevronDown className={cn("h-3.5 w-3.5 transition-transform", dropdownOpen && "rotate-180")} />
+                  </button>
+                  {dropdownOpen && (
+                    <div className="absolute top-full left-0 mt-2 w-72 bg-white rounded-lg shadow-xl border border-border/60 py-2 z-50">
+                      {item.dropdown.map((sub) => (
+                        <Link
+                          key={sub.href}
+                          to={sub.href}
+                          onClick={() => setDropdownOpen(false)}
+                          className="block px-4 py-2.5 text-sm text-foreground hover:bg-muted hover:text-primary transition-colors"
+                        >
+                          {sub.name}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <Link
+                  key={item.name}
+                  to={item.href}
+                  className="text-sm font-bold text-white hover:text-teal transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-teal after:transition-all hover:after:w-full"
+                >
+                  {item.name}
+                </Link>
+              )
+            )}
           </div>
         </div>
 
@@ -73,20 +123,49 @@ export function Header() {
       <div
         className={cn(
           "lg:hidden border-t border-border overflow-hidden transition-all duration-300 bg-white",
-          mobileMenuOpen ? "max-h-[500px]" : "max-h-0"
+          mobileMenuOpen ? "max-h-[700px]" : "max-h-0"
         )}
       >
         <div className="container-academy py-4 space-y-4">
-          {navigation.map((item) => (
-            <Link
-              key={item.name}
-              to={item.href}
-              className="block text-base font-medium text-foreground hover:text-teal transition-colors"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              {item.name}
-            </Link>
-          ))}
+          {navigation.map((item) =>
+            item.dropdown ? (
+              <div key={item.name}>
+                <button
+                  onClick={() => setMobileDropdownOpen(!mobileDropdownOpen)}
+                  className="flex items-center justify-between w-full text-base font-medium text-foreground hover:text-teal transition-colors"
+                >
+                  {item.name}
+                  <ChevronDown className={cn("h-4 w-4 transition-transform", mobileDropdownOpen && "rotate-180")} />
+                </button>
+                <div
+                  className={cn(
+                    "overflow-hidden transition-all duration-200 pl-4 border-l-2 border-primary/20",
+                    mobileDropdownOpen ? "max-h-96 mt-2 space-y-2" : "max-h-0"
+                  )}
+                >
+                  {item.dropdown.map((sub) => (
+                    <Link
+                      key={sub.href}
+                      to={sub.href}
+                      className="block text-sm text-muted-foreground hover:text-primary transition-colors py-1"
+                      onClick={() => { setMobileMenuOpen(false); setMobileDropdownOpen(false); }}
+                    >
+                      {sub.name}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <Link
+                key={item.name}
+                to={item.href}
+                className="block text-base font-medium text-foreground hover:text-teal transition-colors"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                {item.name}
+              </Link>
+            )
+          )}
           <div className="pt-4 border-t border-border space-y-3">
             <Link
               to="/student-login"
