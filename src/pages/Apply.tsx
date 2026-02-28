@@ -187,7 +187,7 @@ const Apply = () => {
           address,
         })
         .select("id")
-        .single();
+        .maybeSingle();
 
       if (studentError) throw studentError;
 
