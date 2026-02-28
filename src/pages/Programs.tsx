@@ -140,7 +140,7 @@ const Programs = () => {
               <div className="mb-6">
                 <h2 className="text-xl font-semibold text-foreground">Healthcare Training Programs</h2>
                 <p className="text-sm text-muted-foreground mt-1">
-                  Certificate programs delivered by Aliko Academy – Health
+                  Industry-aligned programs delivered by Aliko Academy – Health
                 </p>
               </div>
 

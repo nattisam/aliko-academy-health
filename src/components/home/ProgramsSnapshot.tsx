@@ -24,13 +24,13 @@ export function ProgramsSnapshot() {
         {/* Healthcare Training Programs */}
         <div className="text-center mb-16">
           <span className="inline-block px-4 py-1.5 rounded-full bg-teal/10 text-teal text-sm font-semibold mb-4">
-            Certificate Programs
+            Training Programs
           </span>
           <h2 className="text-3xl lg:text-4xl font-bold text-foreground">
             Healthcare Training Programs
           </h2>
           <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
-            Certificate programs delivered by Aliko Academy – Health, designed to launch your healthcare career.
+            Industry-aligned programs delivered by Aliko Academy – Health, designed to launch your healthcare career.
           </p>
         </div>
 
