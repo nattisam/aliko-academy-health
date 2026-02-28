@@ -15,30 +15,43 @@ const institutionalDropdown = [
   { name: "Executive & Policy Programs", href: "/institutional-training/executive" },
 ];
 
-const navigation = [
-  { name: "Home", href: "/" },
+const primaryNav = [
   { name: "Programs", href: "/programs" },
   { name: "Institutional Training", href: "/institutional-training", dropdown: institutionalDropdown },
-  { name: "Schedule", href: "/schedule" },
   { name: "Admissions", href: "/admissions" },
+  { name: "Enterprise", href: "/enterprise" },
+  { name: "About", href: "/about" },
+];
+
+const moreLinks = [
+  { name: "Schedule", href: "/schedule" },
   { name: "Tuition", href: "/tuition" },
   { name: "Partners", href: "/partners" },
-  { name: "Enterprise", href: "/enterprise" },
   { name: "Career Services", href: "/career-services" },
-  { name: "About", href: "/about" },
   { name: "Contact", href: "/contact" },
+];
+
+const allNavigation: { name: string; href: string; dropdown?: { name: string; href: string }[] }[] = [
+  { name: "Home", href: "/" },
+  ...primaryNav,
+  ...moreLinks,
 ];
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [moreOpen, setMoreOpen] = useState(false);
   const [mobileDropdownOpen, setMobileDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const moreRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
         setDropdownOpen(false);
+      }
+      if (moreRef.current && !moreRef.current.contains(e.target as Node)) {
+        setMoreOpen(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -55,13 +68,13 @@ export function Header() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden xl:flex xl:items-center xl:gap-3.5 2xl:gap-5">
-            {navigation.map((item) =>
+          <div className="hidden xl:flex xl:items-center xl:gap-4 2xl:gap-5">
+            {primaryNav.map((item) =>
               item.dropdown ? (
                 <div key={item.name} className="relative" ref={dropdownRef}>
                   <button
                     onClick={() => setDropdownOpen(!dropdownOpen)}
-                    className="flex items-center gap-0.5 text-[13px] 2xl:text-sm font-semibold text-white hover:text-teal transition-colors whitespace-nowrap relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-teal after:transition-all hover:after:w-full"
+                    className="flex items-center gap-0.5 text-sm font-semibold text-white hover:text-teal transition-colors whitespace-nowrap relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-teal after:transition-all hover:after:w-full"
                   >
                     {item.name}
                     <ChevronDown className={cn("h-3 w-3 transition-transform", dropdownOpen && "rotate-180")} />
@@ -85,21 +98,46 @@ export function Header() {
                 <Link
                   key={item.name}
                   to={item.href}
-                  className="text-[13px] 2xl:text-sm font-semibold text-white hover:text-teal transition-colors whitespace-nowrap relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-teal after:transition-all hover:after:w-full"
+                  className="text-sm font-semibold text-white hover:text-teal transition-colors whitespace-nowrap relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-teal after:transition-all hover:after:w-full"
                 >
                   {item.name}
                 </Link>
               )
             )}
+
+            {/* More dropdown */}
+            <div className="relative" ref={moreRef}>
+              <button
+                onClick={() => setMoreOpen(!moreOpen)}
+                className="flex items-center gap-0.5 text-sm font-semibold text-white/80 hover:text-teal transition-colors whitespace-nowrap"
+              >
+                More
+                <ChevronDown className={cn("h-3 w-3 transition-transform", moreOpen && "rotate-180")} />
+              </button>
+              {moreOpen && (
+                <div className="absolute top-full right-0 mt-2 w-52 bg-white rounded-lg shadow-xl border border-border/60 py-2 z-50">
+                  {moreLinks.map((link) => (
+                    <Link
+                      key={link.href}
+                      to={link.href}
+                      onClick={() => setMoreOpen(false)}
+                      className="block px-4 py-2.5 text-sm text-foreground hover:bg-muted hover:text-primary transition-colors"
+                    >
+                      {link.name}
+                    </Link>
+                  ))}
+                </div>
+              )}
+          </div>
           </div>
         </div>
 
         {/* Desktop CTA */}
-        <div className="hidden xl:flex xl:items-center xl:gap-2 2xl:gap-3 flex-shrink-0">
-          <Link to="/student-login" className="px-3 py-1.5 rounded-md bg-accent text-white font-semibold text-[13px] 2xl:text-sm hover:bg-accent/90 transition-colors whitespace-nowrap">
+        <div className="hidden xl:flex xl:items-center xl:gap-3 flex-shrink-0">
+          <Link to="/student-login" className="px-3 py-1.5 rounded-md bg-accent text-white font-semibold text-sm hover:bg-accent/90 transition-colors whitespace-nowrap">
             Student Login
           </Link>
-          <Button asChild size="sm" className="bg-[hsl(0,72%,45%)] text-white hover:bg-[hsl(0,72%,38%)] text-[13px] 2xl:text-sm whitespace-nowrap">
+          <Button asChild size="sm" className="bg-[hsl(0,72%,45%)] text-white hover:bg-[hsl(0,72%,38%)] text-sm whitespace-nowrap">
             <Link to="/apply">Apply Now</Link>
           </Button>
         </div>
@@ -127,7 +165,7 @@ export function Header() {
         )}
       >
         <div className="container-academy py-4 space-y-4">
-          {navigation.map((item) =>
+          {allNavigation.map((item) =>
             item.dropdown ? (
               <div key={item.name}>
                 <button
