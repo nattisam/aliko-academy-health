@@ -34,6 +34,13 @@ import corporateImg from "@/assets/institutional/corporate.jpg";
 import washImg from "@/assets/institutional/wash.jpg";
 import executiveImg from "@/assets/institutional/executive.jpg";
 
+import serveGovernmentImg from "@/assets/institutional/serve-government.jpg";
+import serveHospitalImg from "@/assets/institutional/serve-hospital.jpg";
+import serveInternationalImg from "@/assets/institutional/serve-international.jpg";
+import serveAuImg from "@/assets/institutional/serve-au.jpg";
+import serveCorporateImg from "@/assets/institutional/serve-corporate.jpg";
+import serveDefenseImg from "@/assets/institutional/serve-defense.jpg";
+
 const iconMap: Record<string, React.ElementType> = {
   Landmark,
   Hospital,
@@ -125,17 +132,36 @@ const InstitutionalTraining = () => {
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {whoWeServe.map((card) => {
+            {whoWeServe.map((card, index) => {
               const IconComp = iconMap[card.icon] || Building2;
+              const serveImages = [
+                serveGovernmentImg,
+                serveHospitalImg,
+                serveInternationalImg,
+                serveAuImg,
+                serveCorporateImg,
+                serveDefenseImg,
+              ];
+              const thumbImg = serveImages[index] || serveGovernmentImg;
               return (
                 <Card
                   key={card.title}
-                  className="group hover:shadow-lg hover:-translate-y-1 transition-all duration-300 border-border/60"
+                  className="group hover:shadow-lg hover:-translate-y-1 transition-all duration-300 border-border/60 overflow-hidden"
                 >
-                  <CardContent className="p-6">
-                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
-                      <IconComp className="h-6 w-6 text-primary" />
+                  <div className="relative h-40 overflow-hidden">
+                    <img
+                      src={thumbImg}
+                      alt={card.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[hsl(216,50%,16%)]/70 to-transparent" />
+                    <div className="absolute bottom-3 left-4">
+                      <div className="w-9 h-9 rounded-lg bg-white/15 backdrop-blur-sm flex items-center justify-center">
+                        <IconComp className="h-5 w-5 text-white" />
+                      </div>
                     </div>
+                  </div>
+                  <CardContent className="p-5">
                     <h3 className="text-lg font-bold text-foreground mb-2">
                       {card.title}
                     </h3>
