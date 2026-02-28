@@ -22,6 +22,13 @@ import {
 } from "lucide-react";
 import { institutionalCategories } from "@/data/institutionalPrograms";
 
+import publicHealthImg from "@/assets/institutional/public-health.jpg";
+import digitalHealthImg from "@/assets/institutional/digital-health.jpg";
+import clinicalImg from "@/assets/institutional/clinical.jpg";
+import corporateImg from "@/assets/institutional/corporate.jpg";
+import washImg from "@/assets/institutional/wash.jpg";
+import executiveImg from "@/assets/institutional/executive.jpg";
+
 const categoryIcons: Record<string, React.ElementType> = {
   "public-health": ShieldCheck,
   "digital-health": Cpu,
@@ -29,6 +36,15 @@ const categoryIcons: Record<string, React.ElementType> = {
   corporate: HardHat,
   wash: Droplets,
   executive: Crown,
+};
+
+const categoryImages: Record<string, string> = {
+  "public-health": publicHealthImg,
+  "digital-health": digitalHealthImg,
+  clinical: clinicalImg,
+  corporate: corporateImg,
+  wash: washImg,
+  executive: executiveImg,
 };
 
 const InstitutionalCategoryDetail = () => {
@@ -49,12 +65,17 @@ const InstitutionalCategoryDetail = () => {
   }
 
   const CatIcon = categoryIcons[category.id] || BookOpen;
+  const heroImg = categoryImages[category.id];
 
   return (
     <Layout>
-      {/* Hero */}
-      <section className="relative py-16 lg:py-24 bg-[hsl(216,50%,16%)] overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/15 via-transparent to-teal/10" />
+      {/* Hero with background image */}
+      <section className="relative py-16 lg:py-24 overflow-hidden">
+        <div className="absolute inset-0">
+          <img src={heroImg} alt={category.name} className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-[hsl(216,50%,16%)]/85" />
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/15 via-transparent to-teal/10" />
+        </div>
         <div className="container-academy relative z-10">
           <Link
             to="/institutional-training"
@@ -115,7 +136,6 @@ const InstitutionalCategoryDetail = () => {
       <section className="py-12 bg-muted/30">
         <div className="container-academy">
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-            {/* Target Audience */}
             <Card className="border-border/60">
               <CardContent className="p-5">
                 <div className="flex items-center gap-2 mb-3">
@@ -133,7 +153,6 @@ const InstitutionalCategoryDetail = () => {
               </CardContent>
             </Card>
 
-            {/* Duration Options */}
             <Card className="border-border/60">
               <CardContent className="p-5">
                 <div className="flex items-center gap-2 mb-3">
@@ -150,7 +169,6 @@ const InstitutionalCategoryDetail = () => {
               </CardContent>
             </Card>
 
-            {/* Delivery Formats */}
             <Card className="border-border/60">
               <CardContent className="p-5">
                 <div className="flex items-center gap-2 mb-3">
@@ -167,7 +185,6 @@ const InstitutionalCategoryDetail = () => {
               </CardContent>
             </Card>
 
-            {/* Certification */}
             <Card className="border-border/60">
               <CardContent className="p-5">
                 <div className="flex items-center gap-2 mb-3">
@@ -227,7 +244,7 @@ const InstitutionalCategoryDetail = () => {
             ))}
           </div>
 
-          {/* Ideal For (if available) */}
+          {/* Ideal For */}
           {category.idealFor && (
             <div className="mt-12 p-6 rounded-xl bg-muted/50 border border-border">
               <h3 className="font-semibold text-foreground mb-3">Ideal For</h3>
@@ -249,8 +266,8 @@ const InstitutionalCategoryDetail = () => {
                   Ready to Build Capacity?
                 </h3>
                 <p className="text-white/70 mb-6">
-                  Contact our institutional team to discuss customized training
-                  solutions for your organization.
+                  Contact our government training team to discuss customized
+                  solutions for your agency or institution.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3 justify-center">
                   <Button asChild size="lg">
@@ -262,8 +279,7 @@ const InstitutionalCategoryDetail = () => {
                   <Button
                     asChild
                     size="lg"
-                    variant="outline"
-                    className="border-white/30 text-white hover:bg-white/10"
+                    variant="secondary"
                   >
                     <Link to="/institutional-training">
                       View All Categories

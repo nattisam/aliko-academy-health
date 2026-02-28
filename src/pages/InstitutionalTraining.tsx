@@ -8,7 +8,6 @@ import {
   Landmark,
   Hospital,
   Globe,
-  Network,
   Building2,
   MapPin,
   ShieldCheck,
@@ -28,13 +27,20 @@ import {
   institutionalPricingTiers,
 } from "@/data/institutionalPrograms";
 
+import publicHealthImg from "@/assets/institutional/public-health.jpg";
+import digitalHealthImg from "@/assets/institutional/digital-health.jpg";
+import clinicalImg from "@/assets/institutional/clinical.jpg";
+import corporateImg from "@/assets/institutional/corporate.jpg";
+import washImg from "@/assets/institutional/wash.jpg";
+import executiveImg from "@/assets/institutional/executive.jpg";
+
 const iconMap: Record<string, React.ElementType> = {
   Landmark,
   Hospital,
   Globe,
-  Network,
   Building2,
   MapPin,
+  ShieldCheck,
 };
 
 const categoryIcons: Record<string, React.ElementType> = {
@@ -44,6 +50,15 @@ const categoryIcons: Record<string, React.ElementType> = {
   corporate: HardHat,
   wash: Droplets,
   executive: Crown,
+};
+
+const categoryImages: Record<string, string> = {
+  "public-health": publicHealthImg,
+  "digital-health": digitalHealthImg,
+  clinical: clinicalImg,
+  corporate: corporateImg,
+  wash: washImg,
+  executive: executiveImg,
 };
 
 const InstitutionalTraining = () => {
@@ -58,17 +73,18 @@ const InstitutionalTraining = () => {
           <div className="max-w-3xl">
             <Badge className="mb-6 bg-teal/20 text-teal-foreground border-teal/30 hover:bg-teal/30">
               <BookOpen className="h-3 w-3 mr-1" />
-              Institutional & Specialty Training
+              Government & Institutional Training
             </Badge>
 
             <h1 className="text-3xl lg:text-5xl xl:text-6xl font-bold text-white leading-tight">
               Strengthening Health Systems Through{" "}
-              <span className="text-teal">Institutional Training</span>
+              <span className="text-teal">Government Training</span>
             </h1>
 
             <p className="mt-6 text-lg lg:text-xl text-white/75 max-w-2xl">
-              Capacity-building programs designed for governments, NGOs, hospitals,
-              development agencies, and corporate institutions.
+              Capacity-building programs designed for government ministries,
+              public health agencies, defense health services, and regional
+              governmental bodies.
             </p>
 
             <div className="mt-8 flex flex-col sm:flex-row gap-4">
@@ -81,12 +97,12 @@ const InstitutionalTraining = () => {
               <Button
                 asChild
                 size="lg"
-                variant="outline"
-                className="text-base border-white/30 text-white hover:bg-white/10"
+                variant="secondary"
+                className="text-base"
               >
                 <Link to="/contact">
                   <FileText className="mr-2 h-5 w-5" />
-                  Request Institutional Proposal
+                  Request Government Proposal
                 </Link>
               </Button>
             </div>
@@ -99,13 +115,14 @@ const InstitutionalTraining = () => {
         <div className="container-academy">
           <div className="text-center mb-14">
             <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-semibold mb-4">
-              Our Partners
+              Government Partners
             </span>
             <h2 className="text-3xl lg:text-4xl font-bold text-foreground">
               Who We Serve
             </h2>
             <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
-              We design training solutions for the world's most critical health institutions.
+              We design training solutions exclusively for government
+              institutions and public sector health agencies.
             </p>
           </div>
 
@@ -135,7 +152,7 @@ const InstitutionalTraining = () => {
         </div>
       </section>
 
-      {/* Program Categories */}
+      {/* Program Categories with Thumbnails */}
       <section id="programs" className="py-20 bg-muted/30">
         <div className="container-academy">
           <div className="text-center mb-14">
@@ -146,24 +163,38 @@ const InstitutionalTraining = () => {
               Program Categories
             </h2>
             <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
-              Six specialized training divisions covering the full spectrum of institutional health needs.
+              Six specialized training divisions covering the full spectrum of
+              government health needs.
             </p>
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {institutionalCategories.map((cat) => {
               const CatIcon = categoryIcons[cat.id] || BookOpen;
+              const thumbImg = categoryImages[cat.id];
               return (
                 <Card
                   key={cat.id}
                   className="group flex flex-col hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden"
                 >
-                  <div className="bg-gradient-to-r from-[hsl(216,50%,16%)] to-[hsl(216,50%,22%)] p-6">
-                    <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mb-3">
-                      <CatIcon className="h-5 w-5 text-teal" />
+                  {/* Thumbnail Image */}
+                  <div className="relative h-44 overflow-hidden">
+                    <img
+                      src={thumbImg}
+                      alt={cat.name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[hsl(216,50%,16%)]/80 to-transparent" />
+                    <div className="absolute bottom-3 left-4 flex items-center gap-2">
+                      <div className="w-8 h-8 rounded-lg bg-white/15 backdrop-blur-sm flex items-center justify-center">
+                        <CatIcon className="h-4 w-4 text-teal" />
+                      </div>
+                      <h3 className="text-base font-bold text-white drop-shadow-md">
+                        {cat.name}
+                      </h3>
                     </div>
-                    <h3 className="text-lg font-bold text-white">{cat.name}</h3>
                   </div>
+
                   <CardContent className="flex-1 p-6">
                     <p className="text-sm text-muted-foreground leading-relaxed mb-4">
                       {cat.overview}
@@ -201,10 +232,11 @@ const InstitutionalTraining = () => {
               Pricing
             </span>
             <h2 className="text-3xl lg:text-4xl font-bold text-foreground">
-              Institutional Packages
+              Government Packages
             </h2>
             <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
-              Flexible pricing structured around your team size and institutional needs.
+              Flexible pricing structured around your team size and
+              institutional needs.
             </p>
           </div>
 
@@ -224,7 +256,9 @@ const InstitutionalTraining = () => {
                   </div>
                 )}
                 <CardContent className="flex-1 p-6">
-                  <h3 className="text-lg font-bold text-foreground">{tier.name}</h3>
+                  <h3 className="text-lg font-bold text-foreground">
+                    {tier.name}
+                  </h3>
                   <p className="text-sm font-medium text-primary mt-1">
                     {tier.participants}
                   </p>
@@ -242,7 +276,7 @@ const InstitutionalTraining = () => {
                   <Button
                     asChild
                     className="w-full mt-6"
-                    variant={tier.highlighted ? "default" : "outline"}
+                    variant={tier.highlighted ? "default" : "secondary"}
                   >
                     <Link to="/contact">Request Quote</Link>
                   </Button>
@@ -252,7 +286,7 @@ const InstitutionalTraining = () => {
           </div>
 
           <div className="mt-10 text-center">
-            <Button asChild variant="outline" size="lg">
+            <Button asChild variant="secondary" size="lg">
               <Link to="/contact">
                 <FileText className="mr-2 h-5 w-5" />
                 Download Capability Statement
@@ -269,12 +303,12 @@ const InstitutionalTraining = () => {
             Need a Custom Government Contract?
           </h2>
           <p className="text-white/70 max-w-xl mx-auto mb-8">
-            We design tailored training programs for government agencies, with full compliance
-            documentation and multi-site delivery capabilities.
+            We design tailored training programs for government agencies, with
+            full compliance documentation and multi-site delivery capabilities.
           </p>
           <Button asChild size="lg" className="text-base">
             <Link to="/contact">
-              Contact Our Institutional Team
+              Contact Our Government Team
               <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
           </Button>
