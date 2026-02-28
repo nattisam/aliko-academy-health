@@ -36,6 +36,7 @@ import AdminApplications from "./pages/admin/AdminApplications";
 import AdminEnterpriseLeads from "./pages/admin/AdminEnterpriseLeads";
 import AdminExamPrep from "./pages/admin/AdminExamPrep";
 import AdminContent from "./pages/admin/AdminContent";
+import AdminInstitutional from "./pages/admin/AdminInstitutional";
 
 const queryClient = new QueryClient();
 
@@ -80,6 +81,7 @@ const App = () => (
               <Route path="/admin/enterprise-leads" element={<ProtectedRoute><AdminEnterpriseLeads /></ProtectedRoute>} />
               <Route path="/admin/exam-prep" element={<ProtectedRoute><AdminExamPrep /></ProtectedRoute>} />
               <Route path="/admin/content" element={<ProtectedRoute><AdminContent /></ProtectedRoute>} />
+              <Route path="/admin/institutional" element={<ProtectedRoute><AdminInstitutional /></ProtectedRoute>} />
 
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
