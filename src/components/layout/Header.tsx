@@ -55,7 +55,7 @@ export function Header() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden xl:flex xl:items-center xl:gap-2 2xl:gap-4">
+          <div className="hidden xl:flex xl:items-center xl:gap-3.5 2xl:gap-5">
             {navigation.map((item) =>
               item.dropdown ? (
                 <div key={item.name} className="relative" ref={dropdownRef}>
