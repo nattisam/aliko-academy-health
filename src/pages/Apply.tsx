@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { supabase } from "@/integrations/supabase/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { 
@@ -172,15 +173,55 @@ const Apply = () => {
 
   const onSubmit = async (data: ApplicationFormData) => {
     setIsSubmitting(true);
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    console.log("Application submitted:", data);
-    console.log("Uploaded files:", uploadedFiles);
-    setIsSubmitting(false);
-    setIsSubmitted(true);
-    toast({
-      title: "Application Submitted!",
-      description: "We've received your application and will contact you within 2-3 business days.",
-    });
+    try {
+      // 1. Insert student record
+      const address = `${data.streetAddress}, ${data.city}, ${data.state} ${data.zipCode}`;
+      const { data: student, error: studentError } = await supabase
+        .from("students")
+        .insert({
+          first_name: data.firstName,
+          last_name: data.lastName,
+          email: data.email,
+          phone: data.phone,
+          date_of_birth: data.dateOfBirth,
+          address,
+        })
+        .select("id")
+        .single();
+
+      if (studentError) throw studentError;
+
+      // 2. Insert application record
+      const { error: appError } = await supabase
+        .from("applications")
+        .insert({
+          student_id: student.id,
+          source: "website_form" as const,
+          notes: [
+            data.highestEducation && `Education: ${data.highestEducation}`,
+            data.previousHealthcareExperience && `Experience: ${data.previousHealthcareExperience}`,
+            data.howDidYouHear && `Referral: ${data.howDidYouHear}`,
+            data.emergencyContactName && `Emergency: ${data.emergencyContactName} (${data.emergencyContactRelation}) ${data.emergencyContactPhone}`,
+            data.additionalNotes,
+          ].filter(Boolean).join("\n"),
+        });
+
+      if (appError) throw appError;
+
+      setIsSubmitted(true);
+      toast({
+        title: "Application Submitted!",
+        description: "We've received your application and will contact you within 2-3 business days.",
+      });
+    } catch (err: any) {
+      toast({
+        title: "Submission Error",
+        description: err.message || "Something went wrong. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const selectedProgram = programs.find(p => p.id === watchedFields.programId);

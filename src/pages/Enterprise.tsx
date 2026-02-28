@@ -1,3 +1,4 @@
+import { supabase } from "@/integrations/supabase/client";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -89,17 +90,40 @@ export default function Enterprise() {
     );
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
-    // Simulate submission
-    setTimeout(() => {
-      setIsSubmitting(false);
+    try {
+      const formData = new FormData(e.currentTarget);
+      const firstName = (formData.get("contact-first") as string) || "";
+      const lastName = (formData.get("contact-last") as string) || "";
+      const { error } = await supabase.from("enterprise_leads").insert({
+        organization_name: (formData.get("org-name") as string) || "",
+        contact_name: `${firstName} ${lastName}`.trim(),
+        email: (formData.get("contact-email") as string) || "",
+        phone: (formData.get("contact-phone") as string) || "",
+        message: [
+          formData.get("contact-title") && `Title: ${formData.get("contact-title")}`,
+          selectedPrograms.length > 0 && `Programs: ${selectedPrograms.join(", ")}`,
+          formData.get("additional-info") && `Notes: ${formData.get("additional-info")}`,
+        ].filter(Boolean).join("\n"),
+      });
+      if (error) throw error;
       toast({
         title: "Request Submitted!",
         description: "Our enterprise team will contact you within 1-2 business days.",
       });
-    }, 1500);
+      (e.target as HTMLFormElement).reset();
+      setSelectedPrograms([]);
+    } catch (err: any) {
+      toast({
+        title: "Submission Error",
+        description: err.message || "Something went wrong. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -179,7 +203,7 @@ export default function Enterprise() {
                 <CardContent className="grid sm:grid-cols-2 gap-5">
                   <div className="space-y-2">
                     <Label htmlFor="org-name" className="text-sm font-medium">Organization Name *</Label>
-                    <Input id="org-name" placeholder="e.g., Seattle General Hospital" required className="h-11 text-base" />
+                    <Input id="org-name" name="org-name" placeholder="e.g., Seattle General Hospital" required className="h-11 text-base" />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="org-type" className="text-sm font-medium">Organization Type *</Label>
@@ -233,23 +257,23 @@ export default function Enterprise() {
                 <CardContent className="grid sm:grid-cols-2 gap-5">
                   <div className="space-y-2">
                     <Label htmlFor="contact-first" className="text-sm font-medium">First Name *</Label>
-                    <Input id="contact-first" required className="h-11 text-base" />
+                    <Input id="contact-first" name="contact-first" required className="h-11 text-base" />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="contact-last" className="text-sm font-medium">Last Name *</Label>
-                    <Input id="contact-last" required className="h-11 text-base" />
+                    <Input id="contact-last" name="contact-last" required className="h-11 text-base" />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="contact-title" className="text-sm font-medium">Job Title *</Label>
-                    <Input id="contact-title" placeholder="e.g., HR Director" required className="h-11 text-base" />
+                    <Input id="contact-title" name="contact-title" placeholder="e.g., HR Director" required className="h-11 text-base" />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="contact-email" className="text-sm font-medium">Email *</Label>
-                    <Input id="contact-email" type="email" required className="h-11 text-base" />
+                    <Input id="contact-email" name="contact-email" type="email" required className="h-11 text-base" />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="contact-phone" className="text-sm font-medium">Phone *</Label>
-                    <Input id="contact-phone" type="tel" placeholder="(xxx) xxx-xxxx" required className="h-11 text-base" />
+                    <Input id="contact-phone" name="contact-phone" type="tel" placeholder="(xxx) xxx-xxxx" required className="h-11 text-base" />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="contact-preferred" className="text-sm font-medium">Preferred Contact Method</Label>
@@ -373,7 +397,7 @@ export default function Enterprise() {
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="goals" className="text-sm font-medium">Primary goals for this sponsorship</Label>
-                    <Textarea id="goals" rows={3} placeholder="e.g., Fill CNA staffing gaps, upskill employees..." className="text-base" />
+                    <Textarea id="goals" name="additional-info" rows={3} placeholder="e.g., Fill CNA staffing gaps, upskill employees..." className="text-base" />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="requirements" className="text-sm font-medium">Specific training requirements</Label>
