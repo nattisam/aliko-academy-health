@@ -283,14 +283,6 @@ const InstitutionalTraining = () => {
             ))}
           </div>
 
-          <div className="mt-10 text-center">
-            <Button asChild variant="secondary" size="lg">
-              <Link to="/contact">
-                <FileText className="mr-2 h-5 w-5" />
-                Download Capability Statement
-              </Link>
-            </Button>
-          </div>
         </div>
       </section>
 
