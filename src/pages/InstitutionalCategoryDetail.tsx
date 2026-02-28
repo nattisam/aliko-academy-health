@@ -29,6 +29,19 @@ import corporateImg from "@/assets/institutional/corporate.jpg";
 import washImg from "@/assets/institutional/wash.jpg";
 import executiveImg from "@/assets/institutional/executive.jpg";
 
+import progPh1 from "@/assets/institutional/prog-ph1.jpg";
+import progPh2 from "@/assets/institutional/prog-ph2.jpg";
+import progDh1 from "@/assets/institutional/prog-dh1.jpg";
+import progDh2 from "@/assets/institutional/prog-dh2.jpg";
+import progCl1 from "@/assets/institutional/prog-cl1.jpg";
+import progCl2 from "@/assets/institutional/prog-cl2.jpg";
+import progCo1 from "@/assets/institutional/prog-co1.jpg";
+import progCo2 from "@/assets/institutional/prog-co2.jpg";
+import progWa1 from "@/assets/institutional/prog-wa1.jpg";
+import progWa2 from "@/assets/institutional/prog-wa2.jpg";
+import progEx1 from "@/assets/institutional/prog-ex1.jpg";
+import progEx2 from "@/assets/institutional/prog-ex2.jpg";
+
 const categoryIcons: Record<string, React.ElementType> = {
   "public-health": ShieldCheck,
   "digital-health": Cpu,
@@ -45,6 +58,15 @@ const categoryImages: Record<string, string> = {
   corporate: corporateImg,
   wash: washImg,
   executive: executiveImg,
+};
+
+const programThumbs: Record<string, string[]> = {
+  "public-health": [progPh1, progPh2],
+  "digital-health": [progDh1, progDh2],
+  clinical: [progCl1, progCl2],
+  corporate: [progCo1, progCo2],
+  wash: [progWa1, progWa2],
+  executive: [progEx1, progEx2],
 };
 
 const InstitutionalCategoryDetail = () => {
@@ -218,30 +240,42 @@ const InstitutionalCategoryDetail = () => {
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {category.programs.map((program) => (
-              <Card
-                key={program.title}
-                className="group flex flex-col hover:shadow-lg hover:-translate-y-1 transition-all duration-300 border-border/60"
-              >
-                <CardContent className="flex-1 p-6">
-                  <h3 className="text-base font-bold text-foreground mb-2 group-hover:text-primary transition-colors">
-                    {program.title}
-                  </h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-                    {program.description}
-                  </p>
-                  <div className="flex flex-wrap gap-3 text-sm text-muted-foreground">
-                    <div className="flex items-center gap-1.5">
-                      <Clock className="h-3.5 w-3.5" />
-                      <span>{program.duration}</span>
-                    </div>
-                    <Badge variant="secondary" className="text-xs">
-                      {program.delivery}
-                    </Badge>
+            {category.programs.map((program, index) => {
+              const thumbs = programThumbs[category.id] || [publicHealthImg, publicHealthImg];
+              const thumbImg = thumbs[index % thumbs.length];
+              return (
+                <Card
+                  key={program.title}
+                  className="group flex flex-col hover:shadow-lg hover:-translate-y-1 transition-all duration-300 border-border/60 overflow-hidden"
+                >
+                  <div className="relative h-36 overflow-hidden">
+                    <img
+                      src={thumbImg}
+                      alt={program.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-background/60 to-transparent" />
                   </div>
-                </CardContent>
-              </Card>
-            ))}
+                  <CardContent className="flex-1 p-5">
+                    <h3 className="text-base font-bold text-foreground mb-2 group-hover:text-primary transition-colors">
+                      {program.title}
+                    </h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed mb-3">
+                      {program.description}
+                    </p>
+                    <div className="flex flex-wrap gap-3 text-sm text-muted-foreground">
+                      <div className="flex items-center gap-1.5">
+                        <Clock className="h-3.5 w-3.5" />
+                        <span>{program.duration}</span>
+                      </div>
+                      <Badge variant="secondary" className="text-xs">
+                        {program.delivery}
+                      </Badge>
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })}
           </div>
 
           {/* Ideal For */}
