@@ -23,7 +23,8 @@ import Contact from "./pages/Contact";
 import StudentLogin from "./pages/StudentLogin";
 import NotFound from "./pages/NotFound";
 import Enterprise from "./pages/Enterprise";
-
+import InstitutionalTraining from "./pages/InstitutionalTraining";
+import InstitutionalCategoryDetail from "./pages/InstitutionalCategoryDetail";
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -52,6 +53,8 @@ const App = () => (
             <Route path="/contact" element={<Contact />} />
             <Route path="/student-login" element={<StudentLogin />} />
             <Route path="/enterprise" element={<Enterprise />} />
+            <Route path="/institutional-training" element={<InstitutionalTraining />} />
+            <Route path="/institutional-training/:categorySlug" element={<InstitutionalCategoryDetail />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
