@@ -55,16 +55,16 @@ export function Header() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex lg:items-center lg:gap-5">
+          <div className="hidden xl:flex xl:items-center xl:gap-3 2xl:gap-4">
             {navigation.map((item) =>
               item.dropdown ? (
                 <div key={item.name} className="relative" ref={dropdownRef}>
                   <button
                     onClick={() => setDropdownOpen(!dropdownOpen)}
-                    className="flex items-center gap-1 text-sm font-bold text-white hover:text-teal transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-teal after:transition-all hover:after:w-full"
+                    className="flex items-center gap-0.5 text-xs 2xl:text-sm font-semibold text-white hover:text-teal transition-colors whitespace-nowrap relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-teal after:transition-all hover:after:w-full"
                   >
                     {item.name}
-                    <ChevronDown className={cn("h-3.5 w-3.5 transition-transform", dropdownOpen && "rotate-180")} />
+                    <ChevronDown className={cn("h-3 w-3 transition-transform", dropdownOpen && "rotate-180")} />
                   </button>
                   {dropdownOpen && (
                     <div className="absolute top-full left-0 mt-2 w-72 bg-white rounded-lg shadow-xl border border-border/60 py-2 z-50">
@@ -85,7 +85,7 @@ export function Header() {
                 <Link
                   key={item.name}
                   to={item.href}
-                  className="text-sm font-bold text-white hover:text-teal transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-teal after:transition-all hover:after:w-full"
+                  className="text-xs 2xl:text-sm font-semibold text-white hover:text-teal transition-colors whitespace-nowrap relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-teal after:transition-all hover:after:w-full"
                 >
                   {item.name}
                 </Link>
@@ -95,11 +95,11 @@ export function Header() {
         </div>
 
         {/* Desktop CTA */}
-        <div className="hidden lg:flex lg:items-center lg:gap-4">
-          <Link to="/student-login" className="px-4 py-2 rounded-md bg-accent text-white font-bold text-sm hover:bg-accent/90 transition-colors">
+        <div className="hidden xl:flex xl:items-center xl:gap-2 2xl:gap-3 flex-shrink-0">
+          <Link to="/student-login" className="px-3 py-1.5 rounded-md bg-accent text-white font-semibold text-xs 2xl:text-sm hover:bg-accent/90 transition-colors whitespace-nowrap">
             Student Login
           </Link>
-          <Button asChild className="bg-[hsl(0,72%,45%)] text-white hover:bg-[hsl(0,72%,38%)]">
+          <Button asChild size="sm" className="bg-[hsl(0,72%,45%)] text-white hover:bg-[hsl(0,72%,38%)] text-xs 2xl:text-sm whitespace-nowrap">
             <Link to="/apply">Apply Now</Link>
           </Button>
         </div>
@@ -107,7 +107,7 @@ export function Header() {
         {/* Mobile menu button */}
         <button
           type="button"
-          className="lg:hidden -m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-primary"
+          className="xl:hidden -m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-primary"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           aria-label="Toggle menu"
         >
@@ -122,7 +122,7 @@ export function Header() {
       {/* Mobile menu */}
       <div
         className={cn(
-          "lg:hidden border-t border-border overflow-hidden transition-all duration-300 bg-white",
+          "xl:hidden border-t border-border overflow-hidden transition-all duration-300 bg-white",
           mobileMenuOpen ? "max-h-[700px]" : "max-h-0"
         )}
       >
