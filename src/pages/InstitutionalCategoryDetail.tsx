@@ -266,8 +266,8 @@ const InstitutionalCategoryDetail = () => {
                   Ready to Build Capacity?
                 </h3>
                 <p className="text-white/70 mb-6">
-                  Contact our government training team to discuss customized
-                  solutions for your agency or institution.
+                  Contact our institutional team to discuss customized
+                  solutions for your organization.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3 justify-center">
                   <Button asChild size="lg">
