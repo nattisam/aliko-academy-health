@@ -72,7 +72,7 @@ export const institutionalCategories: InstitutionalCategory[] = [
     shortName: "Public Health",
     slug: "public-health",
     overview:
-      "Short-term and advanced training programs designed to strengthen emergency preparedness, outbreak response, and humanitarian health operations.",
+      "Emergency preparedness, outbreak response, and humanitarian health operations training.",
     targetAudience: [
       "Public health officers",
       "Emergency coordinators",
@@ -98,7 +98,7 @@ export const institutionalCategories: InstitutionalCategory[] = [
     shortName: "Digital Health",
     slug: "digital-health",
     overview:
-      "Technology-enabled health systems training for ministries, hospitals, and development partners.",
+      "Health IT systems, data analytics, AI, and telemedicine deployment for modern institutions.",
     targetAudience: [
       "Health IT professionals",
       "Hospital administrators",
@@ -124,7 +124,7 @@ export const institutionalCategories: InstitutionalCategory[] = [
     shortName: "Clinical Training",
     slug: "clinical",
     overview:
-      "Upskilling frontline healthcare professionals beyond traditional CNA-level certification.",
+      "Advanced clinical skills for frontline healthcare professionals beyond entry-level certification.",
     targetAudience: [
       "Nurses and nursing assistants",
       "Clinical officers",
@@ -150,7 +150,7 @@ export const institutionalCategories: InstitutionalCategory[] = [
     shortName: "Corporate Health",
     slug: "corporate",
     overview:
-      "Workplace health and safety training designed for construction, infrastructure, manufacturing, and institutional employers.",
+      "Workplace safety, first aid, and corporate wellness for construction, manufacturing, and industry.",
     targetAudience: [
       "HR and safety officers",
       "Construction and manufacturing firms",
@@ -181,7 +181,7 @@ export const institutionalCategories: InstitutionalCategory[] = [
     shortName: "WASH",
     slug: "wash",
     overview:
-      "Water, sanitation, and environmental health programs aligned with sustainable development goals.",
+      "Water, sanitation, and hygiene programs aligned with global sustainable development goals.",
     targetAudience: [
       "WASH program managers",
       "Environmental health officers",
@@ -206,7 +206,7 @@ export const institutionalCategories: InstitutionalCategory[] = [
     shortName: "Executive & Policy",
     slug: "executive",
     overview:
-      "Leadership-level programs for health policymakers and institutional leaders.",
+      "Strategic leadership programs for health policymakers, executives, and institutional leaders.",
     targetAudience: [
       "Health ministry leadership",
       "Hospital executives",
