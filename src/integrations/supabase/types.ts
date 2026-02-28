@@ -224,6 +224,107 @@ export type Database = {
         }
         Relationships: []
       }
+      institutional_categories: {
+        Row: {
+          certification_types: string[] | null
+          created_at: string
+          delivery_formats: string[] | null
+          display_order: number
+          duration_options: string[] | null
+          icon: string | null
+          id: string
+          ideal_for: string[] | null
+          is_active: boolean
+          name: string
+          overview: string | null
+          short_name: string
+          slug: string
+          target_audience: string[] | null
+          updated_at: string
+        }
+        Insert: {
+          certification_types?: string[] | null
+          created_at?: string
+          delivery_formats?: string[] | null
+          display_order?: number
+          duration_options?: string[] | null
+          icon?: string | null
+          id?: string
+          ideal_for?: string[] | null
+          is_active?: boolean
+          name: string
+          overview?: string | null
+          short_name: string
+          slug: string
+          target_audience?: string[] | null
+          updated_at?: string
+        }
+        Update: {
+          certification_types?: string[] | null
+          created_at?: string
+          delivery_formats?: string[] | null
+          display_order?: number
+          duration_options?: string[] | null
+          icon?: string | null
+          id?: string
+          ideal_for?: string[] | null
+          is_active?: boolean
+          name?: string
+          overview?: string | null
+          short_name?: string
+          slug?: string
+          target_audience?: string[] | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      institutional_programs: {
+        Row: {
+          category_id: string
+          created_at: string
+          delivery: string | null
+          description: string | null
+          display_order: number
+          duration: string | null
+          id: string
+          is_active: boolean
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          category_id: string
+          created_at?: string
+          delivery?: string | null
+          description?: string | null
+          display_order?: number
+          duration?: string | null
+          id?: string
+          is_active?: boolean
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          category_id?: string
+          created_at?: string
+          delivery?: string | null
+          description?: string | null
+          display_order?: number
+          duration?: string | null
+          id?: string
+          is_active?: boolean
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "institutional_programs_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "institutional_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           created_at: string
