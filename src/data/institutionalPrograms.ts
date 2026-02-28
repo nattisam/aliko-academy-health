@@ -57,12 +57,6 @@ export const whoWeServe: WhoWeServeCard[] = [
     icon: "Building2",
     filterCategories: ["corporate", "clinical", "digital-health"],
   },
-  {
-    title: "Defense & Security Health Services",
-    description: "Military medical corps and security agencies requiring specialized health workforce training.",
-    icon: "ShieldCheck",
-    filterCategories: ["public-health", "clinical", "corporate"],
-  },
 ];
 
 export const institutionalCategories: InstitutionalCategory[] = [
