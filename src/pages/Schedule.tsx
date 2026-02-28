@@ -208,7 +208,7 @@ const Schedule = () => {
                     </div>
                   </div>
                   <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                    <Badge className="bg-accent/90 backdrop-blur-sm text-white border-accent/50 hover:bg-accent text-sm px-3 py-1">Morning Class</Badge>
+                    <Badge className="bg-primary/90 backdrop-blur-sm text-white border-primary/50 hover:bg-primary text-sm px-3 py-1">Morning Class</Badge>
                     <div className="space-y-2 mt-3">
                       <div className="flex items-center gap-2 p-2.5 rounded-lg bg-white/15 backdrop-blur-sm">
                         <Clock className="h-4 w-4 text-blue-200 shrink-0" />
@@ -230,7 +230,7 @@ const Schedule = () => {
                     </div>
                   </div>
                   <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                    <Badge className="bg-accent/90 backdrop-blur-sm text-white border-accent/50 hover:bg-accent text-sm px-3 py-1">Night Class</Badge>
+                    <Badge className="bg-primary/90 backdrop-blur-sm text-white border-primary/50 hover:bg-primary text-sm px-3 py-1">Night Class</Badge>
                     <div className="space-y-2 mt-3">
                       <div className="flex items-center gap-2 p-2.5 rounded-lg bg-white/15 backdrop-blur-sm">
                         <Clock className="h-4 w-4 text-blue-200 shrink-0" />
@@ -252,7 +252,7 @@ const Schedule = () => {
                     </div>
                   </div>
                   <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                    <Badge className="bg-accent/90 backdrop-blur-sm text-white border-accent/50 hover:bg-accent text-sm px-3 py-1">Weekend Class</Badge>
+                    <Badge className="bg-primary/90 backdrop-blur-sm text-white border-primary/50 hover:bg-primary text-sm px-3 py-1">Weekend Class</Badge>
                     <div className="space-y-2 mt-3">
                       <div className="flex items-center gap-2 p-2.5 rounded-lg bg-white/15 backdrop-blur-sm">
                         <Sun className="h-4 w-4 text-blue-200 shrink-0" />

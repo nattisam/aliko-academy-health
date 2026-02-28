@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import logo from "@/assets/logo-new.png";
 
 const navigation = [
+  { name: "Home", href: "/" },
   { name: "Programs", href: "/programs" },
   { name: "Schedule", href: "/schedule" },
   { name: "Admissions", href: "/admissions" },
