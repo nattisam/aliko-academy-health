@@ -37,6 +37,7 @@ const mainNav = [
   { title: "Enterprise Leads", url: "/admin/enterprise-leads", icon: Building2 },
   { title: "Exam Prep", url: "/admin/exam-prep", icon: BookOpen },
   { title: "Institutional", url: "/admin/institutional", icon: Building2 },
+  { title: "Partners", url: "/admin/partners", icon: Building2 },
   { title: "Partnerships", url: "/admin/partnerships", icon: Handshake },
   { title: "Content", url: "/admin/content", icon: FileEdit },
 ];
