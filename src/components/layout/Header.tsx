@@ -19,17 +19,18 @@ const primaryNav = [
   { name: "Programs", href: "/programs" },
   { name: "Institutional Training", href: "/institutional-training", dropdown: institutionalDropdown },
   { name: "Admissions", href: "/admissions" },
-  { name: "Enterprise", href: "/enterprise" },
   { name: "About", href: "/about" },
+  { name: "Contact", href: "/contact" },
 ];
 
 const moreLinks = [
+  { name: "Enterprise", href: "/enterprise" },
   { name: "Schedule", href: "/schedule" },
   { name: "Tuition", href: "/tuition" },
   { name: "Partners", href: "/partners" },
   { name: "Partnerships", href: "/partnerships" },
   { name: "Career Services", href: "/career-services" },
-  { name: "Contact", href: "/contact" },
+  { name: "Exam Prep", href: "/exam-prep" },
 ];
 
 const allNavigation: { name: string; href: string; dropdown?: { name: string; href: string }[] }[] = [
@@ -146,7 +147,7 @@ export function Header() {
         {/* Mobile menu button */}
         <button
           type="button"
-          className="xl:hidden -m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-primary"
+          className="xl:hidden -m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-white"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           aria-label="Toggle menu"
         >
