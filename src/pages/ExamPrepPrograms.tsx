@@ -50,7 +50,16 @@ const ExamPrepPrograms = () => {
           {/* Program Grid */}
           <div className="grid sm:grid-cols-2 lg:grid-cols-2 gap-6">
             {sortedPrograms.map((program) => (
-              <Card key={program.id} className="flex flex-col hover:shadow-lg transition-shadow">
+              <Card key={program.id} className="group flex flex-col hover:shadow-lg transition-shadow overflow-hidden">
+                {program.image && (
+                  <div className="h-48 overflow-hidden">
+                    <img
+                      src={program.image}
+                      alt={program.name}
+                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                  </div>
+                )}
                 <CardHeader className="pb-3">
                   <div className="flex items-start justify-between gap-2">
                     <CardTitle className="text-lg leading-tight">{program.name}</CardTitle>
