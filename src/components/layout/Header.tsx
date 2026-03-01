@@ -70,7 +70,7 @@ export function Header() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden xl:flex xl:items-center xl:gap-4 2xl:gap-5">
+          <div className="hidden lg:flex lg:items-center lg:gap-3 xl:gap-4 2xl:gap-5">
             {primaryNav.map((item) =>
               item.dropdown ? (
                 <div key={item.name} className="relative" ref={dropdownRef}>
@@ -135,7 +135,7 @@ export function Header() {
         </div>
 
         {/* Desktop CTA */}
-        <div className="hidden xl:flex xl:items-center xl:gap-3 flex-shrink-0">
+        <div className="hidden lg:flex lg:items-center lg:gap-3 flex-shrink-0">
           <Link to="/student-login" className="px-3 py-1.5 rounded-md bg-accent text-white font-semibold text-sm hover:bg-accent/90 transition-colors whitespace-nowrap">
             Student Login
           </Link>
@@ -147,7 +147,7 @@ export function Header() {
         {/* Mobile menu button */}
         <button
           type="button"
-          className="xl:hidden -m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-white"
+          className="lg:hidden -m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-white"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           aria-label="Toggle menu"
         >
@@ -162,7 +162,7 @@ export function Header() {
       {/* Mobile menu */}
       <div
         className={cn(
-          "xl:hidden border-t border-border overflow-hidden transition-all duration-300 bg-white",
+          "lg:hidden border-t border-border overflow-hidden transition-all duration-300 bg-white",
           mobileMenuOpen ? "max-h-[700px]" : "max-h-0"
         )}
       >
