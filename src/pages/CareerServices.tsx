@@ -203,6 +203,25 @@ const CareerServices = () => {
             </div>
           </div>
 
+          {/* Job Listing CTA */}
+          <div className="relative bg-[hsl(216,50%,16%)] rounded-2xl p-8 lg:p-10 overflow-hidden mb-16 border border-border/20">
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-transparent to-accent/10 rounded-2xl" />
+            <div className="relative flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+              <div>
+                <h2 className="text-2xl lg:text-3xl font-bold text-white">Check Our Job Listings</h2>
+                <p className="mt-2 text-white/70">
+                  Explore open healthcare positions and take the first step towards a rewarding career.
+                </p>
+              </div>
+              <Button asChild size="lg" className="shrink-0 bg-accent hover:bg-accent/90 text-accent-foreground shadow-lg">
+                <a href="https://career.alikohub.com/" target="_blank" rel="noopener noreferrer">
+                  Visit Career Hub
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </a>
+              </Button>
+            </div>
+          </div>
+
           {/* Disclaimer & CTA */}
           <div className="relative bg-gradient-to-br from-muted/50 to-muted/30 rounded-2xl p-8 lg:p-10 overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-2xl" />
