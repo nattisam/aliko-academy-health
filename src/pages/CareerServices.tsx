@@ -213,10 +213,10 @@ const CareerServices = () => {
                   Explore open healthcare positions and take the first step towards a rewarding career.
                 </p>
               </div>
-              <Button asChild size="lg" className="shrink-0 bg-accent hover:bg-accent/90 text-accent-foreground shadow-lg">
+              <Button asChild size="lg" className="shrink-0 bg-accent hover:bg-accent/90 text-accent-foreground shadow-lg text-base font-bold px-8">
                 <a href="https://career.alikohub.com/" target="_blank" rel="noopener noreferrer">
                   Visit Career Hub
-                  <ArrowRight className="ml-2 h-4 w-4" />
+                  <ArrowRight className="ml-2 h-5 w-5" />
                 </a>
               </Button>
             </div>
