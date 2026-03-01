@@ -139,7 +139,12 @@ export function ProgramsSnapshot() {
 
           <div className="grid sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
             {featuredExamPrep.map((program) => (
-              <Card key={program.id} className="group flex flex-col transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border-accent/20">
+              <Card key={program.id} className="group flex flex-col transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border-accent/20 overflow-hidden">
+                {program.image && (
+                  <div className="aspect-[16/10] relative overflow-hidden">
+                    <img src={program.image} alt={program.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  </div>
+                )}
                 <CardHeader className="pb-3">
                   <CardTitle className="text-lg leading-tight group-hover:text-primary transition-colors">{program.name}</CardTitle>
                   <p className="text-sm text-muted-foreground line-clamp-2">{program.description}</p>
