@@ -175,7 +175,7 @@ const Apply = () => {
         .maybeSingle();
 
       if (studentError) throw studentError;
-
+      if (!student) throw new Error("Failed to create student record");
       // Build document paths for notes
       const docPaths = Object.entries(uploadedFiles)
         .filter(([_, v]) => v?.url)
