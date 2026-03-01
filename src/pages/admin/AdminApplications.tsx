@@ -4,44 +4,63 @@ import { AdminLayout } from "@/components/admin/AdminLayout";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
+import { Eye, Download, FileText } from "lucide-react";
 import type { Tables } from "@/integrations/supabase/types";
 
 type Application = Tables<"applications"> & {
-  students: { first_name: string; last_name: string; email: string } | null;
+  students: { first_name: string; last_name: string; email: string; phone: string | null; address: string | null; date_of_birth: string | null } | null;
   programs: { name: string } | null;
 };
 
 const statusColors: Record<string, "default" | "secondary" | "destructive" | "outline"> = {
-  new: "default",
-  in_review: "secondary",
-  accepted: "outline",
-  enrolled: "outline",
-  rejected: "destructive",
-  withdrawn: "destructive",
+  new: "default", in_review: "secondary", accepted: "outline", enrolled: "outline", rejected: "destructive", withdrawn: "destructive",
 };
 
 export default function AdminApplications() {
   const [apps, setApps] = useState<Application[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedApp, setSelectedApp] = useState<Application | null>(null);
   const { toast } = useToast();
 
-  const fetch = async () => {
+  const fetchApps = async () => {
     const { data } = await supabase
       .from("applications")
-      .select("*, students(first_name, last_name, email), programs(name)")
+      .select("*, students(first_name, last_name, email, phone, address, date_of_birth), programs(name)")
       .order("created_at", { ascending: false });
     setApps((data as Application[]) ?? []);
     setLoading(false);
   };
 
-  useEffect(() => { fetch(); }, []);
+  useEffect(() => { fetchApps(); }, []);
 
   const updateStatus = async (id: string, status: string) => {
     const { error } = await supabase.from("applications").update({ status: status as any }).eq("id", id);
     if (error) { toast({ title: "Error", description: error.message, variant: "destructive" }); return; }
     toast({ title: `Status updated to ${status.replace(/_/g, " ")}` });
-    fetch();
+    fetchApps();
+  };
+
+  // Parse document paths from notes
+  const getDocuments = (notes: string | null) => {
+    if (!notes) return [];
+    const docSection = notes.split("Documents:\n")[1];
+    if (!docSection) return [];
+    return docSection.split("\n").filter(Boolean).map(line => {
+      const [type, path] = line.split(": ");
+      return { type: type.replace(/([A-Z])/g, ' $1').trim(), path };
+    });
+  };
+
+  const downloadDocument = async (path: string, filename: string) => {
+    const { data, error } = await supabase.storage.from("application-documents").download(path);
+    if (error) { toast({ title: "Download failed", description: error.message, variant: "destructive" }); return; }
+    const url = URL.createObjectURL(data);
+    const a = document.createElement("a");
+    a.href = url; a.download = filename; a.click();
+    URL.revokeObjectURL(url);
   };
 
   return (
@@ -58,14 +77,15 @@ export default function AdminApplications() {
                 <TableHead>Source</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead>Submitted</TableHead>
+                <TableHead>Details</TableHead>
                 <TableHead>Change Status</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {loading ? (
-                <TableRow><TableCell colSpan={6} className="text-center py-8 text-muted-foreground">Loading…</TableCell></TableRow>
+                <TableRow><TableCell colSpan={7} className="text-center py-8 text-muted-foreground">Loading…</TableCell></TableRow>
               ) : apps.length === 0 ? (
-                <TableRow><TableCell colSpan={6} className="text-center py-8 text-muted-foreground">No applications yet</TableCell></TableRow>
+                <TableRow><TableCell colSpan={7} className="text-center py-8 text-muted-foreground">No applications yet</TableCell></TableRow>
               ) : apps.map((a) => (
                 <TableRow key={a.id}>
                   <TableCell className="font-medium">
@@ -76,6 +96,11 @@ export default function AdminApplications() {
                   <TableCell className="capitalize text-sm">{a.source.replace(/_/g, " ")}</TableCell>
                   <TableCell><Badge variant={statusColors[a.status] ?? "default"}>{a.status.replace(/_/g, " ")}</Badge></TableCell>
                   <TableCell className="text-sm text-muted-foreground">{new Date(a.created_at).toLocaleDateString()}</TableCell>
+                  <TableCell>
+                    <Button variant="ghost" size="icon" onClick={() => setSelectedApp(a)}>
+                      <Eye className="h-4 w-4" />
+                    </Button>
+                  </TableCell>
                   <TableCell>
                     <Select value={a.status} onValueChange={(v) => updateStatus(a.id, v)}>
                       <SelectTrigger className="w-36 h-8 text-xs"><SelectValue /></SelectTrigger>
@@ -91,6 +116,71 @@ export default function AdminApplications() {
             </TableBody>
           </Table>
         </div>
+
+        {/* Application Detail Dialog */}
+        <Dialog open={!!selectedApp} onOpenChange={() => setSelectedApp(null)}>
+          <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>Application Details</DialogTitle>
+            </DialogHeader>
+            {selectedApp && (
+              <div className="space-y-6">
+                {/* Student Info */}
+                <div>
+                  <h3 className="font-semibold text-sm mb-2">Student Information</h3>
+                  <div className="grid grid-cols-2 gap-3 text-sm">
+                    <div><span className="text-muted-foreground">Name:</span> {selectedApp.students ? `${selectedApp.students.first_name} ${selectedApp.students.last_name}` : "—"}</div>
+                    <div><span className="text-muted-foreground">Email:</span> {selectedApp.students?.email}</div>
+                    <div><span className="text-muted-foreground">Phone:</span> {selectedApp.students?.phone || "—"}</div>
+                    <div><span className="text-muted-foreground">DOB:</span> {selectedApp.students?.date_of_birth || "—"}</div>
+                    <div className="col-span-2"><span className="text-muted-foreground">Address:</span> {selectedApp.students?.address || "—"}</div>
+                  </div>
+                </div>
+
+                {/* Application Notes */}
+                <div>
+                  <h3 className="font-semibold text-sm mb-2">Application Notes</h3>
+                  <pre className="text-sm text-muted-foreground whitespace-pre-wrap bg-muted/50 rounded-lg p-3 border">
+                    {selectedApp.notes?.split("Documents:")[0] || "No additional notes"}
+                  </pre>
+                </div>
+
+                {/* Documents */}
+                {getDocuments(selectedApp.notes).length > 0 && (
+                  <div>
+                    <h3 className="font-semibold text-sm mb-2">Uploaded Documents</h3>
+                    <div className="space-y-2">
+                      {getDocuments(selectedApp.notes).map((doc, i) => (
+                        <div key={i} className="flex items-center justify-between bg-muted/30 rounded-lg p-3 border">
+                          <div className="flex items-center gap-2">
+                            <FileText className="h-4 w-4 text-primary" />
+                            <span className="text-sm font-medium capitalize">{doc.type}</span>
+                          </div>
+                          <Button variant="outline" size="sm" onClick={() => downloadDocument(doc.path, `${doc.type}.${doc.path.split('.').pop()}`)}>
+                            <Download className="h-3 w-3 mr-1" /> Download
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Status */}
+                <div>
+                  <h3 className="font-semibold text-sm mb-2">Status</h3>
+                  <Select value={selectedApp.status} onValueChange={(v) => { updateStatus(selectedApp.id, v); setSelectedApp({ ...selectedApp, status: v as any }); }}>
+                    <SelectTrigger className="w-48"><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      {["new", "in_review", "accepted", "rejected", "enrolled", "withdrawn"].map((s) => (
+                        <SelectItem key={s} value={s}>{s.replace(/_/g, " ")}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
       </div>
     </AdminLayout>
   );

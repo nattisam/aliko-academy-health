@@ -7,10 +7,11 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Plus, Pencil, Trash2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { ImageUpload } from "@/components/admin/ImageUpload";
 import type { Tables, TablesInsert } from "@/integrations/supabase/types";
 
 type Program = Tables<"programs">;
@@ -19,7 +20,7 @@ type ProgramInsert = TablesInsert<"programs">;
 const emptyProgram: ProgramInsert = {
   name: "", slug: "", short_description: "", full_description: "",
   category: "training", tuition: null, duration_weeks: null,
-  is_active: true, display_order: 0,
+  is_active: true, display_order: 0, image_url: null,
 };
 
 export default function AdminPrograms() {
@@ -46,6 +47,7 @@ export default function AdminPrograms() {
       full_description: p.full_description, category: p.category,
       tuition: p.tuition, duration_weeks: p.duration_weeks,
       is_active: p.is_active, display_order: p.display_order,
+      image_url: p.image_url,
     });
     setDialogOpen(true);
   };
@@ -88,6 +90,7 @@ export default function AdminPrograms() {
           <Table>
             <TableHeader>
               <TableRow>
+                <TableHead>Image</TableHead>
                 <TableHead>Name</TableHead>
                 <TableHead>Category</TableHead>
                 <TableHead>Duration</TableHead>
@@ -99,11 +102,18 @@ export default function AdminPrograms() {
             </TableHeader>
             <TableBody>
               {loading ? (
-                <TableRow><TableCell colSpan={7} className="text-center py-8 text-muted-foreground">Loading…</TableCell></TableRow>
+                <TableRow><TableCell colSpan={8} className="text-center py-8 text-muted-foreground">Loading…</TableCell></TableRow>
               ) : programs.length === 0 ? (
-                <TableRow><TableCell colSpan={7} className="text-center py-8 text-muted-foreground">No programs yet</TableCell></TableRow>
+                <TableRow><TableCell colSpan={8} className="text-center py-8 text-muted-foreground">No programs yet</TableCell></TableRow>
               ) : programs.map((p) => (
                 <TableRow key={p.id}>
+                  <TableCell>
+                    {p.image_url ? (
+                      <img src={p.image_url} alt={p.name} className="w-12 h-12 rounded object-cover" />
+                    ) : (
+                      <div className="w-12 h-12 rounded bg-muted flex items-center justify-center text-muted-foreground text-xs">N/A</div>
+                    )}
+                  </TableCell>
                   <TableCell className="font-medium">{p.name}</TableCell>
                   <TableCell className="capitalize">{p.category.replace("_", " ")}</TableCell>
                   <TableCell>{p.duration_weeks ? `${p.duration_weeks} wks` : "—"}</TableCell>
@@ -128,6 +138,16 @@ export default function AdminPrograms() {
               <DialogTitle>{editing ? "Edit Program" : "New Program"}</DialogTitle>
             </DialogHeader>
             <div className="space-y-4">
+              <div>
+                <Label>Thumbnail Image</Label>
+                <ImageUpload
+                  bucket="program-images"
+                  folder="programs"
+                  currentUrl={form.image_url as string | null}
+                  onUploaded={(url) => setForm({ ...form, image_url: url })}
+                  onRemoved={() => setForm({ ...form, image_url: null })}
+                />
+              </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label>Name *</Label>

@@ -1,27 +1,38 @@
 import { Link } from "react-router-dom";
-import { programs } from "@/data/programs";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { programs as staticPrograms } from "@/data/programs";
 import { examPrepPrograms } from "@/data/examPrepPrograms";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Clock, MapPin, Calendar, BookOpen, ArrowRight, Sparkles } from "lucide-react";
+import { Clock, MapPin, Calendar, BookOpen, ArrowRight, Sparkles, GraduationCap } from "lucide-react";
 
 export function ProgramsSnapshot() {
-  // Sort to show featured programs first, then by enrollment status, and limit to 3 for homepage
-  const sortedPrograms = [...programs].sort((a, b) => {
-    if (a.featured && !b.featured) return -1;
-    if (!a.featured && b.featured) return 1;
-    if (a.enrollmentStatus === "open" && b.enrollmentStatus !== "open") return -1;
-    if (a.enrollmentStatus !== "open" && b.enrollmentStatus === "open") return 1;
-    return 0;
-  }).slice(0, 3); // Show only 3 featured programs on homepage
+  const [dbPrograms, setDbPrograms] = useState<any[]>([]);
+
+  useEffect(() => {
+    supabase.from("programs").select("*").eq("is_active", true).order("display_order").limit(4)
+      .then(({ data }) => setDbPrograms(data ?? []));
+  }, []);
+
+  // Merge DB data with static data for rich display, limit to 4
+  const displayPrograms = dbPrograms.length > 0
+    ? dbPrograms.map(dbp => {
+        const staticMatch = staticPrograms.find(sp => sp.id === dbp.slug || sp.name === dbp.name);
+        return { ...staticMatch, ...dbp, id: dbp.slug || dbp.id };
+      }).slice(0, 4)
+    : [...staticPrograms].sort((a, b) => {
+        if (a.featured && !b.featured) return -1;
+        if (!a.featured && b.featured) return 1;
+        return 0;
+      }).slice(0, 4);
 
   const featuredExamPrep = examPrepPrograms.filter(p => p.featured).slice(0, 2);
 
   return (
     <section className="py-20 lg:py-28 bg-background">
       <div className="container-academy">
-        {/* Healthcare Training Programs */}
         <div className="text-center mb-16">
           <span className="inline-block px-4 py-1.5 rounded-full bg-teal/10 text-teal text-sm font-semibold mb-4">
             Training Programs
@@ -34,59 +45,62 @@ export function ProgramsSnapshot() {
           </p>
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {sortedPrograms.map((program) => (
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {displayPrograms.map((program: any) => (
             <Card
               key={program.id}
-              className={`group flex flex-col transition-all duration-300 hover:shadow-xl hover:-translate-y-1 ${
+              className={`group flex flex-col transition-all duration-300 hover:shadow-xl hover:-translate-y-1 overflow-hidden ${
                 program.featured ? "ring-2 ring-primary/20" : ""
               }`}
             >
-              <CardHeader className="pb-3">
-                <div className="flex items-start justify-between gap-2">
-                  <CardTitle className="text-lg leading-tight group-hover:text-primary transition-colors">
-                    {program.name}
-                  </CardTitle>
+              {/* Thumbnail */}
+              {program.image_url ? (
+                <div className="aspect-[16/10] relative overflow-hidden">
+                  <img src={program.image_url} alt={program.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                   {program.featured && (
-                    <Badge className="shrink-0 text-xs bg-accent text-accent-foreground">
-                      <Sparkles className="h-3 w-3 mr-1" />
-                      Featured
+                    <Badge className="absolute top-2 left-2 bg-accent text-accent-foreground text-xs">
+                      <Sparkles className="h-3 w-3 mr-1" /> Featured
                     </Badge>
                   )}
                 </div>
-                <p className="text-sm text-muted-foreground">
-                  {program.credential}
-                </p>
+              ) : (
+                <div className="aspect-[16/10] bg-gradient-to-br from-primary/10 to-teal/10 flex items-center justify-center">
+                  <GraduationCap className="h-10 w-10 text-primary/30" />
+                </div>
+              )}
+
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base leading-tight group-hover:text-primary transition-colors">
+                  {program.name}
+                </CardTitle>
+                <p className="text-xs text-muted-foreground">{program.credential || "Healthcare Training"}</p>
               </CardHeader>
-              <CardContent className="flex-1 space-y-3">
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <Clock className="h-4 w-4 shrink-0 text-primary/60" />
-                  <span>{program.duration} • {program.hours.total} hours</span>
-                </div>
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <MapPin className="h-4 w-4 shrink-0 text-primary/60" />
-                  <span>{program.modality} • {program.location}</span>
-                </div>
+              <CardContent className="flex-1 space-y-2">
+                {program.duration && (
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <Clock className="h-3.5 w-3.5 shrink-0 text-primary/60" />
+                    <span>{program.duration}{program.hours?.total ? ` • ${program.hours.total} hours` : program.duration_weeks ? ` • ${program.duration_weeks} wks` : ""}</span>
+                  </div>
+                )}
+                {(program.modality || program.location) && (
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <MapPin className="h-3.5 w-3.5 shrink-0 text-primary/60" />
+                    <span>{[program.modality, program.location].filter(Boolean).join(" • ")}</span>
+                  </div>
+                )}
                 <div className="flex items-center gap-2">
-                  <Calendar className="h-4 w-4 shrink-0 text-primary/60" />
+                  <Calendar className="h-3.5 w-3.5 shrink-0 text-primary/60" />
                   <Badge
                     variant={program.enrollmentStatus === "open" ? "default" : "secondary"}
-                    className={
-                      program.enrollmentStatus === "open"
-                        ? "bg-accent text-accent-foreground hover:bg-accent/90"
-                        : ""
-                    }
+                    className={program.enrollmentStatus === "open" ? "bg-accent text-accent-foreground hover:bg-accent/90 text-xs" : "text-xs"}
                   >
-                    {program.enrollmentStatus === "open"
-                      ? `Starts ${program.startDate}`
-                      : "Enrollment Closed"}
+                    {program.enrollmentStatus === "open" ? `Starts ${program.startDate}` : "Start Date: TBD"}
                   </Badge>
                 </div>
               </CardContent>
               <CardFooter className="pt-0">
                 <Button
-                  asChild
-                  className="w-full group/btn"
+                  asChild className="w-full group/btn" size="sm"
                   variant={program.enrollmentStatus === "open" ? "default" : "outline"}
                 >
                   <Link to={`/programs/${program.id}`}>
@@ -125,19 +139,10 @@ export function ProgramsSnapshot() {
 
           <div className="grid sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
             {featuredExamPrep.map((program) => (
-              <Card
-                key={program.id}
-                className="group flex flex-col transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border-accent/20"
-              >
+              <Card key={program.id} className="group flex flex-col transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border-accent/20">
                 <CardHeader className="pb-3">
-                  <div className="flex items-start justify-between gap-2">
-                    <CardTitle className="text-lg leading-tight group-hover:text-primary transition-colors">
-                      {program.name}
-                    </CardTitle>
-                  </div>
-                  <p className="text-sm text-muted-foreground line-clamp-2">
-                    {program.description}
-                  </p>
+                  <CardTitle className="text-lg leading-tight group-hover:text-primary transition-colors">{program.name}</CardTitle>
+                  <p className="text-sm text-muted-foreground line-clamp-2">{program.description}</p>
                 </CardHeader>
                 <CardContent className="flex-1 space-y-3">
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -152,24 +157,14 @@ export function ProgramsSnapshot() {
                     <Calendar className="h-4 w-4 shrink-0 text-accent/60" />
                     <Badge
                       variant={program.enrollmentStatus === "open" ? "default" : "secondary"}
-                      className={
-                        program.enrollmentStatus === "open"
-                          ? "bg-accent text-accent-foreground hover:bg-accent/90"
-                          : ""
-                      }
+                      className={program.enrollmentStatus === "open" ? "bg-accent text-accent-foreground hover:bg-accent/90" : ""}
                     >
-                      {program.enrollmentStatus === "open"
-                        ? `Starts ${program.startDate}`
-                        : "Enrollment Closed"}
+                      {program.enrollmentStatus === "open" ? `Starts ${program.startDate}` : "Start Date: TBD"}
                     </Badge>
                   </div>
                 </CardContent>
                 <CardFooter className="pt-0">
-                  <Button
-                    asChild
-                    className="w-full group/btn"
-                    variant={program.enrollmentStatus === "open" ? "default" : "outline"}
-                  >
+                  <Button asChild className="w-full group/btn" variant={program.enrollmentStatus === "open" ? "default" : "outline"}>
                     <Link to={`/exam-prep/${program.id}`}>
                       {program.enrollmentStatus === "open" ? "Enroll Now" : "View Details"}
                       <ArrowRight className="ml-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />

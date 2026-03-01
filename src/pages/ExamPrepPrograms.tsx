@@ -88,7 +88,7 @@ const ExamPrepPrograms = () => {
                     >
                       {program.enrollmentStatus === "open"
                         ? `Starts ${program.startDate}`
-                        : "Enrollment Closed"}
+                        : "Start Date: TBD"}
                     </Badge>
                   </div>
                 </CardContent>
