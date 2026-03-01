@@ -27,6 +27,7 @@ const moreLinks = [
   { name: "Schedule", href: "/schedule" },
   { name: "Tuition", href: "/tuition" },
   { name: "Partners", href: "/partners" },
+  { name: "Partnerships", href: "/partnerships" },
   { name: "Career Services", href: "/career-services" },
   { name: "Contact", href: "/contact" },
 ];
