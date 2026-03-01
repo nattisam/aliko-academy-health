@@ -76,7 +76,7 @@ export function HeroSection() {
               <span className="relative inline-flex rounded-full h-2 w-2 bg-teal"></span>
             </span>
             <span className="text-sm font-medium text-teal-foreground">
-              Enrolling Now for Spring 2025
+              Enrolling Now for Spring 2026
             </span>
           </div>
 
