@@ -64,13 +64,13 @@ export function Header() {
     <header className="bg-[hsl(216,50%,16%)] border-b border-border/50 sticky top-0 z-50 backdrop-blur-sm">
       <nav className="container-academy flex items-center justify-between py-3">
         {/* Logo + Desktop Navigation */}
-        <div className="flex items-center gap-4 xl:gap-5 2xl:gap-8">
+        <div className="flex items-center gap-6 xl:gap-8 2xl:gap-10">
           <Link to="/" className="flex-shrink-0">
             <img src={logo} alt="Aliko Academy Health" className="h-12 xl:h-14 2xl:h-16 w-auto object-contain" />
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex lg:items-center lg:gap-3 xl:gap-4 2xl:gap-5">
+          <div className="hidden lg:flex lg:items-center lg:gap-5 xl:gap-6 2xl:gap-8">
             {primaryNav.map((item) =>
               item.dropdown ? (
                 <div key={item.name} className="relative" ref={dropdownRef}>
