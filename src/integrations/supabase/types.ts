@@ -331,6 +331,57 @@ export type Database = {
           },
         ]
       }
+      partners: {
+        Row: {
+          category: Database["public"]["Enums"]["partner_category"]
+          created_at: string
+          description: string | null
+          display_order: number
+          hiring_roles: string | null
+          id: string
+          is_active: boolean
+          logo_url: string | null
+          name: string
+          organization_type: string | null
+          programs: string[] | null
+          region: string | null
+          updated_at: string
+          website_url: string | null
+        }
+        Insert: {
+          category: Database["public"]["Enums"]["partner_category"]
+          created_at?: string
+          description?: string | null
+          display_order?: number
+          hiring_roles?: string | null
+          id?: string
+          is_active?: boolean
+          logo_url?: string | null
+          name: string
+          organization_type?: string | null
+          programs?: string[] | null
+          region?: string | null
+          updated_at?: string
+          website_url?: string | null
+        }
+        Update: {
+          category?: Database["public"]["Enums"]["partner_category"]
+          created_at?: string
+          description?: string | null
+          display_order?: number
+          hiring_roles?: string | null
+          id?: string
+          is_active?: boolean
+          logo_url?: string | null
+          name?: string
+          organization_type?: string | null
+          programs?: string[] | null
+          region?: string | null
+          updated_at?: string
+          website_url?: string | null
+        }
+        Relationships: []
+      }
       partnership_inquiries: {
         Row: {
           admin_notes: string | null
@@ -541,6 +592,7 @@ export type Database = {
         | "proposal_sent"
         | "won"
         | "lost"
+      partner_category: "clinical" | "career" | "sponsor"
       partnership_status:
         | "new"
         | "contacted"
@@ -693,6 +745,7 @@ export const Constants = {
         "won",
         "lost",
       ],
+      partner_category: ["clinical", "career", "sponsor"],
       partnership_status: [
         "new",
         "contacted",

@@ -1,173 +1,335 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Building2, MapPin, Stethoscope, Briefcase, Handshake, ArrowRight, Heart, Users } from "lucide-react";
+import {
+  Building2,
+  MapPin,
+  Stethoscope,
+  Briefcase,
+  Handshake,
+  ArrowRight,
+  Heart,
+  Users,
+  Star,
+  ExternalLink,
+  ChevronDown,
+} from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 import { useStateConfig } from "@/hooks/useStateConfig";
 
-interface ClinicalPartner {
+// Static fallback data with local images
+import clinicalImg1 from "@/assets/partners/clinical-partner-1.jpg";
+import clinicalImg2 from "@/assets/partners/clinical-partner-2.jpg";
+import clinicalImg3 from "@/assets/partners/clinical-partner-3.jpg";
+import careerImg1 from "@/assets/partners/career-partner-1.jpg";
+import careerImg2 from "@/assets/partners/career-partner-2.jpg";
+import careerImg3 from "@/assets/partners/career-partner-3.jpg";
+import sponsorImg1 from "@/assets/partners/sponsor-1.jpg";
+import sponsorImg2 from "@/assets/partners/sponsor-2.jpg";
+import sponsorImg3 from "@/assets/partners/sponsor-3.jpg";
+
+interface Partner {
+  id: string;
   name: string;
-  type: string;
-  region: string;
+  category: "clinical" | "career" | "sponsor";
+  organization_type: string | null;
+  region: string | null;
+  description: string | null;
   programs: string[];
+  hiring_roles: string | null;
+  logo_url: string | null;
+  website_url: string | null;
+  is_active: boolean;
+  display_order: number;
 }
 
-interface CareerPartner {
-  name: string;
-  industry: string;
-  roles: string;
-  region: string;
-}
+const fallbackPartners: Partner[] = [
+  {
+    id: "c1", name: "Evergreen Health Center", category: "clinical",
+    organization_type: "Skilled Nursing Facility", region: "Seattle, WA",
+    description: "Providing exceptional long-term care and clinical training for nursing assistants.",
+    programs: ["CNA", "HHA", "Medication Aide"], hiring_roles: null,
+    logo_url: clinicalImg1, website_url: null, is_active: true, display_order: 0,
+  },
+  {
+    id: "c2", name: "Pacific Medical Group", category: "clinical",
+    organization_type: "Multi-Specialty Clinic", region: "Bellevue, WA",
+    description: "A premier multi-specialty practice offering diverse clinical rotation opportunities.",
+    programs: ["Medical Assistant", "Phlebotomy", "EKG"], hiring_roles: null,
+    logo_url: clinicalImg2, website_url: null, is_active: true, display_order: 1,
+  },
+  {
+    id: "c3", name: "Cascade Rehabilitation", category: "clinical",
+    organization_type: "Rehabilitation Center", region: "Tacoma, WA",
+    description: "Leading rehabilitation facility focused on patient recovery and staff development.",
+    programs: ["CNA", "PCT"], hiring_roles: null,
+    logo_url: clinicalImg3, website_url: null, is_active: true, display_order: 2,
+  },
+  {
+    id: "c4", name: "Puget Sound Home Health", category: "clinical",
+    organization_type: "Home Health Agency", region: "King County, WA",
+    description: "Compassionate home health services across the greater King County area.",
+    programs: ["HHA", "CNA"], hiring_roles: null,
+    logo_url: clinicalImg1, website_url: null, is_active: true, display_order: 3,
+  },
+  {
+    id: "c5", name: "Northwest Cardiac Care", category: "clinical",
+    organization_type: "Cardiology Practice", region: "Seattle, WA",
+    description: "Specialized cardiac care facility with advanced EKG training capabilities.",
+    programs: ["EKG", "Medical Assistant"], hiring_roles: null,
+    logo_url: clinicalImg2, website_url: null, is_active: true, display_order: 4,
+  },
+  {
+    id: "c6", name: "Community Care Partners", category: "clinical",
+    organization_type: "Assisted Living", region: "Snohomish County, WA",
+    description: "Community-focused assisted living with comprehensive training programs.",
+    programs: ["CNA", "Medication Aide", "HHA"], hiring_roles: null,
+    logo_url: clinicalImg3, website_url: null, is_active: true, display_order: 5,
+  },
+  {
+    id: "k1", name: "Swedish Health Services", category: "career",
+    organization_type: "Hospital System", region: "Seattle Metro",
+    description: "One of the largest nonprofit health providers in the greater Seattle area.",
+    programs: [], hiring_roles: "CNA, PCT, Medical Assistant, Unit Secretary",
+    logo_url: careerImg1, website_url: null, is_active: true, display_order: 0,
+  },
+  {
+    id: "k2", name: "Kaiser Permanente", category: "career",
+    organization_type: "Integrated Healthcare", region: "Washington State",
+    description: "Nationally recognized integrated healthcare system with excellent benefits.",
+    programs: [], hiring_roles: "Medical Assistant, Phlebotomist, EKG Tech",
+    logo_url: careerImg2, website_url: null, is_active: true, display_order: 1,
+  },
+  {
+    id: "k3", name: "BrightSpring Health Services", category: "career",
+    organization_type: "Home Health & Hospice", region: "King & Pierce County",
+    description: "Leading provider of home and community-based health services.",
+    programs: [], hiring_roles: "HHA, CNA, Care Coordinator",
+    logo_url: careerImg3, website_url: null, is_active: true, display_order: 2,
+  },
+  {
+    id: "k4", name: "Virginia Mason Franciscan Health", category: "career",
+    organization_type: "Hospital System", region: "Puget Sound Region",
+    description: "A trusted healthcare partner committed to clinical excellence.",
+    programs: [], hiring_roles: "CNA, PCT, Patient Services",
+    logo_url: careerImg1, website_url: null, is_active: true, display_order: 3,
+  },
+  {
+    id: "k5", name: "Multicare Health System", category: "career",
+    organization_type: "Healthcare Network", region: "Pierce County",
+    description: "A community-based, locally governed health system transforming care.",
+    programs: [], hiring_roles: "Medical Assistant, Patient Care Tech",
+    logo_url: careerImg2, website_url: null, is_active: true, display_order: 4,
+  },
+  {
+    id: "k6", name: "SeaMar Community Health", category: "career",
+    organization_type: "Community Health Center", region: "Western Washington",
+    description: "Community health center providing quality services to diverse populations.",
+    programs: [], hiring_roles: "Medical Assistant, Phlebotomist",
+    logo_url: careerImg3, website_url: null, is_active: true, display_order: 5,
+  },
+  {
+    id: "s1", name: "Washington Health Foundation", category: "sponsor",
+    organization_type: "Foundation", region: "Washington State",
+    description: "Supporting healthcare education and workforce development through grants and scholarships.",
+    programs: [], hiring_roles: null,
+    logo_url: sponsorImg1, website_url: null, is_active: true, display_order: 0,
+  },
+  {
+    id: "s2", name: "Workforce Development Council", category: "sponsor",
+    organization_type: "Government Agency", region: "Puget Sound Region",
+    description: "Public agency funding healthcare training and career advancement programs.",
+    programs: [], hiring_roles: null,
+    logo_url: sponsorImg2, website_url: null, is_active: true, display_order: 1,
+  },
+  {
+    id: "s3", name: "HealthBridge Corporate Sponsors", category: "sponsor",
+    organization_type: "Corporate Partnership", region: "National",
+    description: "Corporate partners investing in the next generation of healthcare professionals.",
+    programs: [], hiring_roles: null,
+    logo_url: sponsorImg3, website_url: null, is_active: true, display_order: 2,
+  },
+];
 
-// Partner data organized by state
-const partnersByState: Record<string, { clinical: ClinicalPartner[]; career: CareerPartner[] }> = {
-  WA: {
-    clinical: [
-      {
-        name: "Evergreen Health Center",
-        type: "Skilled Nursing Facility",
-        region: "Seattle, WA",
-        programs: ["CNA", "HHA", "Medication Aide"],
-      },
-      {
-        name: "Pacific Medical Group",
-        type: "Multi-Specialty Clinic",
-        region: "Bellevue, WA",
-        programs: ["Medical Assistant", "Phlebotomy", "EKG"],
-      },
-      {
-        name: "Cascade Rehabilitation",
-        type: "Rehabilitation Center",
-        region: "Tacoma, WA",
-        programs: ["CNA", "PCT"],
-      },
-      {
-        name: "Puget Sound Home Health",
-        type: "Home Health Agency",
-        region: "King County, WA",
-        programs: ["HHA", "CNA"],
-      },
-      {
-        name: "Northwest Cardiac Care",
-        type: "Cardiology Practice",
-        region: "Seattle, WA",
-        programs: ["EKG", "Medical Assistant"],
-      },
-      {
-        name: "Community Care Partners",
-        type: "Assisted Living",
-        region: "Snohomish County, WA",
-        programs: ["CNA", "Medication Aide", "HHA"],
-      },
-    ],
-    career: [
-      {
-        name: "Swedish Health Services",
-        industry: "Hospital System",
-        roles: "CNA, PCT, Medical Assistant, Unit Secretary",
-        region: "Seattle Metro",
-      },
-      {
-        name: "Kaiser Permanente",
-        industry: "Integrated Healthcare",
-        roles: "Medical Assistant, Phlebotomist, EKG Tech",
-        region: "Washington State",
-      },
-      {
-        name: "BrightSpring Health Services",
-        industry: "Home Health & Hospice",
-        roles: "HHA, CNA, Care Coordinator",
-        region: "King & Pierce County",
-      },
-      {
-        name: "Virginia Mason Franciscan Health",
-        industry: "Hospital System",
-        roles: "CNA, PCT, Patient Services",
-        region: "Puget Sound Region",
-      },
-      {
-        name: "Multicare Health System",
-        industry: "Healthcare Network",
-        roles: "Medical Assistant, Patient Care Tech",
-        region: "Pierce County",
-      },
-      {
-        name: "SeaMar Community Health",
-        industry: "Community Health Center",
-        roles: "Medical Assistant, Phlebotomist",
-        region: "Western Washington",
-      },
-    ],
+const INITIAL_SHOW = 3;
+
+const categoryConfig = {
+  clinical: {
+    label: "Clinical Training",
+    badge: "Clinical Partners",
+    icon: Heart,
+    gradient: "from-primary/5 to-primary/10",
+    iconGradient: "from-primary to-primary/80",
+    borderColor: "border-primary/10 hover:border-primary/30",
+    badgeClass: "bg-primary/10 text-primary border-primary/20",
+    accentColor: "text-primary",
   },
-  OR: {
-    clinical: [
-      {
-        name: "Providence Portland Medical",
-        type: "Hospital System",
-        region: "Portland, OR",
-        programs: ["CNA", "PCT", "Medical Assistant"],
-      },
-      {
-        name: "Legacy Health",
-        type: "Multi-Specialty Clinic",
-        region: "Portland, OR",
-        programs: ["Phlebotomy", "EKG", "Medical Assistant"],
-      },
-    ],
-    career: [
-      {
-        name: "OHSU Health",
-        industry: "Academic Medical Center",
-        roles: "CNA, Medical Assistant, Phlebotomist",
-        region: "Portland Metro",
-      },
-    ],
+  career: {
+    label: "Employment Network",
+    badge: "Career Partners",
+    icon: Users,
+    gradient: "from-accent/5 to-accent/10",
+    iconGradient: "from-accent to-accent/80",
+    borderColor: "border-accent/10 hover:border-accent/30",
+    badgeClass: "bg-accent/10 text-accent border-accent/20",
+    accentColor: "text-accent",
   },
-  CA: {
-    clinical: [
-      {
-        name: "Cedars-Sinai Training Center",
-        type: "Hospital System",
-        region: "Los Angeles, CA",
-        programs: ["CNA", "PCT", "Medical Assistant"],
-      },
-    ],
-    career: [
-      {
-        name: "Kaiser Permanente California",
-        industry: "Integrated Healthcare",
-        roles: "CNA, Medical Assistant, Phlebotomist",
-        region: "Southern California",
-      },
-    ],
+  sponsor: {
+    label: "Sponsors & Supporters",
+    badge: "Sponsors",
+    icon: Star,
+    gradient: "from-yellow-500/5 to-amber-500/10",
+    iconGradient: "from-yellow-600 to-amber-500",
+    borderColor: "border-yellow-500/10 hover:border-yellow-500/30",
+    badgeClass: "bg-yellow-500/10 text-yellow-700 border-yellow-500/20",
+    accentColor: "text-yellow-700",
   },
-  TX: {
-    clinical: [
-      {
-        name: "Houston Methodist Training",
-        type: "Hospital System",
-        region: "Houston, TX",
-        programs: ["CNA", "PCT", "Medical Assistant"],
-      },
-    ],
-    career: [
-      {
-        name: "Texas Medical Center",
-        industry: "Healthcare Network",
-        roles: "CNA, Medical Assistant, Patient Care Tech",
-        region: "Houston Metro",
-      },
-    ],
-  },
+};
+
+const PartnerCard = ({ partner, config }: { partner: Partner; config: typeof categoryConfig.clinical }) => (
+  <Card className={`group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 bg-background border-2 ${config.borderColor} overflow-hidden`}>
+    <CardContent className="p-0">
+      {/* Logo / Image */}
+      <div className="h-40 bg-muted/30 flex items-center justify-center overflow-hidden">
+        {partner.logo_url ? (
+          <img
+            src={partner.logo_url}
+            alt={partner.name}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          />
+        ) : (
+          <Building2 className="h-12 w-12 text-muted-foreground/40" />
+        )}
+      </div>
+
+      {/* Content */}
+      <div className="p-5 space-y-3">
+        <div>
+          <h3 className="font-semibold text-foreground text-lg leading-tight">{partner.name}</h3>
+          {partner.organization_type && (
+            <p className={`text-sm font-medium ${config.accentColor} mt-0.5`}>{partner.organization_type}</p>
+          )}
+        </div>
+
+        {partner.description && (
+          <p className="text-sm text-muted-foreground line-clamp-2">{partner.description}</p>
+        )}
+
+        {partner.region && (
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <MapPin className="h-3.5 w-3.5 shrink-0" />
+            <span>{partner.region}</span>
+          </div>
+        )}
+
+        {partner.programs && partner.programs.length > 0 && (
+          <div className="flex flex-wrap gap-1.5">
+            {partner.programs.map((program) => (
+              <Badge key={program} variant="secondary" className="text-xs">
+                {program}
+              </Badge>
+            ))}
+          </div>
+        )}
+
+        {partner.hiring_roles && (
+          <p className="text-sm">
+            <span className={`font-medium ${config.accentColor}`}>Hiring: </span>
+            <span className="text-muted-foreground">{partner.hiring_roles}</span>
+          </p>
+        )}
+
+        {partner.website_url && (
+          <a
+            href={partner.website_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`inline-flex items-center gap-1 text-sm ${config.accentColor} hover:underline`}
+          >
+            Visit Website <ExternalLink className="h-3 w-3" />
+          </a>
+        )}
+      </div>
+    </CardContent>
+  </Card>
+);
+
+const PartnerSection = ({
+  category,
+  partners,
+}: {
+  category: "clinical" | "career" | "sponsor";
+  partners: Partner[];
+}) => {
+  const [showAll, setShowAll] = useState(false);
+  const config = categoryConfig[category];
+  const Icon = config.icon;
+  const displayed = showAll ? partners : partners.slice(0, INITIAL_SHOW);
+  const hasMore = partners.length > INITIAL_SHOW;
+
+  return (
+    <div className="relative">
+      <div className={`absolute inset-0 bg-gradient-to-br ${config.gradient} rounded-3xl`} />
+      <div className="relative p-8 lg:p-10">
+        <div className="flex items-center gap-4 mb-6">
+          <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${config.iconGradient} flex items-center justify-center shadow-lg`}>
+            <Icon className="h-7 w-7 text-white" />
+          </div>
+          <div>
+            <Badge className={config.badgeClass}>{config.label}</Badge>
+            <h2 className="text-2xl font-bold text-foreground">{config.badge}</h2>
+            <p className="text-sm text-muted-foreground">{partners.length} partners in our network</p>
+          </div>
+        </div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {displayed.map((partner) => (
+            <PartnerCard key={partner.id} partner={partner} config={config} />
+          ))}
+        </div>
+
+        {hasMore && (
+          <div className="mt-8 text-center">
+            <Button
+              variant="outline"
+              size="lg"
+              onClick={() => setShowAll(!showAll)}
+              className="gap-2"
+            >
+              {showAll ? "Show Less" : `View All ${partners.length} Partners`}
+              <ChevronDown className={`h-4 w-4 transition-transform ${showAll ? "rotate-180" : ""}`} />
+            </Button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
 };
 
 const Partners = () => {
   const { currentState } = useStateConfig();
-  
-  const statePartners = partnersByState[currentState.id] || partnersByState.WA;
-  const clinicalPartners = statePartners.clinical;
-  const careerPartners = statePartners.career;
+  const [dbPartners, setDbPartners] = useState<Partner[] | null>(null);
+
+  useEffect(() => {
+    const fetchPartners = async () => {
+      const { data } = await supabase
+        .from("partners")
+        .select("*")
+        .order("display_order");
+      if (data && data.length > 0) {
+        setDbPartners(data as Partner[]);
+      }
+    };
+    fetchPartners();
+  }, []);
+
+  const allPartners = dbPartners ?? fallbackPartners;
+  const clinical = allPartners.filter((p) => p.category === "clinical");
+  const career = allPartners.filter((p) => p.category === "career");
+  const sponsors = allPartners.filter((p) => p.category === "sponsor");
 
   return (
     <Layout>
@@ -175,20 +337,17 @@ const Partners = () => {
       <section className="relative py-16 lg:py-24 bg-gradient-to-br from-primary/5 via-card to-accent/5 overflow-hidden">
         <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
         <div className="absolute bottom-0 left-0 w-64 h-64 bg-accent/5 rounded-full blur-3xl" />
-        
         <div className="container-academy relative">
           <div className="flex items-center gap-2 mb-4">
             <div className="h-1 w-12 bg-accent rounded-full" />
             <span className="text-sm font-medium text-accent">Our Network</span>
           </div>
-          <h1 className="text-3xl lg:text-5xl font-bold text-primary">
-            Our Partners
-          </h1>
+          <h1 className="text-3xl lg:text-5xl font-bold text-primary">Our Partners</h1>
           <p className="mt-4 text-lg text-muted-foreground max-w-3xl">
-            Aliko Academy partners with healthcare organizations throughout {currentState.name} State 
+            Aliko Academy partners with healthcare organizations throughout {currentState.name} State
             to provide quality clinical training and career opportunities for our graduates.
           </p>
-          
+
           {/* Quick stats */}
           <div className="mt-8 flex flex-wrap gap-6">
             <div className="flex items-center gap-2 text-muted-foreground">
@@ -196,7 +355,7 @@ const Partners = () => {
                 <Stethoscope className="h-5 w-5 text-primary" />
               </div>
               <div>
-                <p className="font-semibold text-foreground">{clinicalPartners.length}+</p>
+                <p className="font-semibold text-foreground">{clinical.length}+</p>
                 <p className="text-xs">Clinical Sites</p>
               </div>
             </div>
@@ -205,8 +364,17 @@ const Partners = () => {
                 <Briefcase className="h-5 w-5 text-accent" />
               </div>
               <div>
-                <p className="font-semibold text-foreground">{careerPartners.length}+</p>
+                <p className="font-semibold text-foreground">{career.length}+</p>
                 <p className="text-xs">Hiring Partners</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <div className="w-10 h-10 rounded-lg bg-yellow-500/10 flex items-center justify-center">
+                <Star className="h-5 w-5 text-yellow-600" />
+              </div>
+              <div>
+                <p className="font-semibold text-foreground">{sponsors.length}+</p>
+                <p className="text-xs">Sponsors</p>
               </div>
             </div>
           </div>
@@ -215,136 +383,28 @@ const Partners = () => {
 
       <section className="py-12 lg:py-16">
         <div className="container-academy space-y-16">
-          {/* Clinical Partners - Blue/Primary themed section */}
-          <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-primary/10 rounded-3xl" />
-            <div className="relative p-8 lg:p-10">
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center shadow-lg">
-                  <Heart className="h-7 w-7 text-primary-foreground" />
-                </div>
-                <div>
-                  <Badge className="bg-primary/10 text-primary border-primary/20 mb-1">Clinical Training</Badge>
-                  <h2 className="text-2xl font-bold text-foreground">Clinical Practice Partners</h2>
-                  <p className="text-sm text-muted-foreground">Hands-on training locations for student clinical hours</p>
-                </div>
-              </div>
-              <p className="text-muted-foreground mb-8 max-w-3xl">
-                Our clinical partners provide hands-on training environments where students 
-                develop practical skills under professional supervision.
+          {clinical.length > 0 && <PartnerSection category="clinical" partners={clinical} />}
+          {career.length > 0 && <PartnerSection category="career" partners={career} />}
+          {sponsors.length > 0 && <PartnerSection category="sponsor" partners={sponsors} />}
+
+          {/* Disclaimers */}
+          <div className="space-y-4">
+            <div className="p-4 rounded-xl bg-muted/50 border border-border">
+              <p className="text-sm text-muted-foreground italic">
+                <strong className="text-primary">Disclaimer:</strong> Clinical placements are coordinated based on
+                availability, program requirements, and student readiness. Placement at a specific partner facility is not guaranteed.
               </p>
-
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-                {clinicalPartners.map((partner) => (
-                  <Card 
-                    key={partner.name} 
-                    className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 bg-background border-2 border-primary/10 hover:border-primary/30"
-                  >
-                    <CardHeader className="pb-3">
-                      <div className="flex items-start gap-3">
-                        <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center shrink-0">
-                          <Stethoscope className="h-5 w-5 text-primary" />
-                        </div>
-                        <div>
-                          <CardTitle className="text-lg text-foreground">{partner.name}</CardTitle>
-                          <p className="text-sm text-primary font-medium">{partner.type}</p>
-                        </div>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="space-y-3">
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <MapPin className="h-4 w-4 text-primary/60" />
-                        <span>{partner.region}</span>
-                      </div>
-                      <div className="flex flex-wrap gap-2">
-                        {partner.programs.map((program) => (
-                          <Badge 
-                            key={program} 
-                            variant="secondary" 
-                            className="text-xs bg-primary/10 text-primary border-0"
-                          >
-                            {program}
-                          </Badge>
-                        ))}
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-
-              <div className="mt-8 p-4 rounded-xl bg-background/80 border border-primary/20">
-                <p className="text-sm text-muted-foreground italic">
-                  <strong className="text-primary">Disclaimer:</strong> Clinical placements are coordinated based on 
-                  availability, program requirements, and student readiness. Placement at a 
-                  specific partner facility is not guaranteed.
-                </p>
-              </div>
+            </div>
+            <div className="p-4 rounded-xl bg-muted/50 border border-border">
+              <p className="text-sm text-muted-foreground italic">
+                <strong className="text-accent">Disclaimer:</strong> Aliko Academy does not guarantee employment.
+                Career services support graduates in their job search through resume assistance,
+                interview preparation, and employer connections.
+              </p>
             </div>
           </div>
 
-          {/* Career Network Partners - Orange/Accent themed section */}
-          <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-accent/10 rounded-3xl" />
-            <div className="relative p-8 lg:p-10">
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-accent to-accent/80 flex items-center justify-center shadow-lg">
-                  <Users className="h-7 w-7 text-accent-foreground" />
-                </div>
-                <div>
-                  <Badge className="bg-accent/10 text-accent border-accent/20 mb-1">Employment Network</Badge>
-                  <h2 className="text-2xl font-bold text-foreground">Career Network Partners</h2>
-                  <p className="text-sm text-muted-foreground">Employers who actively hire our graduates</p>
-                </div>
-              </div>
-              <p className="text-muted-foreground mb-8 max-w-3xl">
-                These healthcare employers actively recruit Aliko Academy graduates and participate 
-                in our career development initiatives.
-              </p>
-
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-                {careerPartners.map((partner) => (
-                  <Card 
-                    key={partner.name} 
-                    className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 bg-background border-2 border-accent/10 hover:border-accent/30"
-                  >
-                    <CardHeader className="pb-3">
-                      <div className="flex items-start gap-3">
-                        <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-accent/20 to-accent/10 flex items-center justify-center shrink-0">
-                          <Briefcase className="h-5 w-5 text-accent" />
-                        </div>
-                        <div>
-                          <CardTitle className="text-lg text-foreground">{partner.name}</CardTitle>
-                          <p className="text-sm text-accent font-medium">{partner.industry}</p>
-                        </div>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="space-y-3">
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <MapPin className="h-4 w-4 text-accent/60" />
-                        <span>{partner.region}</span>
-                      </div>
-                      <div>
-                        <p className="text-sm">
-                          <span className="font-medium text-accent">Hiring for: </span>
-                          <span className="text-muted-foreground">{partner.roles}</span>
-                        </p>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-
-              <div className="mt-8 p-4 rounded-xl bg-background/80 border border-accent/20">
-                <p className="text-sm text-muted-foreground italic">
-                  <strong className="text-accent">Disclaimer:</strong> Aliko Academy does not guarantee employment. 
-                  Career services support graduates in their job search through resume assistance, 
-                  interview preparation, and employer connections.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Become a Partner */}
+          {/* Become a Partner CTA */}
           <Card className="bg-gradient-to-r from-primary to-primary/90 text-primary-foreground overflow-hidden relative">
             <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl" />
             <CardContent className="pt-8 pb-8 relative">
@@ -356,15 +416,14 @@ const Partners = () => {
                   <div>
                     <h3 className="text-2xl font-bold mb-2">Become a Partner</h3>
                     <p className="opacity-90 max-w-xl">
-                      Interested in partnering with Aliko Academy for clinical education or workforce 
-                      development? We welcome inquiries from healthcare organizations seeking to support 
-                      the next generation of healthcare professionals.
+                      Interested in partnering with Aliko Academy for clinical education or workforce
+                      development? We welcome inquiries from healthcare organizations.
                     </p>
                   </div>
                 </div>
                 <Button asChild variant="secondary" size="lg" className="shrink-0 shadow-lg">
-                  <Link to="/contact">
-                    Contact Us
+                  <Link to="/partnerships">
+                    Partner With Us
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>
