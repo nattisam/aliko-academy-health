@@ -234,6 +234,7 @@ export type Database = {
           icon: string | null
           id: string
           ideal_for: string[] | null
+          image_url: string | null
           is_active: boolean
           name: string
           overview: string | null
@@ -251,6 +252,7 @@ export type Database = {
           icon?: string | null
           id?: string
           ideal_for?: string[] | null
+          image_url?: string | null
           is_active?: boolean
           name: string
           overview?: string | null
@@ -268,6 +270,7 @@ export type Database = {
           icon?: string | null
           id?: string
           ideal_for?: string[] | null
+          image_url?: string | null
           is_active?: boolean
           name?: string
           overview?: string | null
@@ -287,6 +290,7 @@ export type Database = {
           display_order: number
           duration: string | null
           id: string
+          image_url: string | null
           is_active: boolean
           title: string
           updated_at: string
@@ -299,6 +303,7 @@ export type Database = {
           display_order?: number
           duration?: string | null
           id?: string
+          image_url?: string | null
           is_active?: boolean
           title: string
           updated_at?: string
@@ -311,6 +316,7 @@ export type Database = {
           display_order?: number
           duration?: string | null
           id?: string
+          image_url?: string | null
           is_active?: boolean
           title?: string
           updated_at?: string
@@ -360,6 +366,7 @@ export type Database = {
           duration_weeks: number | null
           full_description: string | null
           id: string
+          image_url: string | null
           is_active: boolean
           name: string
           short_description: string | null
@@ -374,6 +381,7 @@ export type Database = {
           duration_weeks?: number | null
           full_description?: string | null
           id?: string
+          image_url?: string | null
           is_active?: boolean
           name: string
           short_description?: string | null
@@ -388,6 +396,7 @@ export type Database = {
           duration_weeks?: number | null
           full_description?: string | null
           id?: string
+          image_url?: string | null
           is_active?: boolean
           name?: string
           short_description?: string | null

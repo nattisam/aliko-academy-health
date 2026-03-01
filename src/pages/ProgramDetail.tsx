@@ -57,7 +57,7 @@ const ProgramDetail = () => {
                       : ""
                   }
                 >
-                  {program.enrollmentStatus === "open" ? "Enrollment Open" : "Enrollment Closed"}
+                  {program.enrollmentStatus === "open" ? "Enrollment Open" : "Start Date: TBD"}
                 </Badge>
               </div>
               <h1 className="text-3xl lg:text-5xl font-bold text-primary">
@@ -289,7 +289,7 @@ const ProgramDetail = () => {
                         : ""
                     }
                   >
-                    {program.enrollmentStatus === "open" ? "Enrollment Open" : "Enrollment Closed"}
+                    {program.enrollmentStatus === "open" ? "Enrollment Open" : "Start Date: TBD"}
                   </Badge>
                   <Button asChild className="w-full mt-4 shadow-lg bg-accent text-accent-foreground hover:bg-accent/90">
                     <Link to="/apply">Apply Now</Link>

@@ -222,7 +222,7 @@ const ExamPrepDetail = () => {
                     >
                       {program.enrollmentStatus === "open"
                         ? program.startDate
-                        : "Enrollment Closed"}
+                        : "Start Date: TBD"}
                     </Badge>
                   </div>
 
