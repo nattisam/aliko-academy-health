@@ -1,3 +1,8 @@
+import nclexThumb from "@/assets/programs/nclex-thumb.jpg";
+import teasThumb from "@/assets/programs/teas-thumb.jpg";
+import cnaExamThumb from "@/assets/programs/cna-exam-thumb.jpg";
+import maExamThumb from "@/assets/programs/ma-exam-thumb.jpg";
+
 export const examPrepPrograms = [
   {
     id: "nclex-review",
@@ -12,6 +17,7 @@ export const examPrepPrograms = [
     startDate: "March 15, 2026",
     enrollmentStatus: "open" as const,
     featured: true,
+    image: nclexThumb,
     description: "Comprehensive NCLEX-RN and NCLEX-PN exam preparation covering all test content areas, test-taking strategies, and practice questions to maximize your exam success.",
     targetAudience: ["Nursing School Graduates", "LPN/LVN seeking RN licensure", "International Nurses"],
     topicsCovered: [
@@ -37,6 +43,7 @@ export const examPrepPrograms = [
     startDate: "April 1, 2026",
     enrollmentStatus: "open" as const,
     featured: true,
+    image: teasThumb,
     description: "Prepare for nursing school entrance exams with comprehensive review of reading, math, science, and English language arts sections on the TEAS and HESI A2 exams.",
     targetAudience: ["Prospective Nursing Students", "Pre-Nursing Students", "Career Changers"],
     topicsCovered: [
@@ -62,6 +69,7 @@ export const examPrepPrograms = [
     startDate: "March 22, 2026",
     enrollmentStatus: "open" as const,
     featured: false,
+    image: cnaExamThumb,
     description: "Focused review for CNA certification exam success, covering written test content, clinical skills demonstration, and state-specific requirements.",
     targetAudience: ["CNA Program Graduates", "CNAs Seeking Re-certification", "Out-of-State CNAs"],
     topicsCovered: [
@@ -87,6 +95,7 @@ export const examPrepPrograms = [
     startDate: "April 15, 2026",
     enrollmentStatus: "open" as const,
     featured: false,
+    image: maExamThumb,
     description: "Prepare for CMA, RMA, or NCMA certification exams with comprehensive review of administrative, clinical, and general medical knowledge.",
     targetAudience: ["Medical Assistant Program Graduates", "MAs Seeking National Certification"],
     topicsCovered: [
