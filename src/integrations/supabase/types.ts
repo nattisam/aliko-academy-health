@@ -331,6 +331,51 @@ export type Database = {
           },
         ]
       }
+      partnership_inquiries: {
+        Row: {
+          admin_notes: string | null
+          contact_name: string
+          created_at: string
+          email: string
+          id: string
+          message: string | null
+          organization_name: string
+          organization_type: string
+          partnership_type: string
+          phone: string | null
+          status: Database["public"]["Enums"]["partnership_status"]
+          updated_at: string
+        }
+        Insert: {
+          admin_notes?: string | null
+          contact_name: string
+          created_at?: string
+          email: string
+          id?: string
+          message?: string | null
+          organization_name: string
+          organization_type: string
+          partnership_type: string
+          phone?: string | null
+          status?: Database["public"]["Enums"]["partnership_status"]
+          updated_at?: string
+        }
+        Update: {
+          admin_notes?: string | null
+          contact_name?: string
+          created_at?: string
+          email?: string
+          id?: string
+          message?: string | null
+          organization_name?: string
+          organization_type?: string
+          partnership_type?: string
+          phone?: string | null
+          status?: Database["public"]["Enums"]["partnership_status"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
@@ -496,6 +541,12 @@ export type Database = {
         | "proposal_sent"
         | "won"
         | "lost"
+      partnership_status:
+        | "new"
+        | "contacted"
+        | "in_discussion"
+        | "approved"
+        | "declined"
       program_category: "training" | "exam_prep"
     }
     CompositeTypes: {
@@ -641,6 +692,13 @@ export const Constants = {
         "proposal_sent",
         "won",
         "lost",
+      ],
+      partnership_status: [
+        "new",
+        "contacted",
+        "in_discussion",
+        "approved",
+        "declined",
       ],
       program_category: ["training", "exam_prep"],
     },
