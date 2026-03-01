@@ -54,9 +54,9 @@ export function ProgramsSnapshot() {
               }`}
             >
               {/* Thumbnail */}
-              {program.image_url ? (
+              {(program.image_url || program.image) ? (
                 <div className="aspect-[16/10] relative overflow-hidden">
-                  <img src={program.image_url} alt={program.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <img src={program.image_url || program.image} alt={program.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                   {program.featured && (
                     <Badge className="absolute top-2 left-2 bg-accent text-accent-foreground text-xs">
                       <Sparkles className="h-3 w-3 mr-1" /> Featured
