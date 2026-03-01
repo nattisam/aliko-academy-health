@@ -1,3 +1,8 @@
+import cnaThumb from "@/assets/programs/cna-thumb.jpg";
+import billingThumb from "@/assets/programs/billing-thumb.jpg";
+import maThumb from "@/assets/programs/ma-thumb.jpg";
+import phlebotomyThumb from "@/assets/programs/phlebotomy-thumb.jpg";
+
 export const programs = [
   {
     id: "cna",
@@ -14,6 +19,7 @@ export const programs = [
     startDate: "April 1, 2026",
     enrollmentStatus: "open" as const,
     featured: true,
+    image: cnaThumb,
     description: "Prepare for a rewarding career as a Certified Nursing Assistant. This comprehensive program covers patient care fundamentals, vital signs, infection control, and clinical skills.",
     careerPathways: ["Long-term Care Facilities", "Hospitals", "Home Health Care", "Rehabilitation Centers"],
     requirements: ["High school diploma or GED", "Background check", "Physical exam", "Immunization records"],
@@ -32,6 +38,7 @@ export const programs = [
     startDate: "April 1, 2026",
     enrollmentStatus: "closed" as const,
     featured: true,
+    image: billingThumb,
     description: "Master the essential skills for medical billing and coding careers. Learn ICD-10, CPT coding, healthcare reimbursement, and electronic health records management.",
     careerPathways: ["Medical Offices", "Hospitals", "Insurance Companies", "Remote Work Opportunities"],
     requirements: ["High school diploma or GED", "Basic computer skills", "Attention to detail"],
@@ -50,6 +57,7 @@ export const programs = [
     startDate: "May 1, 2026",
     enrollmentStatus: "closed" as const,
     featured: false,
+    image: maThumb,
     description: "Become a versatile healthcare professional capable of both clinical and administrative duties. Learn patient care, vital signs, injections, EKG, phlebotomy, and medical office procedures.",
     careerPathways: ["Physician Offices", "Urgent Care Centers", "Specialty Clinics", "Outpatient Facilities"],
     requirements: ["High school diploma or GED", "Background check", "Physical exam", "CPR certification"],
@@ -68,6 +76,7 @@ export const programs = [
     startDate: "March 22, 2026",
     enrollmentStatus: "closed" as const,
     featured: false,
+    image: phlebotomyThumb,
     description: "Learn the art and science of blood collection. Master venipuncture, capillary puncture, specimen handling, and patient interaction skills.",
     careerPathways: ["Clinical Laboratories", "Hospitals", "Blood Banks", "Diagnostic Centers"],
     requirements: ["High school diploma or GED", "Background check", "Immunization records"],
