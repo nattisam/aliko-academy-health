@@ -194,7 +194,8 @@ const Contact = () => {
                 <CardContent>
                   <p className="text-muted-foreground">
                     General: {currentState.contact.email}<br />
-                    Admissions: {currentState.contact.admissionsEmail}
+                    Admissions: {currentState.contact.admissionsEmail}<br />
+                    Academy: {currentState.contact.generalEmail || "academy-health@alikohub.com"}
                   </p>
                 </CardContent>
               </Card>
