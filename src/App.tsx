@@ -26,6 +26,8 @@ import Contact from "./pages/Contact";
 import StudentLogin from "./pages/StudentLogin";
 import NotFound from "./pages/NotFound";
 import Enterprise from "./pages/Enterprise";
+import Blog from "./pages/Blog";
+import Resources from "./pages/Resources";
 import InstitutionalTraining from "./pages/InstitutionalTraining";
 import InstitutionalCategoryDetail from "./pages/InstitutionalCategoryDetail";
 import AdminLogin from "./pages/admin/AdminLogin";
