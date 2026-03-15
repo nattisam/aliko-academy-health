@@ -142,6 +142,7 @@ const CareerServices = () => {
         </div>
       </section>
 
+      <section className="py-12 lg:py-16">
         <div className="container-academy">
           {/* Services Grid */}
           <div className="grid sm:grid-cols-2 gap-6 sm:gap-8 mb-16">
