@@ -15,6 +15,7 @@ export interface StateConfig {
     admissionsPhone: string;
     email: string;
     admissionsEmail: string;
+    generalEmail?: string;
   };
   officeHours: {
     weekday: string;
