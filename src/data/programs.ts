@@ -2,8 +2,9 @@ import cnaThumb from "@/assets/programs/cna-thumb.jpg";
 import billingThumb from "@/assets/programs/billing-thumb.jpg";
 import maThumb from "@/assets/programs/ma-thumb.jpg";
 import phlebotomyThumb from "@/assets/programs/phlebotomy-thumb.jpg";
+import { additionalPrograms } from "./additionalPrograms";
 
-export const programs = [
+export const corePrograms = [
   {
     id: "cna",
     name: "Certified Nursing Assistant (CNA)",
