@@ -110,7 +110,38 @@ const CareerServices = () => {
         </div>
       </section>
 
-      <section className="py-12 lg:py-16">
+      {/* Employment Opportunities Section */}
+      <section className="py-12 lg:py-16 bg-gradient-to-br from-muted/30 to-muted/10">
+        <div className="container-academy">
+          <div className="flex items-center gap-2 mb-2">
+            <div className="h-1 w-8 bg-primary rounded-full" />
+            <span className="text-sm font-medium text-primary">Employment</span>
+          </div>
+          <h2 className="text-2xl lg:text-3xl font-bold text-foreground mb-4">CNA Employment Opportunities</h2>
+          <p className="text-muted-foreground mb-8 max-w-3xl">
+            CNA graduates are in high demand across Washington State. Our graduates find rewarding positions 
+            in a variety of healthcare settings, including:
+          </p>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {[
+              { title: "Hospitals", desc: "Acute care, emergency departments, surgical units, and specialized wards" },
+              { title: "Nursing Homes & Long-Term Care", desc: "Skilled nursing facilities providing ongoing patient care and rehabilitation" },
+              { title: "Assisted Living Centers", desc: "Residential care for seniors who need daily assistance with activities" },
+              { title: "Home Health Agencies", desc: "In-home patient care with flexible schedules and one-on-one interaction" },
+              { title: "Rehabilitation Centers", desc: "Helping patients recover from surgery, illness, or injury" },
+              { title: "Hospice Care", desc: "Compassionate end-of-life care for patients and their families" },
+            ].map((item) => (
+              <Card key={item.title} className="hover:shadow-lg transition-all duration-300 border-l-4 border-l-primary">
+                <CardContent className="pt-6">
+                  <h3 className="font-semibold text-foreground mb-1">{item.title}</h3>
+                  <p className="text-sm text-muted-foreground">{item.desc}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
         <div className="container-academy">
           {/* Services Grid */}
           <div className="grid sm:grid-cols-2 gap-6 sm:gap-8 mb-16">
