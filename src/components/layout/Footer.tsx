@@ -114,6 +114,18 @@ export function Footer() {
                       {currentState.contact.email}
                     </a>
                   </p>
+                  <p className="flex items-center gap-2">
+                    <Mail className="h-3.5 w-3.5 text-accent" />
+                    <a href="mailto:academy@alikohub.com" className="hover:text-accent transition-colors">
+                      academy@alikohub.com
+                    </a>
+                  </p>
+                  <p className="flex items-center gap-2">
+                    <Mail className="h-3.5 w-3.5 text-accent" />
+                    <a href="mailto:academy-health@alikohub.com" className="hover:text-accent transition-colors">
+                      academy-health@alikohub.com
+                    </a>
+                  </p>
                 </div>
               </div>
               <div>
