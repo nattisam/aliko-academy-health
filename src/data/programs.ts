@@ -175,5 +175,7 @@ export const corePrograms = [
   },
 ];
 
+export const programs = [...corePrograms, ...additionalPrograms];
+
 export type Program = typeof programs[number];
 export type EnrollmentStatus = "open" | "closed";
