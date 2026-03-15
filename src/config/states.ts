@@ -15,6 +15,7 @@ export interface StateConfig {
     admissionsPhone: string;
     email: string;
     admissionsEmail: string;
+    generalEmail?: string;
   };
   officeHours: {
     weekday: string;
@@ -40,10 +41,11 @@ export const stateConfigs: Record<string, StateConfig> = {
       city: "Seattle",
       state: "WA",
       zip: "98101",
-      phone: "(206) 555-0100",
-      admissionsPhone: "(206) 555-0101",
-      email: "info@alikoacademy.edu",
-      admissionsEmail: "admissions@alikoacademy.edu",
+      phone: "206-353-5373",
+      admissionsPhone: "206-353-5373",
+      email: "info@alikohub.com",
+      admissionsEmail: "academy@alikohub.com",
+      generalEmail: "academy-health@alikohub.com",
     },
     officeHours: {
       weekday: "Monday – Friday: 8:00 AM – 6:00 PM",

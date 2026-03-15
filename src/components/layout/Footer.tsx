@@ -22,11 +22,11 @@ const footerLinks = {
     { name: "Career Services", href: "/career-services" },
     { name: "Partners", href: "/partners" },
   ],
-  policies: [
+  resources: [
+    { name: "Blog", href: "/blog" },
+    { name: "Resources & FAQ", href: "/resources" },
     { name: "Student Handbook", href: "/policies" },
-    { name: "Refund Policy", href: "/policies#refund" },
     { name: "Privacy Policy", href: "/policies#privacy" },
-    { name: "ADA Accommodations", href: "/policies#ada" },
   ],
 };
 
@@ -112,6 +112,18 @@ export function Footer() {
                     <Mail className="h-3.5 w-3.5 text-accent" />
                     <a href={`mailto:${currentState.contact.email}`} className="hover:text-accent transition-colors">
                       {currentState.contact.email}
+                    </a>
+                  </p>
+                  <p className="flex items-center gap-2">
+                    <Mail className="h-3.5 w-3.5 text-accent" />
+                    <a href="mailto:academy@alikohub.com" className="hover:text-accent transition-colors">
+                      academy@alikohub.com
+                    </a>
+                  </p>
+                  <p className="flex items-center gap-2">
+                    <Mail className="h-3.5 w-3.5 text-accent" />
+                    <a href="mailto:academy-health@alikohub.com" className="hover:text-accent transition-colors">
+                      academy-health@alikohub.com
                     </a>
                   </p>
                 </div>

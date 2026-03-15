@@ -31,6 +31,8 @@ const moreLinks = [
   { name: "Partnerships", href: "/partnerships" },
   { name: "Career Services", href: "/career-services" },
   { name: "Exam Prep", href: "/exam-prep" },
+  { name: "Blog", href: "/blog" },
+  { name: "Resources & FAQ", href: "/resources" },
 ];
 
 const allNavigation: { name: string; href: string; dropdown?: { name: string; href: string }[] }[] = [

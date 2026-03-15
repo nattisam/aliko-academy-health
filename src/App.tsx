@@ -26,6 +26,8 @@ import Contact from "./pages/Contact";
 import StudentLogin from "./pages/StudentLogin";
 import NotFound from "./pages/NotFound";
 import Enterprise from "./pages/Enterprise";
+import Blog from "./pages/Blog";
+import Resources from "./pages/Resources";
 import InstitutionalTraining from "./pages/InstitutionalTraining";
 import InstitutionalCategoryDetail from "./pages/InstitutionalCategoryDetail";
 import AdminLogin from "./pages/admin/AdminLogin";
@@ -72,6 +74,8 @@ const App = () => (
               <Route path="/contact" element={<Contact />} />
               <Route path="/student-login" element={<StudentLogin />} />
               <Route path="/enterprise" element={<Enterprise />} />
+              <Route path="/blog" element={<Blog />} />
+              <Route path="/resources" element={<Resources />} />
               <Route path="/institutional-training" element={<InstitutionalTraining />} />
               <Route path="/institutional-training/:categorySlug" element={<InstitutionalCategoryDetail />} />
 

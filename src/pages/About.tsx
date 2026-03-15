@@ -104,9 +104,14 @@ const About = () => {
                   for their careers.
                 </p>
                 <p>
+                  As an <strong className="text-foreground">official Washington State CNA testing site</strong>, 
+                  students can complete their training and take their state certification exam right at our 
+                  facility — making the process convenient and seamless.
+                </p>
+                <p>
                   Through partnerships with healthcare facilities throughout {currentState.name} State, we 
-                  provide students with real-world clinical experiences that build confidence and 
-                  competence.
+                  provide students with real-world clinical experiences in hospitals, nursing homes, 
+                  assisted living centers, and home health agencies that build confidence and competence.
                 </p>
               </div>
             </div>
