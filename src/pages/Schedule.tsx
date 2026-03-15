@@ -1,83 +1,124 @@
+import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
-import { programs } from "@/data/programs";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Calendar, Clock, ArrowRight, CheckCircle, Users, Sparkles, Sun, Moon, CalendarDays } from "lucide-react";
+import { Calendar as CalendarWidget } from "@/components/ui/calendar";
+import {
+  Calendar, Clock, ArrowRight, CheckCircle, Users, Sparkles,
+  Sun, Moon, CalendarDays, MapPin, Monitor, Filter,
+} from "lucide-react";
+import { schedules, upcomingCohorts, type ScheduleType, type ScheduleDay } from "@/data/scheduleData";
 import morningImg from "@/assets/schedule-morning.jpg";
 import eveningImg from "@/assets/schedule-evening.jpg";
 import weekendImg from "@/assets/schedule-weekend.jpg";
 
-// Helper to color-code schedule content lines
-const FormatContent = ({ content }: { content: string }) => {
-  const lines = content.split('\n');
-  return (
-    <div className="space-y-0.5">
-      {lines.map((line, i) => {
-        const isExam = line.toLowerCase().startsWith('exam');
-        const isSkill = line.toLowerCase().startsWith('skill');
-        const isChapter = line.toLowerCase().startsWith('chapter') || line.toLowerCase().startsWith('ch');
-        return (
-          <p key={i} className={`text-xs leading-snug ${
-            isChapter ? 'font-bold text-foreground' : isExam ? 'font-semibold text-teal' : isSkill ? 'font-medium text-accent' : 'text-foreground/70'
-          }`}>
-            {line}
-          </p>
-        );
-      })}
-    </div>
-  );
+const scheduleImages: Record<ScheduleType, string> = {
+  morning: morningImg,
+  evening: eveningImg,
+  weekend: weekendImg,
+};
+
+const scheduleIcons: Record<string, React.ReactNode> = {
+  sun: <Sun className="h-5 w-5 text-yellow-500" />,
+  moon: <Moon className="h-5 w-5 text-blue-400" />,
+  calendar: <CalendarDays className="h-5 w-5 text-teal" />,
+};
+
+const phaseColors: Record<string, { bg: string; text: string; border: string; label: string }> = {
+  theory: { bg: "bg-primary/5", text: "text-primary", border: "border-primary/20", label: "Theory" },
+  skills: { bg: "bg-accent/5", text: "text-accent", border: "border-accent/20", label: "Skills Practice" },
+  clinical: { bg: "bg-teal/5", text: "text-teal", border: "border-teal/20", label: "Clinical" },
+};
+
+const modeIcon = (mode: string) => {
+  if (mode === "Online") return <Monitor className="h-3 w-3" />;
+  return <MapPin className="h-3 w-3" />;
 };
 
 const Schedule = () => {
-  // Sort programs by start date
-  const sortedPrograms = [...programs].sort((a, b) => {
-    // Simple date comparison - in production would use proper date parsing
-    return a.startDate.localeCompare(b.startDate);
-  });
+  const [activeSchedule, setActiveSchedule] = useState<ScheduleType>("morning");
+  const [activeWeek, setActiveWeek] = useState<number | "all">("all");
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
+  const [phaseFilter, setPhaseFilter] = useState<string | "all">("all");
 
-  const openPrograms = sortedPrograms.filter((p) => p.enrollmentStatus === "open");
-  const closedPrograms = sortedPrograms.filter((p) => p.enrollmentStatus === "closed");
+  const schedule = schedules.find((s) => s.id === activeSchedule)!;
+
+  // Filter cohorts by schedule type and selected date
+  const filteredCohorts = useMemo(() => {
+    let cohorts = upcomingCohorts.filter((c) => c.scheduleType === activeSchedule);
+    if (selectedDate) {
+      const dateStr = selectedDate.toISOString().split("T")[0];
+      cohorts = cohorts.filter((c) => c.date === dateStr);
+    }
+    return cohorts;
+  }, [activeSchedule, selectedDate]);
+
+  // All cohort dates for calendar highlighting
+  const cohortDates = useMemo(() => {
+    return upcomingCohorts
+      .filter((c) => c.scheduleType === activeSchedule)
+      .map((c) => new Date(c.date + "T00:00:00"));
+  }, [activeSchedule]);
+
+  // Filter weeks
+  const displayedWeeks = useMemo(() => {
+    let weeks = schedule.weeks;
+    if (activeWeek !== "all") {
+      weeks = weeks.filter((w) => w.week === activeWeek);
+    }
+    if (phaseFilter !== "all") {
+      weeks = weeks.filter((w) => w.phase === phaseFilter);
+    }
+    return weeks;
+  }, [schedule, activeWeek, phaseFilter]);
+
+  const totalDisplayedHours = displayedWeeks.reduce((acc, w) => acc + w.totalHours, 0);
 
   return (
     <Layout>
-      {/* Hero Section */}
+      {/* Hero */}
       <section className="relative py-16 lg:py-24 bg-gradient-to-br from-primary/5 via-card to-accent/5 overflow-hidden">
         <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
         <div className="absolute bottom-0 left-0 w-64 h-64 bg-accent/5 rounded-full blur-3xl" />
-        
         <div className="container-academy relative">
           <div className="flex items-center gap-2 mb-4">
             <div className="h-1 w-12 bg-accent rounded-full" />
             <span className="text-sm font-medium text-accent">Plan Your Journey</span>
           </div>
-          <h1 className="text-3xl lg:text-5xl font-bold text-primary">
-            Start Dates & Schedule
-          </h1>
+          <h1 className="text-3xl lg:text-5xl font-bold text-primary">CNA Class Schedule</h1>
           <p className="mt-4 text-lg text-muted-foreground max-w-3xl">
-            View upcoming cohort start dates and enrollment status for all our healthcare training programs.
+            Choose your preferred schedule, explore the week-by-week curriculum, and pick your start date.
           </p>
-          
+
           {/* Quick stats */}
           <div className="mt-8 flex flex-wrap gap-6">
-            <div className="flex items-center gap-2 text-muted-foreground">
+            <div className="flex items-center gap-2">
               <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center">
                 <Sparkles className="h-5 w-5 text-accent" />
               </div>
               <div>
-                <p className="font-semibold text-foreground">{openPrograms.length}</p>
-                <p className="text-xs">Open Enrollments</p>
+                <p className="font-semibold text-foreground">3 Schedules</p>
+                <p className="text-xs text-muted-foreground">Morning · Evening · Weekend</p>
               </div>
             </div>
-            <div className="flex items-center gap-2 text-muted-foreground">
+            <div className="flex items-center gap-2">
               <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                <Calendar className="h-5 w-5 text-primary" />
+                <Clock className="h-5 w-5 text-primary" />
               </div>
               <div>
-                <p className="font-semibold text-foreground">Cohort-Based</p>
-                <p className="text-xs">Structured Learning</p>
+                <p className="font-semibold text-foreground">108 Hours</p>
+                <p className="text-xs text-muted-foreground">Total Program</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-10 h-10 rounded-lg bg-teal/10 flex items-center justify-center">
+                <Calendar className="h-5 w-5 text-teal" />
+              </div>
+              <div>
+                <p className="font-semibold text-foreground">{upcomingCohorts.filter(c => c.scheduleType === activeSchedule).length} Dates</p>
+                <p className="text-xs text-muted-foreground">Upcoming Cohorts</p>
               </div>
             </div>
           </div>
@@ -85,397 +126,286 @@ const Schedule = () => {
       </section>
 
       <section className="py-12">
-        <div className="container-academy space-y-12">
-          {/* Open Enrollment */}
+        <div className="container-academy space-y-10">
+
+          {/* Schedule Type Selector - Photo Cards */}
           <div>
-            <div className="flex items-center gap-3 mb-6">
+            <h2 className="text-2xl font-bold text-foreground mb-6">Choose Your Schedule</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {schedules.map((s) => {
+                const isActive = s.id === activeSchedule;
+                return (
+                  <button
+                    key={s.id}
+                    onClick={() => { setActiveSchedule(s.id); setActiveWeek("all"); setPhaseFilter("all"); setSelectedDate(undefined); }}
+                    className={`group relative rounded-2xl overflow-hidden text-left transition-all duration-300 ${
+                      isActive ? "ring-2 ring-primary ring-offset-2 shadow-xl scale-[1.02]" : "hover:shadow-lg hover:-translate-y-1"
+                    }`}
+                  >
+                    <div className="aspect-[4/3] relative">
+                      <img src={scheduleImages[s.id]} alt={s.label} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+                      {isActive && (
+                        <div className="absolute top-3 right-3">
+                          <Badge className="bg-primary text-primary-foreground">Selected</Badge>
+                        </div>
+                      )}
+                      <div className="absolute top-3 left-3">
+                        <div className="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                          {scheduleIcons[s.icon]}
+                        </div>
+                      </div>
+                      <div className="absolute bottom-0 left-0 right-0 p-5 text-white">
+                        <p className="font-bold text-lg">{s.label}</p>
+                        <p className="text-sm text-white/80">{s.daysOfWeek}</p>
+                        <p className="text-sm font-semibold text-blue-200 mt-1">{s.timeRange}</p>
+                        <p className="text-xs text-white/60 mt-1">{s.programLength} · {s.totalHours} hours</p>
+                      </div>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Filters + Calendar Row */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Filters */}
+            <div className="lg:col-span-2 space-y-4">
+              <div className="flex items-center gap-2 mb-2">
+                <Filter className="h-4 w-4 text-muted-foreground" />
+                <span className="text-sm font-medium text-muted-foreground">Filter Schedule</span>
+              </div>
+
+              {/* Week filter */}
+              <div>
+                <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2">By Week</p>
+                <div className="flex flex-wrap gap-2">
+                  <Button
+                    size="sm"
+                    variant={activeWeek === "all" ? "default" : "outline"}
+                    onClick={() => setActiveWeek("all")}
+                  >
+                    All Weeks
+                  </Button>
+                  {schedule.weeks.map((w) => (
+                    <Button
+                      key={w.week}
+                      size="sm"
+                      variant={activeWeek === w.week ? "default" : "outline"}
+                      onClick={() => setActiveWeek(w.week)}
+                    >
+                      Week {w.week}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Phase filter */}
+              <div>
+                <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2">By Phase</p>
+                <div className="flex flex-wrap gap-2">
+                  <Button
+                    size="sm"
+                    variant={phaseFilter === "all" ? "default" : "outline"}
+                    onClick={() => setPhaseFilter("all")}
+                  >
+                    All Phases
+                  </Button>
+                  {Object.entries(phaseColors).map(([key, val]) => (
+                    <Button
+                      key={key}
+                      size="sm"
+                      variant={phaseFilter === key ? "default" : "outline"}
+                      onClick={() => setPhaseFilter(key)}
+                      className={phaseFilter === key ? "" : `${val.text} border ${val.border}`}
+                    >
+                      {val.label}
+                    </Button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Summary bar */}
+              <div className="flex items-center gap-4 p-3 rounded-lg bg-muted/50 text-sm">
+                <span>Showing <strong>{displayedWeeks.length}</strong> week{displayedWeeks.length !== 1 ? "s" : ""}</span>
+                <span className="text-muted-foreground">·</span>
+                <span><strong>{totalDisplayedHours}</strong> hours</span>
+                <span className="text-muted-foreground">·</span>
+                <span className="capitalize">{schedule.label}</span>
+              </div>
+            </div>
+
+            {/* Calendar */}
+            <Card className="h-fit">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-base flex items-center gap-2">
+                  <Calendar className="h-4 w-4 text-primary" />
+                  Pick a Start Date
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-2">
+                <CalendarWidget
+                  mode="single"
+                  selected={selectedDate}
+                  onSelect={setSelectedDate}
+                  className="p-3 pointer-events-auto"
+                  modifiers={{ cohortDate: cohortDates }}
+                  modifiersStyles={{
+                    cohortDate: {
+                      backgroundColor: "hsl(var(--primary))",
+                      color: "white",
+                      borderRadius: "50%",
+                      fontWeight: "bold",
+                    },
+                  }}
+                  disabled={(date) => date < new Date()}
+                />
+                {selectedDate && (
+                  <div className="px-3 pb-3">
+                    {filteredCohorts.length > 0 ? (
+                      <div className="space-y-2">
+                        {filteredCohorts.map((c) => (
+                          <div key={c.id} className="flex items-center justify-between p-2 rounded-lg bg-primary/5 border border-primary/20">
+                            <div>
+                              <p className="text-sm font-medium">{new Date(c.date + "T00:00:00").toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}</p>
+                              {c.seatsAvailable && <p className="text-xs text-muted-foreground">{c.seatsAvailable} seats available</p>}
+                            </div>
+                            <Button asChild size="sm">
+                              <Link to="/apply">Enroll</Link>
+                            </Button>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-sm text-muted-foreground text-center py-2">No cohort on this date. See highlighted dates.</p>
+                    )}
+                  </div>
+                )}
+                {!selectedDate && (
+                  <p className="text-xs text-muted-foreground text-center pb-3">
+                    Highlighted dates have available cohorts
+                  </p>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Upcoming Cohort Dates */}
+          <div>
+            <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-lg bg-teal/10 flex items-center justify-center">
                 <Sparkles className="h-5 w-5 text-teal" />
               </div>
               <div>
-                <h2 className="text-3xl font-bold text-teal">Open for Enrollment</h2>
-                <Badge variant="outline" className="border-teal text-teal mt-1">
-                  {openPrograms.length} Programs Available
-                </Badge>
+                <h2 className="text-2xl font-bold text-foreground">Upcoming Start Dates</h2>
+                <p className="text-sm text-muted-foreground capitalize">{schedule.label} · {schedule.timeRange}</p>
               </div>
             </div>
-            <Card className="overflow-hidden">
-              <div className="bg-teal/10 border-b border-teal/20 px-6 py-2.5">
-                <div className="flex items-center gap-2 text-teal">
-                  <CheckCircle className="h-4 w-4" />
-                  <span className="text-sm font-medium">Enroll Now — Limited Seats Available</span>
-                </div>
-              </div>
-              {/* Mobile card layout */}
-              <div className="block md:hidden p-4 space-y-4">
-                {openPrograms.map((program) => (
-                  <div key={program.id} className="border border-border rounded-xl p-4 space-y-3 bg-background">
-                    <Link to={`/programs/${program.id}`} className="font-bold text-base hover:text-primary transition-colors block">
-                      {program.name}
-                    </Link>
-                    <div className="flex flex-wrap gap-3 text-sm text-muted-foreground">
-                      <div className="flex items-center gap-1.5">
-                        <Clock className="h-4 w-4" />
-                        <span>{program.duration}</span>
-                      </div>
-                      <Badge variant="outline">{program.modality}</Badge>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Calendar className="h-4 w-4 text-teal" />
-                      <span className="font-bold text-teal">{program.startDate}</span>
-                    </div>
-                    <Button asChild size="sm" className="w-full shadow-sm">
-                      <Link to="/apply">
-                        Apply Now
-                        <ArrowRight className="ml-1 h-3 w-3" />
-                      </Link>
-                    </Button>
-                  </div>
-                ))}
-              </div>
-              {/* Desktop table */}
-              <CardContent className="p-0 hidden md:block">
-                <Table>
-                  <TableHeader>
-                     <TableRow className="bg-muted/50">
-                      <TableHead className="font-bold text-base">Program</TableHead>
-                      <TableHead className="font-bold text-base">Duration</TableHead>
-                      <TableHead className="font-bold text-base">Modality</TableHead>
-                      <TableHead className="font-bold text-base">Start Date</TableHead>
-                      <TableHead className="text-right font-bold text-base">Action</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {openPrograms.map((program, index) => (
-                      <TableRow key={program.id} className={`${index % 2 === 0 ? 'bg-background' : 'bg-muted/30'} hover:bg-accent/5 transition-colors`}>
-                        <TableCell className="font-bold text-base">
-                          <Link to={`/programs/${program.id}`} className="hover:text-primary transition-colors">
-                            {program.name}
-                          </Link>
-                        </TableCell>
-                        <TableCell className="text-base">
-                          <div className="flex items-center gap-2">
-                            <Clock className="h-4 w-4 text-muted-foreground" />
-                            {program.duration}
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          <Badge variant="outline">{program.modality}</Badge>
-                        </TableCell>
-                        <TableCell className="text-base">
-                          <div className="flex items-center gap-2">
-                            <Calendar className="h-4 w-4 text-teal" />
-                            <span className="font-bold text-teal">{program.startDate}</span>
-                          </div>
-                        </TableCell>
-                        <TableCell className="text-right">
-                          <Button asChild size="sm" className="shadow-sm">
-                            <Link to="/apply">
-                              Apply Now
-                              <ArrowRight className="ml-1 h-3 w-3" />
-                            </Link>
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* CNA Class Schedule - Photo Cards */}
-          <div>
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center">
-                <Clock className="h-5 w-5 text-accent" />
-              </div>
-              <div>
-                <h2 className="text-2xl font-bold text-foreground">CNA Class Schedules</h2>
-                <p className="text-sm text-muted-foreground">Choose the schedule that fits your lifestyle</p>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
-              {/* Weekday Morning */}
-              <div className="group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-1">
-                <div className="aspect-[3/4] relative">
-                  <img src={morningImg} alt="Morning class" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-                  <div className="absolute top-4 left-4">
-                    <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                      <Sun className="h-6 w-6 text-yellow-300" />
-                    </div>
-                  </div>
-                  <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                    <Badge className="bg-primary/90 backdrop-blur-sm text-white border-primary/50 hover:bg-primary text-sm px-3 py-1">Day Class</Badge>
-                    <div className="space-y-2 mt-3">
-                      <div className="p-2.5 rounded-lg bg-white/15 backdrop-blur-sm">
-                        <p className="font-bold text-blue-200 text-sm">Lecture/Lab</p>
-                        <p className="font-bold text-white text-lg">Mon – Fri: 10am – 4:30pm</p>
-                      </div>
-                      <div className="p-2.5 rounded-lg bg-white/10 backdrop-blur-sm">
-                        <p className="font-bold text-blue-200 text-sm">Clinical</p>
-                        <p className="font-bold text-white text-lg">6am – 2:30pm</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Weekday Evening */}
-              <div className="group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-1">
-                <div className="aspect-[3/4] relative">
-                  <img src={eveningImg} alt="Evening class" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-                  <div className="absolute top-4 left-4">
-                    <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                      <Moon className="h-6 w-6 text-blue-300" />
-                    </div>
-                  </div>
-                  <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                    <Badge className="bg-primary/90 backdrop-blur-sm text-white border-primary/50 hover:bg-primary text-sm px-3 py-1">Evening Class</Badge>
-                    <div className="space-y-2 mt-3">
-                      <div className="p-2.5 rounded-lg bg-white/15 backdrop-blur-sm">
-                        <p className="font-bold text-blue-200 text-sm">Lecture/Lab</p>
-                        <p className="font-bold text-white text-sm">Mon – Thu: 6pm – 10pm</p>
-                        <p className="font-bold text-white text-sm">Sat – Sun: 2pm – 8:30pm</p>
-                      </div>
-                      <div className="p-2.5 rounded-lg bg-white/10 backdrop-blur-sm">
-                        <p className="font-bold text-blue-200 text-sm">Clinical</p>
-                        <p className="font-bold text-white text-sm">Mon – Thu: 6pm – 10pm</p>
-                        <p className="font-bold text-white text-sm">Sat – Sun: 2pm – 8:30pm</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Weekend */}
-              <div className="group relative rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-1">
-                <div className="aspect-[3/4] relative">
-                  <img src={weekendImg} alt="Weekend class" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent" />
-                  <div className="absolute top-4 left-4">
-                    <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                      <CalendarDays className="h-6 w-6 text-green-300" />
-                    </div>
-                  </div>
-                  <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                    <Badge className="bg-primary/90 backdrop-blur-sm text-white border-primary/50 hover:bg-primary text-sm px-3 py-1">Weekend Class</Badge>
-                    <div className="space-y-2 mt-3">
-                      <div className="flex items-center gap-2 p-2.5 rounded-lg bg-white/15 backdrop-blur-sm">
-                        <Sun className="h-4 w-4 text-blue-200 shrink-0" />
-                        <span className="font-bold text-blue-200 text-sm">8:00 AM – 12:00 PM</span>
-                      </div>
-                      <div className="flex items-center gap-2 p-2.5 rounded-lg bg-white/10 backdrop-blur-sm">
-                        <Clock className="h-4 w-4 text-white/60 shrink-0" />
-                        <span className="font-medium text-sm text-white/70">12:00 – 1:00 PM Lunch</span>
-                      </div>
-                      <div className="flex items-center gap-2 p-2.5 rounded-lg bg-white/15 backdrop-blur-sm">
-                        <Sun className="h-4 w-4 text-blue-200 shrink-0" />
-                        <span className="font-bold text-blue-200 text-sm">1:00 PM – 5:00 PM</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* CNA 20-Day Calendar - Single unified table */}
-          <div>
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                <Calendar className="h-5 w-5 text-primary" />
-              </div>
-              <div>
-                <h2 className="text-2xl font-bold text-foreground">CNA Program – 20-Day Calendar</h2>
-                <p className="text-sm text-muted-foreground">Complete program breakdown by day</p>
-              </div>
-            </div>
-
-            <Card className="overflow-hidden">
-              <div className="bg-gradient-to-r from-primary to-primary/80 text-primary-foreground px-6 py-3">
-                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                    <div className="flex items-center gap-2">
-                      <Calendar className="h-5 w-5" />
-                      <span className="font-medium">20-Day Training Schedule</span>
-                    </div>
-                    <div className="flex flex-wrap items-center gap-3 text-xs">
-                      <span className="flex items-center gap-1"><span className="w-3 h-3 rounded bg-primary/30 inline-block" /> Theory</span>
-                      <span className="flex items-center gap-1"><span className="w-3 h-3 rounded bg-accent/40 inline-block" /> Skills</span>
-                      <span className="flex items-center gap-1"><span className="w-3 h-3 rounded bg-teal/40 inline-block" /> Clinical</span>
-                    </div>
-                  </div>
-              </div>
-              <CardContent className="p-4 overflow-x-auto">
-                {/* Week 1: Days 1-5 */}
-                <div className="mb-3">
-                  <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2 px-1">Week 1 — Theory Foundation</p>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2">
-                    {[
-                      { day: 1, hrs: 4, content: "Ch.1 & Ch.2" },
-                      { day: 2, hrs: 4, content: "Ch.2 & Ch.3" },
-                      { day: 3, hrs: 4, content: "Exam Ch1–3\nCh.4\nSkills Ch4" },
-                      { day: 4, hrs: 4, content: "Exam Ch4\nCh.5" },
-                      { day: 5, hrs: 4, content: "Ch.6\nSkills Ch5–6" },
-                    ].map((d) => (
-                      <div key={d.day} className="rounded-xl border border-border bg-card shadow-sm p-3 hover:shadow-md transition-all">
-                        <div className="flex items-center justify-between mb-2">
-                          <span className="text-xs font-bold text-primary">Day {d.day}</span>
-                          <span className="text-[10px] text-muted-foreground bg-muted rounded-full px-2 py-0.5">{d.hrs}h</span>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {upcomingCohorts.filter(c => c.scheduleType === activeSchedule).map((c) => {
+                const d = new Date(c.date + "T00:00:00");
+                return (
+                  <Card key={c.id} className="hover:shadow-md transition-shadow">
+                    <CardContent className="p-4 flex flex-col gap-3">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <Calendar className="h-4 w-4 text-primary" />
+                          <span className="font-bold text-foreground">
+                            {d.toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+                          </span>
                         </div>
-                        <FormatContent content={d.content} />
+                        <Badge variant={c.status === "open" ? "default" : c.status === "waitlist" ? "secondary" : "destructive"}>
+                          {c.status === "open" ? "Open" : c.status === "waitlist" ? "Waitlist" : "Closed"}
+                        </Badge>
                       </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Week 2: Days 6-10 */}
-                <div className="mb-3">
-                  <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2 px-1">Week 2 — Advanced Theory & Skills Intro</p>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2">
-                    {[
-                      { day: 6, hrs: 4, content: "Exam Ch5–6\nCh.7\nSkills Ch7" },
-                      { day: 7, hrs: 4, content: "Ch.8\nSkills Ch8\nExam Ch7–8" },
-                      { day: 8, hrs: 5, content: "Ch.9 & Ch.10\nSkills Ch9–10\nExam Ch9–10" },
-                      { day: 9, hrs: 5, content: "Skill Practice", isSkill: true },
-                      { day: 10, hrs: 5, content: "Skill Practice", isSkill: true },
-                    ].map((d) => (
-                      <div key={d.day} className={`rounded-xl border shadow-sm p-3 hover:shadow-md transition-all ${
-                        'isSkill' in d && d.isSkill ? 'border-accent/30 bg-accent/5' : 'border-border bg-card'
-                      }`}>
-                        <div className="flex items-center justify-between mb-2">
-                          <span className={`text-xs font-bold ${'isSkill' in d && d.isSkill ? 'text-accent' : 'text-primary'}`}>Day {d.day}</span>
-                          <span className="text-[10px] text-muted-foreground bg-muted rounded-full px-2 py-0.5">{d.hrs}h</span>
-                        </div>
-                        <FormatContent content={d.content} />
+                      <div className="text-sm text-muted-foreground">
+                        <p>{schedule.daysOfWeek}</p>
+                        <p>{schedule.timeRange}</p>
+                        {c.seatsAvailable && <p className="text-teal font-medium mt-1">{c.seatsAvailable} seats left</p>}
                       </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Week 3: Days 11-15 */}
-                <div className="mb-3">
-                  <p className="text-xs font-semibold text-accent uppercase tracking-wider mb-2 px-1">Week 3 — Full Skills Practice</p>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2">
-                    {[11, 12, 13, 14, 15].map((day) => (
-                      <div key={day} className="rounded-xl border border-accent/30 bg-accent/5 shadow-sm p-3 hover:shadow-md transition-all">
-                        <div className="flex items-center justify-between mb-2">
-                          <span className="text-xs font-bold text-accent">Day {day}</span>
-                          <span className="text-[10px] text-muted-foreground bg-muted rounded-full px-2 py-0.5">5h</span>
-                        </div>
-                        <p className="text-xs font-medium text-accent">Full Skills Practice</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Week 4: Days 16-20 */}
-                <div>
-                  <p className="text-xs font-semibold text-primary uppercase tracking-wider mb-2 px-1">Week 4 — Clinical Rotation</p>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2">
-                    {[16, 17, 18, 19, 20].map((day) => (
-                      <div key={day} className="rounded-xl border border-primary/30 bg-primary/5 shadow-sm p-3 hover:shadow-md transition-all">
-                        <div className="flex items-center justify-between mb-2">
-                          <span className="text-xs font-bold text-primary">Day {day}</span>
-                          <span className="text-[10px] text-muted-foreground bg-muted rounded-full px-2 py-0.5">8h</span>
-                        </div>
-                        <p className="text-xs font-medium text-primary">Clinical</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Closed Enrollment */}
-          {closedPrograms.length > 0 && (
-            <div>
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                  <Calendar className="h-5 w-5 text-primary" />
-                </div>
-                <div>
-                  <h2 className="text-2xl font-bold text-destructive">Upcoming Cohorts</h2>
-                  <Badge variant="destructive" className="mt-1">{closedPrograms.length} Programs</Badge>
-                </div>
-              </div>
-              <Card className="overflow-hidden">
-                <div className="bg-gradient-to-r from-primary to-primary/80 text-primary-foreground px-6 py-3">
-                  <div className="flex items-center gap-2">
-                    <Clock className="h-5 w-5" />
-                    <span className="font-medium">Coming Soon — Join the Waitlist</span>
-                  </div>
-                </div>
-                {/* Mobile card layout */}
-                <div className="block md:hidden p-4 space-y-4">
-                  {closedPrograms.map((program) => (
-                    <div key={program.id} className="border border-border rounded-xl p-4 space-y-3 bg-background">
-                      <Link to={`/programs/${program.id}`} className="font-medium hover:text-primary transition-colors block">
-                        {program.name}
-                      </Link>
-                      <div className="flex flex-wrap gap-3 text-sm text-muted-foreground">
-                        <div className="flex items-center gap-1.5">
-                          <Clock className="h-4 w-4" />
-                          <span>{program.duration}</span>
-                        </div>
-                        <Badge variant="outline">{program.modality}</Badge>
-                        <Badge variant="destructive">Coming Soon</Badge>
-                      </div>
-                      <Button asChild size="sm" variant="outline" className="w-full">
-                        <Link to={`/programs/${program.id}`}>View Details</Link>
+                      <Button asChild size="sm" className="w-full mt-auto">
+                        <Link to="/apply">
+                          Apply Now <ArrowRight className="ml-1 h-3 w-3" />
+                        </Link>
                       </Button>
-                    </div>
-                  ))}
-                </div>
-                {/* Desktop table */}
-                <CardContent className="p-0 hidden md:block">
-                  <Table>
-                    <TableHeader>
-                       <TableRow className="bg-muted/50">
-                        <TableHead className="font-semibold text-sm">Program</TableHead>
-                        <TableHead className="font-semibold text-sm">Duration</TableHead>
-                        <TableHead className="font-semibold text-sm">Modality</TableHead>
-                        <TableHead className="font-semibold text-sm">Status</TableHead>
-                        <TableHead className="text-right font-semibold text-sm">Action</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {closedPrograms.map((program, index) => (
-                        <TableRow key={program.id} className={`${index % 2 === 0 ? 'bg-background' : 'bg-muted/30'} hover:bg-primary/5 transition-colors`}>
-                          <TableCell className="font-medium">
-                            <Link to={`/programs/${program.id}`} className="hover:text-primary transition-colors">
-                              {program.name}
-                            </Link>
-                          </TableCell>
-                          <TableCell>
-                            <div className="flex items-center gap-2">
-                              <Clock className="h-4 w-4 text-muted-foreground" />
-                              {program.duration}
-                            </div>
-                          </TableCell>
-                          <TableCell>
-                            <Badge variant="outline">{program.modality}</Badge>
-                          </TableCell>
-                          <TableCell>
-                            <Badge variant="destructive">Coming Soon</Badge>
-                          </TableCell>
-                          <TableCell className="text-right">
-                            <Button asChild size="sm" variant="outline">
-                              <Link to={`/programs/${program.id}`}>View Details</Link>
-                            </Button>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </CardContent>
-              </Card>
+                    </CardContent>
+                  </Card>
+                );
+              })}
             </div>
-          )}
+          </div>
+
+          {/* Weekly Breakdown */}
+          <div>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                <CalendarDays className="h-5 w-5 text-primary" />
+              </div>
+              <div>
+                <h2 className="text-2xl font-bold text-foreground">Week-by-Week Breakdown</h2>
+                <p className="text-sm text-muted-foreground">{schedule.programLength} · {schedule.totalHours} total hours</p>
+              </div>
+            </div>
+
+            {/* Legend */}
+            <div className="flex flex-wrap items-center gap-4 mb-6 text-sm">
+              {Object.entries(phaseColors).map(([key, val]) => (
+                <span key={key} className="flex items-center gap-1.5">
+                  <span className={`w-3 h-3 rounded ${val.bg} border ${val.border}`} />
+                  <span className={val.text}>{val.label}</span>
+                </span>
+              ))}
+              <span className="flex items-center gap-1.5 text-muted-foreground">
+                <Monitor className="h-3 w-3" /> Online
+              </span>
+              <span className="flex items-center gap-1.5 text-muted-foreground">
+                <MapPin className="h-3 w-3" /> In Person
+              </span>
+            </div>
+
+            <div className="space-y-6">
+              {displayedWeeks.map((week) => {
+                const pc = phaseColors[week.phase];
+                return (
+                  <div key={week.week}>
+                    <div className="flex items-center gap-3 mb-3">
+                      <Badge className={`${pc.bg} ${pc.text} border ${pc.border} hover:${pc.bg}`}>
+                        Week {week.week}
+                      </Badge>
+                      <span className="font-semibold text-foreground">{week.title}</span>
+                      <span className="text-sm text-muted-foreground">({week.totalHours} hrs)</span>
+                    </div>
+                    <div className={`grid gap-2 ${
+                      week.days.length <= 2 ? "grid-cols-1 sm:grid-cols-2" : "grid-cols-2 sm:grid-cols-3 md:grid-cols-5"
+                    }`}>
+                      {week.days.map((day, idx) => {
+                        const dp = phaseColors[day.phase];
+                        return (
+                          <Card key={idx} className={`${dp.bg} border ${dp.border} hover:shadow-md transition-all`}>
+                            <CardContent className="p-3">
+                              <div className="flex items-center justify-between mb-2">
+                                <span className={`text-xs font-bold ${dp.text}`}>{day.day}</span>
+                                <span className="text-[10px] text-muted-foreground bg-background/80 rounded-full px-2 py-0.5">{day.hours}h</span>
+                              </div>
+                              <p className={`text-xs font-medium ${dp.text}`}>{day.content}</p>
+                              {day.skills && (
+                                <p className="text-xs text-accent font-medium mt-1">{day.skills}</p>
+                              )}
+                              <div className="flex items-center gap-1 mt-2 text-[10px] text-muted-foreground">
+                                {modeIcon(day.mode)}
+                                <span>{day.mode}</span>
+                              </div>
+                            </CardContent>
+                          </Card>
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
 
           {/* Info Card */}
           <Card className="bg-gradient-to-br from-muted/50 to-muted/30 border-l-4 border-l-primary">
@@ -484,20 +414,20 @@ const Schedule = () => {
                 <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
                   <Users className="h-5 w-5 text-primary" />
                 </div>
-                About Our Cohort Schedule
+                About Our CNA Program
               </CardTitle>
             </CardHeader>
             <CardContent className="text-muted-foreground">
               <p className="mb-4">
-                Aliko Academy operates on a cohort-based schedule, with new classes starting on 
-                specific dates throughout the year. This approach ensures:
+                Our CNA program is 108 total hours across theory, skills lab, and clinical rotation.
+                All schedules follow the same comprehensive curriculum — choose the timing that works for you.
               </p>
               <ul className="space-y-2 mb-4">
                 {[
-                  "Structured learning with dedicated instructor support",
-                  "Peer collaboration and networking opportunities",
-                  "Coordinated clinical placement scheduling",
-                  "Clear timelines for program completion and certification",
+                  "Same curriculum across all schedule options",
+                  "Online and in-person hybrid delivery",
+                  "Hands-on clinical rotation at partner facilities",
+                  "Prepares you for Washington State CNA Certification Exam",
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-2">
                     <CheckCircle className="h-4 w-4 text-primary mt-0.5 shrink-0" />
