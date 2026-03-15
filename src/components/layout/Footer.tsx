@@ -22,11 +22,11 @@ const footerLinks = {
     { name: "Career Services", href: "/career-services" },
     { name: "Partners", href: "/partners" },
   ],
-  policies: [
+  resources: [
+    { name: "Blog", href: "/blog" },
+    { name: "Resources & FAQ", href: "/resources" },
     { name: "Student Handbook", href: "/policies" },
-    { name: "Refund Policy", href: "/policies#refund" },
     { name: "Privacy Policy", href: "/policies#privacy" },
-    { name: "ADA Accommodations", href: "/policies#ada" },
   ],
 };
 
